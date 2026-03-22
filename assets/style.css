@@ -1,0 +1,262 @@
+:root {
+    --primary-color: #a588ae; /* Lavender */
+    --link-hover: #8e7396;
+    --text-color: #444;       /* Professional Grey */
+    --light-text: #666;
+    --heading-color: #222;
+    --bg-color: #ffffff;
+    --sidebar-bg: #fdfdfd;
+    --border-color: #eee;
+    --container-width: 900px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary-color: #c7b1ce; /* Lighter lavender for dark mode */
+        --link-hover: #d9c8de;
+        --text-color: #ccc;
+        --light-text: #999;
+        --heading-color: #eee;
+        --bg-color: #121212;
+        --sidebar-bg: #1a1a1a;
+        --border-color: #333;
+    }
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: var(--link-hover);
+    text-decoration: underline;
+}
+
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.site-layout {
+    display: flex;
+    gap: 4rem;
+    align-items: flex-start;
+    padding-top: 4rem;
+}
+
+/* Sidebar Styling - Peter Innes Style */
+.sidebar {
+    width: 220px;
+    position: sticky;
+    top: 4rem;
+    flex-shrink: 0;
+}
+
+.sidebar h1 {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+    margin-bottom: 1.5rem;
+    color: var(--heading-color);
+    font-weight: 400;
+}
+
+.profile-image {
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+    display: block;
+    border: 1px solid var(--border-color);
+}
+
+.profile-info {
+    margin-bottom: 2rem;
+}
+
+.profile-info p {
+    margin: 0.4rem 0;
+    font-size: 0.9rem;
+    color: var(--light-text);
+    text-align: left !important; /* Ensure sidebar isn't justified */
+}
+
+.social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.social-links a {
+    color: var(--text-color);
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-weight: 500;
+}
+
+.social-links a i {
+    color: var(--primary-color);
+    width: 18px;
+    text-align: center;
+}
+
+/* Main Body */
+.main-body {
+    flex: 1;
+}
+
+.main-body p {
+    text-align: justify;
+    margin-bottom: 1.2rem;
+}
+
+header {
+    margin-bottom: 3rem;
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: var(--light-text);
+    font-weight: 400;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--primary-color);
+    border-bottom: 1px solid var(--primary-color);
+}
+
+/* Headings throughout the site */
+h1, h2, h3, h4 {
+    color: var(--heading-color);
+    font-weight: 400; /* Unbolded headers */
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.3rem;
+}
+
+/* Publications */
+.publications-list {
+    margin-top: 2rem;
+}
+
+.pub-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid var(--border-color);
+    gap: 2rem;
+}
+
+.pub-main {
+    flex: 1;
+}
+
+.pub-title {
+    font-weight: 400;
+    margin-bottom: 0.2rem;
+}
+
+.highlighted-publications .pub-title a {
+    color: var(--primary-color);
+}
+
+.all-publications .pub-title a {
+    color: var(--heading-color);
+}
+
+.pub-meta {
+    color: var(--light-text);
+    font-size: 0.85rem;
+}
+
+.pub-venue {
+    font-style: italic;
+}
+
+.pub-year {
+    color: var(--light-text);
+    font-size: 0.9rem;
+    min-width: 50px;
+    text-align: right;
+}
+
+.pub-divider {
+    border: 0;
+    border-top: 1px solid var(--border-color);
+    margin: 3rem 0;
+}
+
+footer {
+    text-align: center;
+    padding: 3rem 0;
+    color: var(--light-text);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: 5rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .site-layout {
+        flex-direction: column;
+        gap: 2rem;
+        padding-top: 2rem;
+    }
+
+    .sidebar {
+        width: 100%;
+        position: static;
+        text-align: center;
+    }
+
+    .profile-image {
+        margin: 0 auto 1.5rem;
+    }
+
+    .social-links {
+        align-items: center;
+    }
+
+    .nav-links {
+        justify-content: center;
+    }
+}
+
