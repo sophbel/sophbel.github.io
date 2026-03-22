@@ -30,6 +30,7 @@ body {
     background-color: var(--bg-color);
     margin: 0;
     padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 a {
@@ -123,6 +124,8 @@ a:hover {
 .main-body p {
     text-align: justify;
     margin-bottom: 1.2rem;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 header {
@@ -235,6 +238,10 @@ footer {
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
+    .container {
+        padding: 0 1.2rem;
+    }
+
     .site-layout {
         flex-direction: column;
         gap: 2rem;
@@ -257,6 +264,26 @@ footer {
 
     .nav-links {
         justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .pub-row {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .pub-year {
+        text-align: left;
+        font-weight: 500;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.4rem;
     }
 }
 
