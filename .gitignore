@@ -1,0 +1,28 @@
+# Ignore installed npm modules
+node_modules/
+
+# Astro's build output and its generated type cache
+dist/
+.astro/
+
+# Ignore folders from source code editors
+.vscode
+.idea
+
+# Ignore build outputs from performing a nix-build or `nix build` command
+result
+result-*
+
+# Ignore automatically generated direnv output
+.direnv
+
+# Local environment overrides, which are nobody else's and may hold a token
+.env
+
+# Scratch space for design notes and working files
+.scratch/
+
+.DS_Store
+*.log
+public/admin/sveltia-cms.mjs
+public/admin/index.html

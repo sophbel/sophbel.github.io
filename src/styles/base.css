@@ -1,0 +1,436 @@
+/*
+ * Layer order is declared once so later rules never depend on source position.
+ *
+ * `styles/design.css` extends these same layers and is imported by BaseLayout
+ * after this file. The split is by what a rule is about: here the reset, the
+ * shared components and the default single-column arrangement; there every
+ * choice that belongs to the design.
+ */
+@layer reset, base, layout, components, utilities;
+
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  body, h1, h2, h3, h4, p, figure, blockquote, dl, dd, ul, ol { margin: 0; }
+  ul[class], ol[class] { list-style: none; padding: 0; }
+  /*
+    `block-size: auto` is load-bearing: without it an <img> with width/height
+    attributes keeps the attribute height even when CSS constrains its width,
+    so `aspect-ratio` is silently ignored and the image is distorted.
+  */
+  img, picture, svg { max-inline-size: 100%; block-size: auto; display: block; }
+  input, button, textarea, select { font: inherit; color: inherit; }
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: var(--step-0);
+    line-height: 1.6;
+    margin: 0;
+    text-wrap: pretty;
+    overflow-wrap: break-word;
+  }
+
+  h1, h2, h3, h4 {
+    color: var(--color-heading);
+    font-family: var(--font-display);
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  h1 { font-size: var(--step-4); }
+  h2 { font-size: var(--step-2); margin-block-start: var(--space-l); }
+  h3 { font-size: var(--step-1); margin-block-start: var(--space-m); }
+
+  a { color: var(--color-accent); text-underline-offset: 0.15em; }
+  a:hover { text-decoration-thickness: 2px; }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius);
+  }
+
+  code, pre { font-family: var(--font-mono); font-size: var(--step--1); }
+
+  hr {
+    border: 0;
+    border-block-start: var(--rule) solid var(--color-border);
+    margin-block: var(--space-l);
+  }
+}
+
+@layer layout {
+  /*
+    The grid, and its single-column arrangement. `design.css` rearranges the
+    same three areas above 62rem; navigation, identity and content are emitted
+    exactly once and placed by grid-area, so the layout changes where things
+    sit without changing the markup. A second nav emitted and hidden at one
+    width would put two "Primary" landmarks and every link twice into the page.
+
+    Three areas, not four. The in-page index used to be a fourth, filled
+    through a slot in BaseLayout; it is now rendered by the page inside <main>
+    under its <h1>, because that is the one place in the document a sibling of
+    <main> cannot reach. `design.css` puts it back in a column of its own above
+    62rem.
+  */
+  .page {
+    display: grid;
+    column-gap: var(--space-xl);
+    row-gap: var(--space-m);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'nav' 'identity' 'main';
+    margin-inline: auto;
+    max-inline-size: var(--page-max);
+    padding: var(--space-l) var(--space-m);
+  }
+
+  .site-nav { grid-area: nav; }
+  .identity-column { grid-area: identity; }
+  /*
+    No top margin here. The row gap already separates the content from whatever
+    sits above it, and a margin on top of that made the seam under the in-page
+    index twice every other seam on the page. Stated once, in the grid that
+    owns the spacing.
+  */
+  .page > main { grid-area: main; }
+
+  .flow > * + * { margin-block-start: var(--space-s); }
+  .flow h2 + *, .flow h3 + * { margin-block-start: var(--space-2xs); }
+
+  /*
+    The measure constrains prose, not the column. Applying it to the container
+    would also squeeze the team grid, the gallery and the card lists, which want
+    the full width available to them.
+  */
+  .prose > :is(p, ul, ol, h1, h2, h3, h4, blockquote, hr) { max-inline-size: var(--measure); }
+  .prose > section > :is(p, h2, h3, h4, ol, ul, dl, details, aside, table, blockquote) {
+    max-inline-size: var(--measure);
+  }
+  /*
+    Scoped to unclassed lists. Every grid on this site is a <ul> - the team,
+    the cards, the gallery - so an unscoped `li + li` margin knocks each grid
+    item after the first out of alignment with its row.
+  */
+  .prose :is(ul, ol):not([class]) { padding-inline-start: var(--space-m); }
+  .prose :is(ul, ol):not([class]) > li + li { margin-block-start: var(--space-2xs); }
+}
+
+@layer components {
+  .identity { display: flex; flex-direction: column; gap: var(--space-2xs); }
+  .identity__name { font-size: var(--step-3); margin: 0; }
+  .identity__photo {
+    aspect-ratio: 1;
+    border-radius: var(--radius);
+    inline-size: 100%;
+    max-inline-size: 12rem;
+    object-fit: cover;
+    object-position: top;
+  }
+  .identity__meta { color: var(--color-muted); font-size: var(--step--1); }
+  .identity__meta p { margin: 0; }
+  /*
+    The name of the field each identity line came from. Shown only by a design
+    that sets the block as a keyed metadata rail; written once in the markup so
+    it is real text rather than a CSS-generated string.
+  */
+
+  .nav { display: flex; flex-wrap: wrap; gap: var(--space-2xs) var(--space-s); }
+  /*
+    The current page is marked, and where the mark goes is the design's
+    business rather than this file's. Hanging it off the block edge only works
+    while the box is the height of its line, and these are 44px touch targets
+    on a phone: the rule landed sixteen pixels below the word and read as a
+    dash that had come loose. `design.css` draws it on the text below 62rem and
+    on the inline edge above, and both used to have to undo a border from here
+    first.
+  */
+  .nav a {
+    color: var(--color-text);
+    padding-block: var(--space-3xs);
+    text-decoration: none;
+  }
+  .nav a[aria-current='page'] {
+    color: var(--color-heading);
+    font-weight: 600;
+  }
+
+  .social { display: flex; flex-wrap: wrap; gap: var(--space-2xs) var(--space-s); font-size: var(--step--1); }
+
+  .people { container-type: inline-size; }
+  .people__grid {
+    display: grid;
+    gap: var(--space-m);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
+    list-style: none;
+    padding: 0;
+  }
+  .person {
+    border: var(--rule) solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    padding: var(--space-s);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+  .person__avatar {
+    object-fit: cover;
+    object-position: top;
+    aspect-ratio: 1;
+    background: var(--color-border);
+    border-radius: var(--radius);
+    display: grid;
+    place-items: center;
+    color: var(--color-muted);
+    font-size: var(--step-2);
+  }
+  .person__name { font-size: var(--step-0); margin: 0; }
+  .person__rank { color: var(--color-muted); font-size: var(--step--1); }
+  /*
+    Not a second rank. It was one until a design review read "Postdoc" and
+    "Placeholder entry" as two equal lines under one name, which is exactly the
+    confusion this mark exists to prevent: it says the person is not real, and
+    it has to be the loudest thing in the row rather than the quietest. Each
+    design marks it in its own vocabulary; the accent is the one thing they
+    share, because on this site colour means something.
+  */
+  .person__placeholder {
+    color: var(--color-accent);
+    font-size: var(--step--1);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /*
+    Publication and event lists are prose, so they respect the measure.
+
+    `.pubs--dated` marks the two lists whose rows are dated entries rather than
+    citations - news and events. They share the row shape and nothing else: an
+    entry has a date where a paper has authors, a venue and a year, so a design
+    that does something with the year has to know which list it is looking at.
+  */
+  .pubs { display: flex; flex-direction: column; gap: var(--space-m); list-style: none; padding: 0; max-inline-size: var(--measure); }
+  .pub { display: grid; gap: var(--space-3xs); }
+  .pub__title { font-size: var(--step-0); font-weight: 600; }
+  /* The rail copy of the year. Shown only by a design that rails years. */
+  .pub__year { display: none; }
+  /* The DOI on a line of its own. Shown only by a design that cites by identifier. */
+  .pub__doi { display: none; }
+  .pub__authors, .pub__meta { color: var(--color-muted); font-size: var(--step--1); }
+  /*
+    Two things are worth picking out of a citation at a glance, and they are
+    picked out differently so neither is mistaken for the other: her name takes
+    weight, and the journal takes italic, which is how a journal has been set
+    in a citation for a century. The author list italicises nothing, so the
+    <em> around her name is turned back upright to make room for that.
+
+    Archivo ships a real italic and `font-synthesis: none` in design.css
+    refuses a faked one, so this resolves to a drawn face or to the fallback's
+    own italic - never to a slanted roman.
+  */
+  .pub__authors em { color: var(--color-heading); font-style: normal; font-weight: 600; }
+  .pub__journal { color: var(--color-heading); font-style: italic; }
+  .tag {
+    background: var(--color-accent);
+    border-radius: var(--radius);
+    color: var(--color-accentText);
+    font-size: var(--step--1);
+    letter-spacing: 0.04em;
+    padding: 0.1em 0.5em;
+    text-transform: uppercase;
+  }
+
+  .cards { display: grid; gap: var(--space-m); grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr)); list-style: none; padding: 0; }
+  .card {
+    border: var(--rule) solid var(--color-border);
+    border-radius: var(--radius);
+    padding: var(--space-s);
+    background: var(--color-surface);
+  }
+  /*
+    The card's title is addressed by name rather than by level, because the
+    same card is a top-level entry on the Software and data page and a nested
+    one inside a section on the home page - an <h2> in one place and an <h3> in
+    the other. Only the margin is reset here: what size a card title takes is a
+    decision each design makes, and taking it away from the heading level would
+    change two designs that never asked.
+  */
+  .card__title { margin-block-start: 0; }
+  /*
+    A card holds a summary and then a body written in the CMS, and the reset
+    takes the margin off both. Without this the two run together as one block
+    of text - which only became visible once Software and data went into the
+    menu and the page was looked at in all three designs.
+  */
+  .card > p + p { margin-block-start: var(--space-2xs); }
+
+  .gallery { display: grid; gap: var(--space-s); grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr)); list-style: none; padding: 0; }
+  .gallery__item {
+    background: var(--color-surface);
+    border: var(--rule) dashed var(--color-border);
+    border-radius: var(--radius);
+    display: grid;
+    place-items: center;
+    color: var(--color-muted);
+    font-size: var(--step--1);
+    padding: var(--space-s);
+    text-align: center;
+  }
+
+  /* Long-form explanatory page. */
+  .manual > * + * { margin-block-start: var(--space-s); }
+  /*
+    One of the three designs, described in its own words. Set apart from the
+    prose around it because the page's argument is the comparison: three of
+    these read one after another is the decision, and a run of headings with
+    paragraphs under them is not.
+  */
+  .design {
+    border-block-start: var(--rule-strong) solid var(--color-border);
+    padding-block-start: var(--space-2xs);
+  }
+  .design > * + * { margin-block-start: var(--space-2xs); }
+  .design h3 { margin-block-start: 0; }
+  .design__short { color: var(--color-muted); font-size: var(--step--1); }
+  .manual > section { margin-block-start: var(--space-xl); }
+  .manual > section > * + * { margin-block-start: var(--space-s); }
+  .manual h3 { font-size: var(--step-0); }
+
+  .lede { font-size: var(--step-1); color: var(--color-muted); max-inline-size: var(--measure); }
+
+  /*
+    The date on the one page that is about a single dated thing. Named rather
+    than left as `.muted`, because a date is the one line on a news item every
+    design has an opinion about - a year railed down the margin, a dateline in
+    the display italic, a monospaced identifier - and an unnamed grey paragraph
+    is the one thing none of them can have an opinion about.
+  */
+  .dateline { color: var(--color-muted); font-size: var(--step--1); }
+
+  .toc {
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    border-inline-start: var(--rule-heavy) solid var(--color-accent);
+    max-inline-size: var(--measure);
+    padding: var(--space-s) var(--space-m);
+  }
+  .toc h2 { font-size: var(--step--1); letter-spacing: 0.06em; margin: 0; text-transform: uppercase; }
+  .toc ol { margin-block-start: var(--space-2xs); }
+
+  .manual dl { display: grid; gap: var(--space-2xs) var(--space-m); }
+  .manual dt { color: var(--color-heading); font-weight: 600; }
+  .manual dd { color: var(--color-muted); margin: 0; }
+  @media (min-width: 34rem) {
+    .manual dl { grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr); }
+    .manual dt { grid-column: 1; }
+    .manual dd { grid-column: 2; }
+  }
+
+  .manual details {
+    border: var(--rule) solid var(--color-border);
+    border-radius: var(--radius);
+    padding: var(--space-2xs) var(--space-s);
+  }
+  .manual summary { cursor: pointer; color: var(--color-heading); font-weight: 600; }
+  .manual details[open] summary { margin-block-end: var(--space-2xs); }
+
+  /*
+    Two weights of aside. `.note` is a remark alongside the text - the accent
+    bar marks it without interrupting. `.notice` is a warning the reader has to
+    act on, which on this site means a gap in the ORCID record that only she
+    can close, so it is boxed rather than barred.
+  */
+  .note {
+    border-inline-start: var(--rule-heavy) solid var(--color-accent);
+    color: var(--color-muted);
+    padding-inline-start: var(--space-s);
+  }
+
+  .notice {
+    border: var(--rule) dashed var(--color-accent);
+    border-radius: var(--radius);
+    color: var(--color-muted);
+    font-size: var(--step--1);
+    margin-block: var(--space-m);
+    padding: var(--space-s);
+  }
+
+  .manual .table-scroll { overflow-x: auto; }
+  .manual table { border-collapse: collapse; inline-size: 100%; min-inline-size: 22rem; text-align: start; }
+  .manual caption {
+    color: var(--color-muted);
+    font-size: var(--step--1);
+    margin-block-end: var(--space-2xs);
+    text-align: start;
+  }
+  .manual :is(th, td) {
+    /* The UA stylesheet centres th, which beats inheriting from the table. */
+    text-align: start;
+    border-block-end: var(--rule) solid var(--color-border);
+    padding: var(--space-2xs) var(--space-2xs) var(--space-2xs) 0;
+    vertical-align: top;
+  }
+  .manual thead th { color: var(--color-heading); font-size: var(--step--1); letter-spacing: 0.04em; text-transform: uppercase; }
+  .manual tbody th { color: var(--color-heading); font-weight: 600; inline-size: 40%; }
+  .manual td { color: var(--color-muted); }
+
+  .manual code {
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    padding: 0.1em 0.35em;
+  }
+
+  /*
+    Where the page is written and which commit built it. Both are emitted on
+    every page and shown only by the design that treats the site as something
+    with a source, so the other two are not asked to find room for a line about
+    the machinery.
+  */
+
+  .footer {
+    border-block-start: var(--rule) solid var(--color-border);
+    color: var(--color-muted);
+    font-size: var(--step--1);
+    margin-block-start: var(--space-2xl);
+    padding: var(--space-l) var(--space-m);
+  }
+  .footer__inner { margin-inline: auto; max-inline-size: var(--page-max); }
+  .footer p { margin: 0; }
+}
+
+@layer utilities {
+  /* Visible only once focused, so keyboard users can jump past the sidebar. */
+  .skip {
+    background: var(--color-bg);
+    border: var(--rule) solid var(--color-accent);
+    border-radius: var(--radius);
+    inset-block-start: var(--space-2xs);
+    inset-inline-start: var(--space-2xs);
+    padding: var(--space-2xs) var(--space-s);
+    position: absolute;
+    transform: translateY(-200%);
+    z-index: 20;
+  }
+  .skip:focus { transform: none; }
+
+  .visually-hidden {
+    clip-path: inset(50%);
+    block-size: 1px;
+    inline-size: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+  }
+  .muted { color: var(--color-muted); }
+  .small { font-size: var(--step--1); }
+  .stack-l > * + * { margin-block-start: var(--space-l); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

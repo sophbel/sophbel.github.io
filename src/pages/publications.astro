@@ -1,0 +1,98 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PublicationList from '../components/PublicationList.astro';
+import SectionIndex from '../components/SectionIndex.astro';
+import { normalisePublications, type Snapshot } from '../lib/orcid.ts';
+import snapshot from '../data/orcid-snapshot.json' with { type: 'json' };
+
+const { publications, syncedAt } = normalisePublications(snapshot as Snapshot);
+
+const highlightEntries = (await getCollection('highlights')).sort(
+  (a, b) => (a.data.order as number) - (b.data.order as number),
+);
+const notes = Object.fromEntries(
+  highlightEntries.flatMap((entry) =>
+    entry.data.note ? [[entry.data.doi as string, entry.data.note as string]] : [],
+  ),
+);
+const highlightDois = highlightEntries.map((entry) => entry.data.doi as string);
+
+const byDoi = new Map(publications.flatMap((p) => (p.doi ? [[p.doi, p]] : [])));
+const highlights = highlightDois.flatMap((doi) => byDoi.get(doi) ?? []);
+const missingHighlights = highlightDois.filter((doi) => !byDoi.has(doi));
+
+/*
+ * Every work appears once, and the selected list wins.
+ *
+ * Two exclusions, for two different reasons. A highlighted paper is already
+ * set out above with a note saying why it matters, and printing it again a
+ * screen later says the record has two of it. And a preprint whose published
+ * version is also on the record is the same work twice in ORCID's data rather
+ * than on this page: the published version is the one that carries the
+ * citation, so the preprint is dropped rather than given a section of its own
+ * to sit in.
+ */
+const selectedDois = new Set(highlightDois);
+const rest = publications.filter(
+  (p) => p.supersededBy === null && !(p.doi && selectedDois.has(p.doi)),
+);
+
+/*
+ * What the second list is called depends on whether there is a first one. With
+ * selected papers above it, it holds what is left and cannot be called all of
+ * them; without, it is the whole record. The highlights are hers to edit, so
+ * both states are reachable from the CMS.
+ */
+const restHeading = highlights.length > 0 ? 'Other publications' : 'All publications';
+
+const synced = new Date(syncedAt).toLocaleDateString('en-GB', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
+});
+
+// The index of this page, built from the same conditions that decide whether
+// each section is rendered, so it can never point at a heading that is not
+// there.
+const sections: [string, string][] = [
+  ...(highlights.length > 0 ? [['selected', 'Selected publications'] as [string, string]] : []),
+  ['rest', restHeading],
+];
+---
+<BaseLayout title="Publications" description="Publications, synchronised from ORCID.">
+  <h1>Publications</h1>
+  <SectionIndex sections={sections} />
+
+  <p class="muted small">
+    Last updated from <a href="https://orcid.org/0000-0002-9778-7174" rel="noopener">ORCID</a> on {synced}.
+  </p>
+
+  {/*
+    Works absent from the ORCID record are not named here. That list is a
+    to-do list for her and reads as an apology to everyone else, so it lives on
+    /how-this-works, which is the page written for her. See the "Why some of
+    your papers are missing" section there.
+
+    This notice is the other thing, and it stays: a highlighted DOI that is not
+    on the record is a broken entry in her own curation, and the paper it names
+    is silently absent from the page above until she fixes it.
+  */}
+  {missingHighlights.length > 0 && (
+    <p class="notice">
+      <strong>{missingHighlights.length} highlighted {missingHighlights.length === 1 ? 'DOI is' : 'DOIs are'} not on the ORCID record</strong>
+      {' '}({missingHighlights.join(', ')}), so {missingHighlights.length === 1 ? 'it cannot' : 'they cannot'} be shown.
+      Adding {missingHighlights.length === 1 ? 'it' : 'them'} to ORCID will fix this.
+    </p>
+  )}
+
+  {highlights.length > 0 && (
+    <section id="selected">
+      <h2>Selected publications</h2>
+      <PublicationList publications={highlights} notes={notes} />
+    </section>
+  )}
+
+  <section id="rest">
+    <h2>{restHeading}</h2>
+    <PublicationList publications={rest} />
+  </section>
+</BaseLayout>

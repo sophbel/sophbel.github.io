@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import fixtures from '../data/fixtures/gallery.json' with { type: 'json' };
+
+import { galleryState, type GalleryPhoto } from '../lib/gallery.ts';
+import { url } from '../lib/paths.ts';
+
+// Fixtures shaped like @palebluebytes/cms `Photo[]`. Swapping in
+// `await fetchPhotos({ folderId, auth })` is the only change needed to go live.
+const state = galleryState(fixtures as GalleryPhoto[]);
+
+---
+<BaseLayout title="Gallery" description="Photographs from the lab.">
+  <h1>Gallery</h1>
+
+  {state.kind === 'empty' ? (
+    <p class="notice"><strong>Gallery unavailable.</strong> {state.warning}</p>
+  ) : (
+    <ul class="gallery">
+      {state.photos.map((photo) => (
+        <li>
+          {photo.url
+            ? <img src={url(photo.url)} alt={photo.caption} width={photo.width ?? undefined} height={photo.height ?? undefined} loading="lazy" />
+            : (
+              <div class="gallery__item" style={`aspect-ratio: ${photo.ratio};`}>
+                <span>{photo.caption}<br /><span class="small">{photo.width}×{photo.height}</span></span>
+              </div>
+            )}
+        </li>
+      ))}
+    </ul>
+  )}
+</BaseLayout>

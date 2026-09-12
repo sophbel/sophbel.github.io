@@ -1,0 +1,72 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'scripts/**'
+      - 'astro.config.mjs'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/deploy.yml'
+  # Sveltia's "Publish Changes" button fires this. `[skip ci]` suppresses only
+  # `push` and `pull_request`, never `repository_dispatch`, so an editor can
+  # save repeatedly without building and then publish once.
+  repository_dispatch:
+    types: [sveltia-cms-publish]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Coalesces a burst of CMS saves: a queued run replaces any pending run, so six
+# saves in four minutes produce one in-flight build plus one final build rather
+# than six. `cancel-in-progress: false` matches GitHub's own Pages starter
+# workflow - an in-flight production deploy is allowed to finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm test
+
+      - run: pnpm typecheck
+
+      - run: pnpm build
+        env:
+          # This demo is served from a GitHub Pages project path. On the real
+          # site at a domain root, drop SITE_BASE.
+          SITE_BASE: /belman-lab-demo
+          SITE_URL: https://inkpot-monkey.github.io
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

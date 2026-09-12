@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { url } from '../../lib/nav.ts';
+
+const news = (await getCollection('news')).sort(
+  (a, b) => (b.data.date as Date).getTime() - (a.data.date as Date).getTime(),
+);
+const format = (date: Date) =>
+  date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+---
+<BaseLayout title="News" description="Announcements and updates from the lab.">
+  <h1>News</h1>
+
+  <ul class="pubs pubs--dated">
+    {news.map((item) => (
+      <li class="pub">
+        <div class="pub__title"><a href={url(`/news/${item.id}`)}>{item.data.title}</a></div>
+        <p class="pub__meta"><time datetime={(item.data.date as Date).toISOString()}>{format(item.data.date as Date)}</time></p>
+        {item.data.summary && <p>{item.data.summary}</p>}
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

@@ -1,0 +1,34 @@
+[
+  {
+    "id": "demo-1",
+    "summary": "Lab meeting",
+    "description": "Placeholder event. Not a real calendar entry.",
+    "location": "Office 308",
+    "kind": "instant",
+    "isMultiDay": false,
+    "start": "2026-09-15T14:00:00-04:00",
+    "end": "2026-09-15T15:00:00-04:00",
+    "timeZone": "America/New_York"
+  },
+  {
+    "id": "demo-2",
+    "summary": "Departmental seminar",
+    "description": "Placeholder event. Not a real calendar entry.",
+    "location": "LEPH Auditorium",
+    "kind": "instant",
+    "isMultiDay": false,
+    "start": "2026-09-22T12:00:00-04:00",
+    "end": "2026-09-22T13:00:00-04:00",
+    "timeZone": "America/New_York"
+  },
+  {
+    "id": "demo-3",
+    "summary": "Field work",
+    "description": "Placeholder event. Not a real calendar entry.",
+    "location": "",
+    "kind": "date",
+    "isMultiDay": true,
+    "start": "2026-10-05",
+    "end": "2026-10-10"
+  }
+]

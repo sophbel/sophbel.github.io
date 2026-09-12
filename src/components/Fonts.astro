@@ -1,0 +1,69 @@
+---
+/**
+ * Archivo, declared and preloaded in the document head.
+ *
+ * Written here rather than imported from `@fontsource-variable/archivo`'s own
+ * stylesheet, for two reasons that between them are the whole fix for the
+ * flash of unstyled text.
+ *
+ * **The request starts at the first byte of the head.** Fontsource's CSS
+ * arrives inside the bundled stylesheet, so the browser could not learn the
+ * font existed until it had fetched and parsed that file: HTML, then CSS, then
+ * font, one after the other. Declaring the faces inline and preloading the one
+ * every page needs collapses that chain — the font is in flight alongside the
+ * stylesheet rather than behind it.
+ *
+ * **`font-display: optional`, not `swap`.** `swap` is a promise to repaint the
+ * page in a different typeface whenever the font turns up, which is the flash
+ * itself. `optional` gives the font about 100ms to arrive and then stops
+ * offering: either the first paint is Archivo, or the page is set in the
+ * fallback and stays there, and the font is used from the next navigation on.
+ * Nothing reflows either way. The fallback chain in `lib/design.ts` was chosen
+ * to be grotesques of a similar width for exactly this moment.
+ *
+ * The URLs come from Vite, which hashes each file and prefixes the site's base
+ * path, so they stay correct under a GitHub Pages project path and can be
+ * cached forever.
+ */
+import latin from '@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2?url';
+import latinExt from '@fontsource-variable/archivo/files/archivo-latin-ext-wght-normal.woff2?url';
+import latinItalic from '@fontsource-variable/archivo/files/archivo-latin-wght-italic.woff2?url';
+import latinExtItalic from '@fontsource-variable/archivo/files/archivo-latin-ext-wght-italic.woff2?url';
+
+/*
+ * The subsets, with the ranges Fontsource ships. Latin-ext earns its place on
+ * the author lists - Noémie, Rendón, Plessis - and italic on the species names
+ * running through the prose. Vietnamese is dropped: `unicode-range` means no
+ * page here would ever fetch it, and shipping a file nothing requests is still
+ * a file in the deploy.
+ */
+const LATIN = 'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD';
+const LATIN_EXT = 'U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF';
+
+/** Weight is a range on the face, so `font-weight: 550` interpolates on its own. */
+const face = (src: string, style: 'normal' | 'italic', range: string) => `@font-face {
+  font-family: 'Archivo Variable';
+  font-style: ${style};
+  font-weight: 100 900;
+  font-display: optional;
+  src: url(${src}) format('woff2-variations');
+  unicode-range: ${range};
+}`;
+
+const faces = [
+  face(latin, 'normal', LATIN),
+  face(latinExt, 'normal', LATIN_EXT),
+  face(latinItalic, 'italic', LATIN),
+  face(latinExtItalic, 'italic', LATIN_EXT),
+].join('\n');
+---
+{/*
+  Only the roman latin subset is preloaded. It is the face every page sets its
+  body text in; the other three are conditional on a character appearing, and
+  preloading a file a page may never ask for is how a preload starts costing
+  more than it saves. `crossorigin` is not optional even same-origin - fonts
+  are fetched in CORS mode, and without it the browser preloads one copy and
+  then fetches a second.
+*/}
+<link rel="preload" href={latin} as="font" type="font/woff2" crossorigin />
+<style is:global set:html={faces}></style>

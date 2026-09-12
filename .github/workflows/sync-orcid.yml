@@ -1,0 +1,86 @@
+name: Sync ORCID
+
+# Re-reads the ORCID record daily and republishes if it changed, so adding a
+# paper at orcid.org is the only step anyone has to take.
+on:
+  schedule:
+    # Deliberately not on the hour: GitHub delays scheduled runs at busy times.
+    - cron: '17 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# Shares the deploy workflow's group so a sync and a CMS save cannot publish
+# over each other.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.sync.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - id: sync
+        name: Fetch the ORCID record
+        run: |
+          node scripts/fetch-orcid.ts
+          # The script leaves the file untouched when nothing changed, so the
+          # working tree is the whole test.
+          if git diff --quiet -- src/data/orcid-snapshot.json; then
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+            echo 'ORCID record unchanged; nothing to publish.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+            echo 'ORCID record changed; republishing.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      # Build and deploy happen in this same job, from this same working tree.
+      # A push made with GITHUB_TOKEN does not trigger other workflows, so
+      # relying on the commit to set off the deploy workflow would silently
+      # commit the new data and never publish it.
+      - name: Commit the new snapshot
+        if: steps.sync.outputs.changed == 'true'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'chore(orcid): sync publication snapshot' -- src/data/orcid-snapshot.json
+          git push
+
+      - name: Build
+        if: steps.sync.outputs.changed == 'true'
+        run: pnpm build
+        env:
+          SITE_BASE: /belman-lab-demo
+          SITE_URL: https://inkpot-monkey.github.io
+
+      - uses: actions/upload-pages-artifact@v4
+        if: steps.sync.outputs.changed == 'true'
+        with:
+          path: dist
+
+  deploy:
+    needs: sync
+    if: needs.sync.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

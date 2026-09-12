@@ -1,0 +1,22 @@
+<!--
+  The lab mark: Archivo Regular "B", knocked out of the accent.
+
+  Proportioned from the reference mark in the brief, measured rather than
+  eyeballed: a cap height of 58.8% of the tile, centred both ways, a corner
+  radius of 8.8% of the side, and a stroke of 13.62% of the cap. That last
+  number is what sets the weight, and it identified the face before the zip's
+  own about.txt confirmed it: Archivo, at 400, matching to three decimal
+  places. Only the violet was not ours, so the ground stays the site accent.
+
+  The letter is an outline rather than a <text> element, because a favicon is
+  rendered in a context that loads no webfonts - `font-family: Archivo` there
+  falls back to whatever the machine happens to have. Drawn from the same file
+  the site loads, @fontsource-variable/archivo.
+
+  Regular, not the body text's bold: at 32px the counters of a bold B close up
+  into two grey smudges, and the reference is light enough to keep them open.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Belman Lab">
+  <rect width="32" height="32" rx="2.81" fill="#7b4b8a" />
+  <path fill="#ffffff" d="M8.26 25.41V6.6H17.97Q19.57 6.6 20.75 7.15Q21.93 7.71 22.57 8.73Q23.22 9.75 23.22 11.15Q23.22 12.22 22.84 13.12Q22.45 14.02 21.77 14.62Q21.09 15.23 20.2 15.53V15.64Q21.19 15.86 21.99 16.44Q22.8 17.01 23.27 17.95Q23.74 18.9 23.74 20.27Q23.74 22.1 22.98 23.24Q22.22 24.37 20.92 24.89Q19.63 25.41 17.97 25.41ZM10.86 23.16H17.92Q19.32 23.16 20.2 22.43Q21.08 21.71 21.08 20.01Q21.08 18.97 20.7 18.27Q20.32 17.56 19.58 17.22Q18.84 16.87 17.73 16.87H10.86ZM10.86 14.65H17.45Q18.39 14.65 19.08 14.28Q19.78 13.91 20.17 13.24Q20.56 12.58 20.56 11.72Q20.56 10.25 19.76 9.55Q18.96 8.84 17.67 8.84H10.86Z" />
+</svg>

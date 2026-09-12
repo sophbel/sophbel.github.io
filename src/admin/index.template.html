@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <!-- TEMPLATE. scripts/generate-cms-config.ts writes public/admin/index.html from this. -->
+    <title>Edit the site</title>
+    <link href="./config.yml" type="text/yaml" rel="cms-config-url" />
+    <style>
+      :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+      body { margin: 0; }
+
+      /*
+        Help lives outside the CMS and on top of it, because the moment it is
+        needed is the moment sign-in has failed and there is no CMS to put it
+        in. Collapsed it is a single button: an earlier version was a bar
+        pinned across the bottom, which sat over the editing form.
+      */
+      .help {
+        position: fixed;
+        inset-block-end: 1rem;
+        inset-inline-end: 1rem;
+        z-index: 2147483647;
+        font-size: 14px;
+        line-height: 1.55;
+        color: light-dark(#2b2b2b, #e8e6e0);
+      }
+
+      .help__toggle {
+        align-items: center;
+        background: light-dark(#fffdf5, #26231a);
+        block-size: 2.5rem;
+        border: 1px solid light-dark(#d8cfae, #4a442f);
+        border-radius: 50%;
+        box-shadow: 0 2px 10px rgb(0 0 0 / 0.18);
+        cursor: pointer;
+        display: flex;
+        font-size: 1.15rem;
+        font-weight: 700;
+        inline-size: 2.5rem;
+        justify-content: center;
+        margin-inline-start: auto;
+        user-select: none;
+      }
+      /* Hide the native disclosure triangle in every engine. */
+      .help__toggle { list-style: none; }
+      .help__toggle::-webkit-details-marker { display: none; }
+      .help__toggle::marker { content: ""; }
+      .help__toggle:hover { background: light-dark(#fff8e2, #302c20); }
+      .help__toggle:focus-visible { outline: 2px solid light-dark(#7b4b8a, #c7b1ce); outline-offset: 2px; }
+      .help[open] .help__toggle { background: light-dark(#f2e9cd, #3a3527); }
+
+      .help__panel {
+        background: light-dark(#fffdf5, #1c1a14);
+        border: 1px solid light-dark(#e0d9c0, #3a3527);
+        border-radius: 10px;
+        box-shadow: 0 6px 28px rgb(0 0 0 / 0.22);
+        inline-size: min(30rem, calc(100vw - 2rem));
+        inset-block-end: calc(100% + 0.5rem);
+        inset-inline-end: 0;
+        max-block-size: min(70vh, 40rem);
+        overflow-y: auto;
+        padding: 0 1rem 1rem;
+        position: absolute;
+      }
+      .help__panel h2 { font-size: 1rem; margin-block: 1rem 0.4rem; }
+      .help__panel h3 { font-size: 0.95rem; margin-block: 1rem 0.3rem; }
+      .help__panel ol, .help__panel ul { padding-inline-start: 1.2rem; }
+      .help__panel li { margin-block-end: 0.4rem; }
+      .help__panel code {
+        background: light-dark(#efe9d6, #2c2820);
+        border-radius: 3px;
+        font-size: 0.92em;
+        padding: 0.1em 0.35em;
+      }
+      .help__panel a { color: light-dark(#7b4b8a, #c7b1ce); }
+      .help__note {
+        border-inline-start: 3px solid light-dark(#c9a227, #8a7320);
+        margin-block: 0.8rem 0;
+        padding-inline-start: 0.8rem;
+      }
+      .help__manual {
+        border-block-start: 1px solid light-dark(#e0d9c0, #3a3527);
+        margin-block-start: 1rem;
+        padding-block-start: 0.8rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      The vendored bundle is the package's module build, which exposes
+      `window.CMS` but does not mount itself; only the IIFE bundle auto-mounts.
+      Initialising explicitly works with either build, so vendoring cannot
+      silently produce a blank admin page.
+    -->
+    <script type="module">
+      import './sveltia-cms.mjs';
+      window.CMS.init();
+    </script>
+
+    <details class="help">
+      <summary class="help__toggle" title="Help" aria-label="Help and sign-in instructions">i</summary>
+
+      <div class="help__panel">
+        <h2>Signing in</h2>
+        <p>
+          This CMS edits <code>{{REPO}}</code>. Signing in needs a
+          <strong>GitHub access token</strong>, which is a long password GitHub
+          generates for you. It expires, so this needs doing again roughly once a year.
+        </p>
+
+        <h3>Getting a token</h3>
+        <ol>
+          <li>
+            Open
+            <a
+              href="https://github.com/settings/personal-access-tokens/new?name=Sveltia%20CMS&contents=write"
+              target="_blank"
+              rel="noopener"
+              >this pre-filled GitHub page</a
+            >. Sign in to GitHub if it asks.
+          </li>
+          <li>
+            Under <strong>Expiration</strong>, choose the longest option offered (usually
+            <code>1 year</code>), so you do not have to repeat this often.
+          </li>
+          <li>
+            Under <strong>Repository access</strong>, choose
+            <strong>Only select repositories</strong> and pick <code>{{REPO_NAME}}</code>.
+          </li>
+          <li>
+            Under <strong>Permissions &rarr; Repository permissions</strong>, find
+            <strong>Contents</strong> and set it to <strong>Read and write</strong>. Leave
+            everything else alone.
+          </li>
+          <li>Click <strong>Generate token</strong> at the bottom.</li>
+          <li>Copy the token it shows you. <strong>You only get to see it once.</strong></li>
+          <li>Come back here, choose <strong>Sign in using access token</strong>, and paste it in.</li>
+        </ol>
+
+        <p class="help__note">
+          The token is stored only in this browser. If you use another computer, you will need
+          to paste it there too &mdash; the same token works in both, so keep a copy somewhere
+          safe like a password manager.
+        </p>
+
+        <h3>If something still will not work</h3>
+        <ul>
+          <li>
+            <strong>&ldquo;Bad credentials&rdquo;, or signed out again:</strong> the token has
+            expired or was revoked. Make a new one with the steps above.
+          </li>
+          <li>
+            <strong>Saving fails:</strong> the token is probably missing the
+            <strong>Contents: Read and write</strong> permission. Make a new one and check step 4.
+          </li>
+          <li>
+            <strong>Your change saved but the site looks the same:</strong> give it two or three
+            minutes. The site rebuilds after each save.
+          </li>
+        </ul>
+
+        <p class="help__manual">
+          <a href="{{MANUAL_URL}}">How this site works</a> explains where everything lives, what
+          each field does, and why the publication list behaves the way it does.
+        </p>
+      </div>
+    </details>
+  </body>
+</html>

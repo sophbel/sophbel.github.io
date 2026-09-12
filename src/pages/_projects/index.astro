@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { url } from '../../lib/paths.ts';
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => (a.data.order as number) - (b.data.order as number),
+);
+
+---
+<BaseLayout title="Projects" description="Research projects running in the lab.">
+  <h1>Projects</h1>
+
+  <ul class="cards">
+    {projects.map((project) => (
+      <li class="card">
+        {project.data.image && (
+          <img
+            src={url(project.data.image as string)}
+            alt={(project.data.imageAlt as string | undefined) ?? ''}
+            width="600"
+            height="400"
+          />
+        )}
+        <h2 class="card__title">
+          <a href={url(`/projects/${project.id}`)}>{project.data.title}</a>
+        </h2>
+        <p>{project.data.summary}</p>
+        {project.data.funder && <p class="small muted">Funded by {project.data.funder}</p>}
+      </li>
+    ))}
+  </ul>
+</BaseLayout>
