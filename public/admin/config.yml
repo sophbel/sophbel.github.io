@@ -94,7 +94,7 @@ collections:
         label: Placeholder entry
         widget: boolean
         required: false
-        hint: Marks a demo entry that is not a real person
+        hint: Marks a stand-in entry that is not a real person
       - name: body
         label: Content
         widget: markdown

@@ -34,11 +34,6 @@ export interface CollectionSpec {
   labelSingular: string;
   /** Repo-relative folder holding the entries. */
   folder: string;
-  /**
-   * Marks a collection that exists to demonstrate the layout rather than to
-   * hold real content. Rendered with a visible banner.
-   */
-  demo?: boolean;
   fields: Field[];
 }
 

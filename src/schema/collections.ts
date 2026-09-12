@@ -51,7 +51,7 @@ export const collections: CollectionSpec[] = [
       { name: 'orcid', label: 'ORCID iD', widget: 'string', required: false, hint: 'Just the identifier, e.g. 0000-0002-9778-7174' },
       { name: 'github', label: 'GitHub username', widget: 'string', required: false },
       { name: 'website', label: 'Personal website', widget: 'string', required: false },
-      { name: 'placeholder', label: 'Placeholder entry', widget: 'boolean', required: false, hint: 'Marks a demo entry that is not a real person' },
+      { name: 'placeholder', label: 'Placeholder entry', widget: 'boolean', required: false, hint: 'Marks a stand-in entry that is not a real person' },
       body,
     ],
   },
@@ -60,7 +60,6 @@ export const collections: CollectionSpec[] = [
     label: 'News',
     labelSingular: 'News item',
     folder: 'src/content/news',
-    demo: true,
     fields: [
       { name: 'title', label: 'Headline', widget: 'string' },
       { name: 'date', label: 'Date', widget: 'datetime' },
@@ -75,7 +74,6 @@ export const collections: CollectionSpec[] = [
     label: 'Projects',
     labelSingular: 'Project',
     folder: 'src/content/projects',
-    demo: true,
     fields: [
       { name: 'title', label: 'Title', widget: 'string' },
       { name: 'summary', label: 'One-line summary', widget: 'text' },
