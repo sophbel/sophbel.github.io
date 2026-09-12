@@ -3,7 +3,7 @@
 # Edit the collection spec there and run `pnpm gen:cms`.
 backend:
   name: github
-  repo: inkpot-monkey/belman-lab-demo
+  repo: sophbel/sophbel.github.io
   branch: main
   auth_methods:
     - token

@@ -12,10 +12,11 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { collections, fileCollections } from '../src/schema/collections.ts';
 import { generateCmsConfig } from '../src/schema/generate.ts';
 
-// Defaults to THIS repository. The real site sets CMS_REPO to
-// sophbel/sophbel.github.io; defaulting to that instead would mean a
-// mis-configured demo writes to her live site.
-const repo = process.env.CMS_REPO ?? 'inkpot-monkey/belman-lab-demo';
+// This repository, which is now also the live site, so the default is the
+// right answer rather than the safe one. It was pointed away from here while
+// a demo repo existed to be confused with it. `CMS_REPO` stays for a fork or
+// a staging copy, which must not be able to save into this one by default.
+const repo = process.env.CMS_REPO ?? 'sophbel/sophbel.github.io';
 const branch = process.env.CMS_BRANCH ?? 'main';
 
 // The manual is not in the site navigation, so /admin is where it has to be
