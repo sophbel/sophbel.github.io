@@ -1,10 +1,14 @@
-# Belman Lab site — design demo
+# Belman Lab
 
-A research group site: one content model, one design, real content.
+The website of the Belman Lab at the Yale School of Public Health, live at
+<https://sophbel.github.io>.
 
-This is a **demo repository**. It existed to choose a design between three
-candidates; Record won, and the other two have been removed. The site moves
-into `sophbel/sophbel.github.io`; this repo then gets archived.
+One content model, one design, real content. It is a folder of static files
+with nothing running behind it: no server, no database, no subscription.
+
+The design and the content model were worked out in
+[inkpot-monkey/belman-lab-demo](https://github.com/inkpot-monkey/belman-lab-demo),
+which is archived. `docs/design.md` carries the reasoning forward.
 
 ## Running it
 
@@ -23,6 +27,7 @@ Then open <http://localhost:4321>.
 | `pnpm test` | Unit tests (Vitest) |
 | `pnpm typecheck` | `tsc --noEmit` |
 | `pnpm sync:orcid` | Re-fetch the ORCID snapshot |
+| `pnpm gen:og` | Redraw the link-preview card |
 | `pnpm check:responsive` | Drive a real browser over every page and viewport (needs `pnpm preview` running) |
 
 ## How it fits together
@@ -51,7 +56,7 @@ and every link twice into every page.
 and the invariants that hold.
 
 **Most of the site is shelved.** Team, Software & data, Projects, News, Events,
-Gallery and Join us are still placeholder content, so nothing links to them and
+Gallery and Join us are still stand-in content, so nothing links to them and
 nothing builds them. Their pages keep their code under a leading underscore in
 `src/pages/`, which is Astro's "compile this, do not route it", and
 `src/lib/nav.ts` keeps their menu entries behind a `shelved` flag. Bringing one
@@ -60,14 +65,14 @@ back is dropping the underscore and dropping the flag.
 **Publications come from ORCID.** `pnpm sync:orcid` writes
 `src/data/orcid-snapshot.json`; the build reads only that file, so builds are
 reproducible and work offline. `src/lib/orcid.ts` handles presentation —
-repairing titles that Crossref mangled, and linking preprints to their published
-versions.
+repairing titles that Crossref mangled, resolving DOIs over https, and linking
+preprints to their published versions.
 
 **Events and gallery are fixtures.** `src/data/fixtures/` holds data shaped
 exactly like `@palebluebytes/cms` returns, so wiring the real Google Calendar
 and Drive folder later is a one-line swap for `fetchEvents()` / `fetchPhotos()`.
 
-## What is real and what is not
+## What is published and what is waiting
 
 Everything the site publishes is real. Everything that is not is shelved.
 
@@ -77,16 +82,19 @@ Everything the site publishes is real. Everything that is not is shelved.
 | Publications (live ORCID record) | News, Projects, Join us |
 | Site details, footer, links | Events, Gallery, Software & data |
 
-The publications page deliberately shows the ORCID record **as it currently
-stands**, which is missing at least six papers including a Lancet Microbe
-article. That gap is visible on purpose.
+The publications page shows the ORCID record **as it currently stands**, which
+is missing at least six papers including a Lancet Microbe article.
+`/how-this-works` names them, so the gap is a to-do list rather than an
+invisible omission, and each one drops off that list as it is added to ORCID.
 
 ## Deployment
 
-GitHub Actions builds and deploys to GitHub Pages. There is no server, no
-Cloudflare Worker, and no platform-specific code — `dist/` is plain static
-files. See `.github/workflows/deploy.yml`.
+GitHub Actions builds and deploys to GitHub Pages on every push touching the
+site, and again each morning if the ORCID record has changed. There is no
+server and no platform-specific code — `dist/` is plain static files. See
+`.github/workflows/`.
 
 ## Editing
 
-See [docs/cms-access.md](docs/cms-access.md).
+See [docs/cms-access.md](docs/cms-access.md), and `/how-this-works` on the site
+itself.

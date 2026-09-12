@@ -9,16 +9,16 @@ describe('joinBase', () => {
   });
 
   it('prefixes a project path', () => {
-    expect(joinBase('/belman-lab-demo', '/team')).toBe('/belman-lab-demo/team');
+    expect(joinBase('/lab', '/team')).toBe('/lab/team');
   });
 
   it('does not double the slash when the base has a trailing one', () => {
-    expect(joinBase('/belman-lab-demo/', '/team')).toBe('/belman-lab-demo/team');
+    expect(joinBase('/lab/', '/team')).toBe('/lab/team');
   });
 
   it('keeps the root reachable under a project path', () => {
-    expect(joinBase('/belman-lab-demo/', '/')).toBe('/belman-lab-demo/');
-    expect(joinBase('/belman-lab-demo', '/')).toBe('/belman-lab-demo/');
+    expect(joinBase('/lab/', '/')).toBe('/lab/');
+    expect(joinBase('/lab', '/')).toBe('/lab/');
   });
 });
 
@@ -34,13 +34,13 @@ describe('isCurrentPath', () => {
   });
 
   it('matches under a project base path', () => {
-    expect(isCurrentPath('/belman-lab-demo', '/team', '/belman-lab-demo/team')).toBe(true);
-    expect(isCurrentPath('/belman-lab-demo', '/team', '/team')).toBe(false);
+    expect(isCurrentPath('/lab', '/team', '/lab/team')).toBe(true);
+    expect(isCurrentPath('/lab', '/team', '/team')).toBe(false);
   });
 
   it('matches the home page under a project base path', () => {
-    expect(isCurrentPath('/belman-lab-demo', '/', '/belman-lab-demo/')).toBe(true);
-    expect(isCurrentPath('/belman-lab-demo', '/', '/belman-lab-demo')).toBe(true);
+    expect(isCurrentPath('/lab', '/', '/lab/')).toBe(true);
+    expect(isCurrentPath('/lab', '/', '/lab')).toBe(true);
   });
 
   it('does not treat a prefix as a match', () => {
@@ -61,24 +61,24 @@ describe('COLLECTION_NAV', () => {
 
 describe('withBase', () => {
   it('prefixes a root-relative media path, which is how CMS uploads are written', () => {
-    expect(withBase('/belman-lab-demo', '/uploads/profile.jpg')).toBe('/belman-lab-demo/uploads/profile.jpg');
+    expect(withBase('/lab', '/uploads/profile.jpg')).toBe('/lab/uploads/profile.jpg');
   });
 
   it('leaves an absolute URL alone, so a Drive photo URL is not mangled', () => {
     const drive = 'https://drive.google.com/uc?id=abc';
-    expect(withBase('/belman-lab-demo', drive)).toBe(drive);
-    expect(withBase('/belman-lab-demo', 'http://example.com/a.png')).toBe('http://example.com/a.png');
+    expect(withBase('/lab', drive)).toBe(drive);
+    expect(withBase('/lab', 'http://example.com/a.png')).toBe('http://example.com/a.png');
   });
 
   it('leaves protocol-relative, data, mailto, fragment and query URLs alone', () => {
     for (const value of ['//cdn.example.com/a.png', 'data:image/png;base64,AAA', 'mailto:a@b.c', '#top', '?page=2']) {
-      expect(withBase('/belman-lab-demo', value)).toBe(value);
+      expect(withBase('/lab', value)).toBe(value);
     }
   });
 
   it('leaves a relative path alone', () => {
-    expect(withBase('/belman-lab-demo', 'sveltia-cms.mjs')).toBe('sveltia-cms.mjs');
-    expect(withBase('/belman-lab-demo', './config.yml')).toBe('./config.yml');
+    expect(withBase('/lab', 'sveltia-cms.mjs')).toBe('sveltia-cms.mjs');
+    expect(withBase('/lab', './config.yml')).toBe('./config.yml');
   });
 
   it('is a no-op at the site root', () => {
