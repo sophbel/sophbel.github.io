@@ -1,5 +1,5 @@
 {
-  "name": "belman-lab-demo",
+  "name": "belman-lab-site",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -13,6 +13,7 @@
     "test:watch": "vitest",
     "gen:cms": "node scripts/generate-cms-config.ts",
     "sync:orcid": "node scripts/fetch-orcid.ts",
+    "gen:og": "node scripts/generate-og-card.ts",
     "vendor:cms": "node scripts/vendor-cms.ts",
     "check:paths": "node scripts/check-base-paths.ts",
     "check:responsive": "node scripts/check-responsive.mjs"
