@@ -66,8 +66,7 @@ jobs:
         if: steps.sync.outputs.changed == 'true'
         run: pnpm build
         env:
-          SITE_BASE: /belman-lab-demo
-          SITE_URL: https://inkpot-monkey.github.io
+          SITE_URL: https://sophbel.github.io
 
       - uses: actions/upload-pages-artifact@v4
         if: steps.sync.outputs.changed == 'true'

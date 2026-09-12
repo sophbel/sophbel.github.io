@@ -3,10 +3,8 @@ import { isIndexable } from '../lib/env.ts';
 import { url } from '../lib/paths.ts';
 
 /**
- * The demo carries invented lab members alongside a real academic's name and
- * photo. Letting a search engine index that is a bad idea, so indexing is
- * opt-in rather than opt-out: a build only allows crawling when it is
- * explicitly told to.
+ * A build is crawlable unless it was told otherwise - see `isIndexable`,
+ * which carries the reasoning for which way round that default goes.
  */
 export const GET: APIRoute = ({ site }) =>
   new Response(

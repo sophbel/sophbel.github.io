@@ -52,10 +52,9 @@ jobs:
 
       - run: pnpm build
         env:
-          # This demo is served from a GitHub Pages project path. On the real
-          # site at a domain root, drop SITE_BASE.
-          SITE_BASE: /belman-lab-demo
-          SITE_URL: https://inkpot-monkey.github.io
+          # A user site, served from the root of the domain, so no SITE_BASE.
+          # `astro.config.mjs` says what it would take to add one back.
+          SITE_URL: https://sophbel.github.io
 
       - uses: actions/upload-pages-artifact@v4
         with:
