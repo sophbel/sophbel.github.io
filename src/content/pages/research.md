@@ -11,14 +11,24 @@ My research aims to understand how the environment shapes evolutionary selection
 
 ## Core research themes
 
-In the Belman Lab we focus on integrating environmental, genomic, and epidemiological datasets to model infectious disease vulnerability and microbial responses to environmental shifts.
+### Epidemiological Associations
+
+I am interested in understanding how environmental factors together with other human factors shape disease dynamics, especially for infectious diseases for which we have a limited understanding of the climatic sensitivity.
+
+### Biological Mechanisms
+
+I am interested in identifying the biological mechanisms by which environmental factors shape microbial evolution. I am working to identify signals of genomic evolutionary selection in microbial populations exposed to high levels of air pollution or other environmental factors.
+
+### Genomic and Environmental Data Integration
+
+I am developing frameworks to bring pathogen genomic data to similar space-time scales as environmental and sociodemographic datasets enabling further exploration of their interactions.
 
 ## Previous research
 
-### Schmidt Science Fellowship
+### Effects of the Environment on Infectious Disease Dynamics
 
-As part of my Schmidt Science Fellowship at the Barcelona Supercomputing Center (BSC), I developed models to identify meteorological and air pollution drivers of invasive pneumococcal disease. Additionally, I investigated signals of genomic evolutionary selection in microbial populations exposed to high air pollution levels, developed frameworks to bring pathogen genomic data to space-time scales compatible with environmental datasets, and analysed how human mobility and climate interactions shape dengue virus dynamics for the [E4Warning](https://www.e4warning.eu/) project.
+As part of my Schmidt Science Fellowship at the Barcelona Supercomputing Center (BSC), I developed models to identify meteorological and air pollution drivers of invasive pneumococcal disease (**Nature Microbiology**, 2026). Additionally, I investigated signals of genomic evolutionary selection in microbial populations exposed to high air pollution levels, developed frameworks to bring pathogen genomic data to space-time scales compatible with environmental datasets, and analysed how human mobility and climate interactions shape dengue virus dynamics for the [E4Warning](https://www.e4warning.eu/) project (under review).
 
-### _Streptococcus pneumoniae_ spatiotemporal dynamics
+### _Streptococcus pneumoniae_ Spatiotemporal Dynamics
 
 My doctoral research at the Wellcome Sanger Institute and the University of Cambridge focused on the spatiotemporal dynamics of _Streptococcus pneumoniae_. Using thousands of genomes combined with human mobility data, I developed methods to quantify pathogen migration and fitness across global scales. This work provided critical insights into how this pathogen evolves and spreads between countries, with results published in **Nature** (2024) and **G3: Genes, Genomes, Genetics** (2024). Additionally, I investigated the emergence of multidrug-resistant lineages (**The Lancet Microbe**, 2022) and reconstructed the evolutionary history of ancient streptococcal groups (**Microbial Genomics**, 2022).
