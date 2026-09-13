@@ -1,0 +1,50 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// In the menu directly under Publications. That placement is the point of the
+// page: code and data named at the top level rather than folded into a GitHub
+// link, which is the fastest thing separating a research group's site from a
+// departmental template. See COLLECTION_NAV in src/lib/nav.ts.
+const sorted = (await getCollection('software')).sort(
+  (a, b) => (a.data.order as number) - (b.data.order as number),
+);
+// Rendered up front rather than inside the template, so the list stays a plain
+// map over data the way every other index page here is. Fields are named one
+// by one rather than spread: test/rendered-fields.test.ts looks for `data.x`
+// to prove a field the CMS offers has somewhere to go, and a spread hides it.
+const entries = await Promise.all(
+  sorted.map(async (entry) => ({
+    title: entry.data.title as string,
+    summary: entry.data.summary as string,
+    repo: entry.data.repo as string,
+    language: entry.data.language as string | undefined,
+    doi: entry.data.doi as string | undefined,
+    Content: (await render(entry)).Content,
+  })),
+);
+
+---
+<BaseLayout title="Software and data" description="Research code and data released by the lab.">
+  <h1>Software and data</h1>
+
+  <p class="lede">
+    Code and data behind the papers, released so the analysis can be read and
+    re-run rather than taken on trust.
+  </p>
+
+  <ul class="cards">
+    {entries.map(({ title, summary, repo, language, doi, Content }) => (
+      <li class="card">
+        <h2 class="card__title card__title--repo">
+          <a href={repo} rel="noopener">{title}</a>
+        </h2>
+        <p>{summary}</p>
+        <Content />
+        {/* One line: Astro turns the newline between two expressions into a
+            space of its own, which would double the separator. */}
+        <p class="small muted">{language}{language && doi ? ' — ' : ''}{doi && <a href={`https://doi.org/${doi}`} rel="noopener">doi:{doi}</a>}</p>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

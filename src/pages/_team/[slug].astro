@@ -1,0 +1,33 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const people = await getCollection('people');
+  return people.map((person) => ({ params: { slug: person.id }, props: { person } }));
+}
+
+const { person } = Astro.props;
+const { Content } = await render(person);
+const data = person.data as Record<string, unknown>;
+---
+<BaseLayout
+  title={data.name as string}
+  description={`${data.name}, ${data.rank} in the Belman Lab.`}
+>
+  <h1>{data.name}</h1>
+  <p class="muted">{data.rank}{data.pronouns ? ` · ${data.pronouns}` : ''}</p>
+
+  {data.placeholder && (
+    <p class="notice"><strong>Placeholder entry.</strong> This is not a real person.</p>
+  )}
+
+  <Content />
+
+  <ul class="social" style="margin-block-start: var(--space-m);">
+    {data.email && <li><a href={`mailto:${data.email}`}>{data.email as string}</a></li>}
+    {data.orcid && <li><a href={`https://orcid.org/${data.orcid}`} rel="noopener">ORCID</a></li>}
+    {data.github && <li><a href={`https://github.com/${data.github}`} rel="noopener">GitHub</a></li>}
+    {data.website && <li><a href={data.website as string} rel="noopener">Website</a></li>}
+  </ul>
+</BaseLayout>

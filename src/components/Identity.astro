@@ -1,0 +1,101 @@
+---
+import { site } from '../lib/site.ts';
+import { url } from '../lib/paths.ts';
+import Icon, { type IconName } from './Icon.astro';
+
+interface Props {
+  /**
+   * True only where the person is the subject of the page, which is the home
+   * page. Everywhere else the name is a repeated site header, and marking it
+   * as a heading gives every page two <h1>s.
+   */
+  primary?: boolean;
+}
+const { primary = false } = Astro.props;
+
+/*
+ * Where else she is, in one list rather than three near-identical lines.
+ *
+ * Each entry is a service, its mark and the field of site.json that says
+ * whether she has an account there - ORCID is required by the schema, the
+ * other two are not, so the list is filtered rather than each link being
+ * wrapped in its own conditional.
+ */
+const profiles: { name: IconName; label: string; href: string }[] = [
+  { name: 'orcid', label: 'ORCID', href: `https://orcid.org/${site.orcid}` },
+  ...(site.github ? [{ name: 'github' as const, label: 'GitHub', href: `https://github.com/${site.github}` }] : []),
+  ...(site.scholar
+    ? [{ name: 'scholar' as const, label: 'Scholar', href: `https://scholar.google.com/citations?user=${site.scholar}` }]
+    : []),
+];
+---
+<div class="identity">
+  {/*
+    The lab's own name, above the institutional taxonomy underneath it. All
+    three designs want it and each sets it differently: Record as a small
+    tracked label over the strapline, Feature as the masthead flag the rest of
+    the page hangs off, Instrument as the first line of the metadata rail. One
+    line inside the identity block, not a second identity block.
+  */}
+  <p class="identity__lab">{site.labName}</p>
+  {primary
+    ? <h1 class="identity__name">{site.name}</h1>
+    : <p class="identity__name">{site.name}</p>}
+  {/*
+    The portrait, on the one page it is about. `alt=""` because the name is set
+    beside it in text, so a screen reader announcing the face as well would
+    only say it twice.
+
+    Rendered on the condition that shows it rather than emitted everywhere and
+    hidden. `display: none` hides the box and does not cancel the request, so
+    every page was fetching the largest asset on the site — four fifths of the
+    weight of a page on `/research`, for an image `/research` never draws. The
+    component already knows, from the same prop that decides whether the name
+    is the page's heading; the stylesheet should not have had to guess.
+
+    `width`/`height` are the file's own dimensions, so the space is reserved at
+    the right shape before it arrives. They said 400x400 while the file was
+    860x850, which `aspect-ratio: 1` and `object-fit: cover` between them hid.
+
+    No caption. A photograph of the person whose page this is needs no
+    explanation, and a standing "credit to be added" line is a note to
+    ourselves printed on her site. Whoever takes the real photograph gets
+    credited where photographs are credited, not in the page header.
+  */}
+  {primary && (
+    <img class="identity__photo" src={url(site.photo)} alt="" width="480" height="474" loading="eager" decoding="async" />
+  )}
+  {/*
+    Two facts, named, rather than four paragraphs in a known order.
+
+    The discipline is the second line of the strapline and carries the rule
+    that closes it; the three under it are where she works. The stylesheet used
+    to tell them apart with `p:first-child` and `p + p`, which is the exact
+    shape `docs/design.md` warns about: it is correct only while site.json
+    declares its fields in this order, and it says nothing about which line is
+    which to anyone reading either file.
+  */}
+  <div class="identity__meta">
+    <p class="identity__discipline">{site.discipline}</p>
+    {/*
+      The three lines of where she works are one thing, so they are one
+      element. It is what lets the masthead centre the address in the room
+      under the rule without a number: the block has a top and a bottom of its
+      own to give an auto margin, where three sibling paragraphs have only the
+      gaps between them. Wrapping them is also the answer this design gives
+      everywhere else - reaching the same three with `p + p` is the positional
+      selector `docs/design.md` warns about, and it says nothing about what
+      they are.
+    */}
+    <div class="identity__address">
+      <p class="identity__affiliation">{site.jobTitle}</p>
+      <p class="identity__affiliation">{site.department}</p>
+      <p class="identity__affiliation">{site.institution}</p>
+    </div>
+  </div>
+  <div class="social">
+    {profiles.map((profile) => (
+      <a href={profile.href} rel="noopener"><Icon name={profile.name} />{profile.label}</a>
+    ))}
+  </div>
+</div>

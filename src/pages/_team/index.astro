@@ -1,0 +1,53 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PeopleGrid from '../../components/PeopleGrid.astro';
+import SectionIndex from '../../components/SectionIndex.astro';
+import { PERSON_RANKS } from '../../schema/collections.ts';
+
+const people = await getCollection('people');
+
+/** Rank names become the anchors the in-page index points at. */
+const anchor = (rank: string) => rank.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+// Group by rank in the order ranks are declared, so seniority drives the page
+// rather than alphabetical accident.
+const groups = PERSON_RANKS.map((rank) => ({
+  rank,
+  id: anchor(rank),
+  // Alumni are part of the record but not the answer to "who is in this lab":
+  // they are folded away so the people currently here are not read past. This
+  // is a ranking of the content rather than a look, so every design gets it.
+  collapsed: rank === 'Alumni',
+  members: people
+    .filter((person) => person.data.rank === rank)
+    .sort((a, b) => (a.data.order as number) - (b.data.order as number)),
+})).filter((group) => group.members.length > 0);
+
+const sections: [string, string][] = groups.map((group) => [group.id, group.rank]);
+
+---
+<BaseLayout title="Team" description="People in the Belman Lab.">
+  <h1>Team</h1>
+  <SectionIndex sections={sections} heading="Positions" />
+  <p class="notice">
+    <strong>Placeholder content.</strong> Every entry except Sophie is a stand-in, shown so the
+    team layout can be judged at realistic size. None of them are real people.
+  </p>
+
+  {groups.map((group) => (
+    <section class="people" id={group.id}>
+      <h2>{group.rank}</h2>
+      {group.collapsed ? (
+        <details class="people__fold">
+          <summary class="people__summary">
+            {group.members.length} former {group.members.length === 1 ? 'member' : 'members'}
+          </summary>
+          <PeopleGrid members={group.members} />
+        </details>
+      ) : (
+        <PeopleGrid members={group.members} />
+      )}
+    </section>
+  ))}
+</BaseLayout>

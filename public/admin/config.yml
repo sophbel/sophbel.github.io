@@ -1,0 +1,272 @@
+# GENERATED FILE - DO NOT EDIT.
+# Written by scripts/generate-cms-config.ts from src/schema/collections.ts.
+# Edit the collection spec there and run `pnpm gen:cms`.
+backend:
+  name: github
+  repo: sophbel/sophbel.github.io
+  branch: main
+  auth_methods:
+    - token
+  skip_ci: false
+media_folder: public/uploads
+public_folder: /uploads
+collections:
+  - name: pages
+    label: Pages
+    label_singular: Page
+    folder: src/content/pages
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    fields:
+      - name: title
+        label: Title
+        widget: string
+        hint: Shown as the page heading and in the browser tab
+      - name: order
+        label: Menu order
+        widget: number
+        hint: Lower numbers appear first in the navigation
+      - name: showInNav
+        label: Show in navigation
+        widget: boolean
+      - name: description
+        label: Search description
+        widget: text
+        required: false
+      - name: body
+        label: Content
+        widget: markdown
+  - name: people
+    label: People
+    label_singular: Person
+    folder: src/content/people
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    fields:
+      - name: name
+        label: Full name
+        widget: string
+      - name: rank
+        label: Position
+        widget: select
+        options:
+          - Principal Investigator
+          - Postdoc
+          - PhD Student
+          - Masters Student
+          - Undergraduate
+          - Staff
+          - Alumni
+      - name: order
+        label: Order within position
+        widget: number
+        hint: Lower numbers appear first
+      - name: photo
+        label: Photo
+        widget: image
+        required: false
+      - name: pronouns
+        label: Pronouns
+        widget: string
+        required: false
+      - name: email
+        label: Email
+        widget: string
+        required: false
+      - name: orcid
+        label: ORCID iD
+        widget: string
+        required: false
+        hint: Just the identifier, e.g. 0000-0002-9778-7174
+      - name: github
+        label: GitHub username
+        widget: string
+        required: false
+      - name: website
+        label: Personal website
+        widget: string
+        required: false
+      - name: placeholder
+        label: Placeholder entry
+        widget: boolean
+        required: false
+        hint: Marks a stand-in entry that is not a real person
+      - name: body
+        label: Content
+        widget: markdown
+  - name: news
+    label: News
+    label_singular: News item
+    folder: src/content/news
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    fields:
+      - name: title
+        label: Headline
+        widget: string
+      - name: date
+        label: Date
+        widget: datetime
+      - name: summary
+        label: Summary
+        widget: text
+        required: false
+      - name: image
+        label: Image
+        widget: image
+        required: false
+      - name: imageAlt
+        label: Image description
+        widget: string
+        required: false
+        hint: For screen readers. Leave blank if the image is purely decorative.
+      - name: body
+        label: Content
+        widget: markdown
+  - name: projects
+    label: Projects
+    label_singular: Project
+    folder: src/content/projects
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    fields:
+      - name: title
+        label: Title
+        widget: string
+      - name: summary
+        label: One-line summary
+        widget: text
+      - name: order
+        label: Order
+        widget: number
+      - name: image
+        label: Image
+        widget: image
+        required: false
+      - name: imageAlt
+        label: Image description
+        widget: string
+        required: false
+        hint: For screen readers. Leave blank if the image is purely decorative.
+      - name: funder
+        label: Funder
+        widget: string
+        required: false
+      - name: body
+        label: Content
+        widget: markdown
+  - name: software
+    label: Software and data
+    label_singular: Software entry
+    folder: src/content/software
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    fields:
+      - name: title
+        label: Name
+        widget: string
+      - name: summary
+        label: One-line summary
+        widget: text
+      - name: repo
+        label: Repository URL
+        widget: string
+        hint: e.g. https://github.com/sophbel/geomig_evo_pneumo
+      - name: language
+        label: Main language
+        widget: string
+        required: false
+        hint: e.g. R, Python
+      - name: doi
+        label: DOI of the paper it accompanies
+        widget: string
+        required: false
+        hint: Leave empty for code that stands on its own
+      - name: order
+        label: Order
+        widget: number
+        hint: Lower numbers appear first
+      - name: body
+        label: Content
+        widget: markdown
+  - name: highlights
+    label: Selected publications
+    label_singular: Selected publication
+    folder: src/content/highlights
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    fields:
+      - name: doi
+        label: DOI
+        widget: string
+        hint: e.g. 10.1038/s41586-024-07626-3 - must match a paper on your ORCID record
+      - name: order
+        label: Order
+        widget: number
+      - name: note
+        label: Why it matters
+        widget: text
+        required: false
+  - name: settings
+    label: Site details
+    files:
+      - name: site
+        label: Profile and footer
+        file: src/data/site.json
+        fields:
+          - name: name
+            label: Name
+            widget: string
+          - name: jobTitle
+            label: Job title
+            widget: string
+          - name: discipline
+            label: Discipline
+            widget: string
+            hint: e.g. Infectious Disease Epidemiologist
+          - name: department
+            label: Department
+            widget: string
+          - name: institution
+            label: Institution
+            widget: string
+          - name: labName
+            label: Lab name
+            widget: string
+          - name: photo
+            label: Profile photo
+            widget: image
+          - name: email
+            label: Email
+            widget: string
+          - name: office
+            label: Office
+            widget: string
+            required: false
+          - name: address
+            label: Postal address
+            widget: text
+            required: false
+          - name: orcid
+            label: ORCID iD
+            widget: string
+          - name: github
+            label: GitHub username
+            widget: string
+            required: false
+          - name: scholar
+            label: Google Scholar user id
+            widget: string
+            required: false

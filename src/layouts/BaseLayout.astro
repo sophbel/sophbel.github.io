@@ -1,0 +1,132 @@
+---
+import { getCollection } from 'astro:content';
+import Fonts from '../components/Fonts.astro';
+import Tokens from '../components/Tokens.astro';
+import Identity from '../components/Identity.astro';
+import { site } from '../lib/site.ts';
+import { NAV, SHELVED_PAGES, url, isCurrent, type NavItem } from '../lib/nav.ts';
+import { isIndexable } from '../lib/env.ts';
+import { OG_CARD } from '../lib/og.ts';
+import '../styles/base.css';
+// The design's own file, extending the layers base.css declares. Imported
+// after it so a same-specificity rule resolves in the design's favour.
+import '../styles/design.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Keeps internal-facing pages out of search results. */
+  noindex?: boolean;
+  /** Marks the page whose subject is the person, so their name is its heading. */
+  identityIsHeading?: boolean;
+}
+const { title, description, noindex, identityIsHeading } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(url(OG_CARD.path), Astro.site);
+const fullTitle = `${title} | ${site.name}`;
+const summary = description ?? `${site.name}, ${site.jobTitle} at ${site.institution}.`;
+
+const pages = await getCollection('pages');
+const pageNav: NavItem[] = pages
+  .filter((page) => (page.data.showInNav as boolean) && !SHELVED_PAGES.includes(page.id))
+  .map((page) => ({
+    label: page.data.title as string,
+    href: page.id === 'home' ? '/' : `/${page.id}`,
+    order: page.data.order as number,
+  }));
+
+const nav = [...pageNav, ...NAV].sort((a, b) => a.order - b.order);
+const pathname = Astro.url.pathname;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={summary} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+    <meta name="theme-color" content="#7b4b8a" />
+    {(noindex || !isIndexable) && <meta name="robots" content="noindex" />}
+
+    <!-- Link previews: this URL gets pasted into email and chat. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.labName} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={summary} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content={String(OG_CARD.width)} />
+    <meta property="og:image:height" content={String(OG_CARD.height)} />
+    <meta property="og:image:alt" content={OG_CARD.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <Fonts />
+    <Tokens />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    {/*
+      Source order is reading order: navigation, the identity block, then the
+      content — and inside the content, the page's own title, its index and
+      then the page. Grid placement moves the picture and not the document, so
+      anyone following the page by keyboard or by screen reader gets this order
+      whatever width they are at.
+
+      The in-page index is not here. It belongs between a page's title and the
+      page, and both of those are inside <main>, so no arrangement of this grid
+      can put it there — a sibling of <main> can only go above the whole
+      article or below it. The pages that have one render it themselves, after
+      their <h1>; `design.css` puts it in the third column of the module above
+      62rem and leaves it where it is below.
+
+      It used to be a `rail` slot emitted here, drawn as a strip above the
+      article on a phone. That put a page's contents ahead of the page's title:
+      a reader met "01 Core research themes" before they met "Research".
+
+      Above 62rem the menu sits under the identity inside the left column, so
+      the two are the other way round on screen. That is the one place the
+      order is not literal, and it is the right way round for a reader who
+      cannot see the column: the site's navigation before the site's name.
+    */}
+    <div class="page">
+      <nav class="site-nav nav" aria-label="Primary">
+        {nav.map((item) => (
+          <a href={url(item.href)} aria-current={isCurrent(item.href, pathname) ? 'page' : undefined}>{item.label}</a>
+        ))}
+      </nav>
+
+      {/*
+        <header>, not <aside>. This is the site's identity on every page and on
+        the home page it holds the <h1>; the complementary landmark says the
+        opposite of both.
+      */}
+      <header class="identity-column">
+        <Identity primary={identityIsHeading} />
+      </header>
+
+      <main id="main" class="flow prose">
+        <slot />
+      </main>
+    </div>
+
+    <footer class="footer">
+      <div class="footer__inner">
+        <p>&copy; {new Date().getFullYear()} {site.labName}</p>
+        <p>{site.name}</p>
+        {/*
+          The address block is the only place the email appears, and it was
+          plain text: on a phone the one action an academic site exists to
+          support could not be tapped, only selected and copied out of grey
+          fine print. A single link in a block of text is exactly the case the
+          accent is reserved for, so it keeps it.
+        */}
+        <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+        <p>{site.jobTitle} | {site.department}</p>
+        {site.office && <p>{site.office}</p>}
+        {site.address && <p>{site.address}</p>}
+      </div>
+    </footer>
+  </body>
+</html>

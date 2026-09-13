@@ -1,0 +1,71 @@
+---
+import { formatAuthors, type Publication } from '../lib/orcid.ts';
+import { site } from '../lib/site.ts';
+
+interface Props {
+  publications: Publication[];
+  /** Curated notes keyed by DOI. */
+  notes?: Record<string, string>;
+}
+const { publications, notes = {} } = Astro.props;
+---
+<ol class="pubs">
+  {publications.map((publication) => {
+    const { shown, truncated } = formatAuthors(publication.authors, { max: 6, emphasise: site.name });
+    const note = publication.doi ? notes[publication.doi] : undefined;
+    return (
+      <li class="pub">
+        {/*
+          The year twice: once on its own, for a design that rails the years
+          down the margin, and once inside the meta line for the designs that
+          read it as part of the citation. Whichever one a design does not use
+          is `display: none`, so it is out of the accessibility tree as well as
+          off the screen and the year is announced once.
+        */}
+        {publication.year && <p class="pub__year">{publication.year}</p>}
+        <div class="pub__title">
+          {publication.url
+            ? <a href={publication.url} rel="noopener">{publication.title}</a>
+            : publication.title}
+        </div>
+        {shown.length > 0 && (
+          <p class="pub__authors">
+            {shown.map((author, index) => (
+              <>
+                {index > 0 && ', '}
+                {author === site.name ? <em>{author}</em> : author}
+              </>
+            ))}
+            {truncated && ' et al.'}
+          </p>
+        )}
+        {/*
+          The venue line. A work with no journal is a preprint, and the tag at
+          the end already says so, so the word is not set twice - which it was,
+          as "Preprint · PREPRINT", once the journal took bold.
+
+          Each separator lives inside the element it precedes rather than
+          between them. The year is hidden wherever the design rails it down
+          the margin instead, and a separator sitting outside that span would
+          survive the hiding and leave a stray bullet behind.
+        */}
+        <p class="pub__meta">
+          {publication.journal && <span class="pub__journal">{publication.journal}</span>}
+          {publication.year && <span class="pub__meta-year">{publication.journal ? ' · ' : ''}{publication.year}</span>}
+          {publication.isPreprint && <>{publication.journal ? ' · ' : ''}<span class="tag">Preprint</span></>}
+        </p>
+        {/*
+          The DOI, given a line of its own for a design that reads a paper as a
+          record with an identifier rather than as a title with a citation
+          under it. Hidden by default, so it is out of the accessibility tree
+          as well as off the screen wherever it is not the dialect - the same
+          arrangement as the year above.
+        */}
+        {publication.doi && (
+          <p class="pub__doi"><a href={`https://doi.org/${publication.doi}`} rel="noopener">doi:{publication.doi}</a></p>
+        )}
+        {note && <p class="small">{note}</p>}
+      </li>
+    );
+  })}
+</ol>

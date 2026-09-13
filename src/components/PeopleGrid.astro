@@ -1,0 +1,35 @@
+---
+import { type CollectionEntry } from 'astro:content';
+import { url } from '../lib/paths.ts';
+
+/**
+ * One rank's worth of people. Extracted from the team page so the same grid
+ * can be rendered inside a <details> for alumni without the markup existing
+ * twice, which is how the two copies would drift apart.
+ *
+ * A name, a rank and a portrait, and nothing else: each person's own words are
+ * on their own page, and a paragraph per person here would make the team page
+ * a second copy of all of them.
+ */
+interface Props {
+  members: CollectionEntry<'people'>[];
+}
+const { members } = Astro.props;
+
+const initials = (name: string) =>
+  name.split(/\s+/).slice(0, 2).map((part) => part[0] ?? '').join('');
+---
+<ul class="people__grid">
+  {members.map((person) => (
+    <li class="person">
+      {person.data.photo
+        ? <img class="person__avatar" src={url(person.data.photo as string)} alt="" width="300" height="300" />
+        : <div class="person__avatar" aria-hidden="true">{initials(person.data.name as string)}</div>}
+      <h3 class="person__name">
+        <a href={url(`/team/${person.id}`)}>{person.data.name}</a>
+      </h3>
+      <p class="person__rank">{person.data.rank}</p>
+      {person.data.placeholder && <p class="person__placeholder">Placeholder entry</p>}
+    </li>
+  ))}
+</ul>

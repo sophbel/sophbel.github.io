@@ -1,0 +1,34 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionIndex from '../components/SectionIndex.astro';
+import { SHELVED_PAGES } from '../lib/nav.ts';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  return pages
+    // Home is the index route, not a slug. The shelved ones are entries the
+    // CMS still edits and the site does not publish yet - see `SHELVED_PAGES`.
+    .filter((page) => page.id !== 'home' && !SHELVED_PAGES.includes(page.id))
+    .map((page) => ({ params: { slug: page.id }, props: { page } }));
+}
+
+const { page } = Astro.props;
+const { Content, headings } = await render(page);
+
+// Astro gives every Markdown heading an id, so a page written in the editor
+// gets an in-page index without anyone having to add anchors by hand. Only the
+// top level of it: an index that mirrors the whole outline is a second copy of
+// the page.
+const sections: [string, string][] = headings
+  .filter((heading) => heading.depth === 2)
+  .map((heading) => [heading.slug, heading.text]);
+---
+<BaseLayout
+  title={page.data.title as string}
+  description={page.data.description as string | undefined}
+>
+  <h1>{page.data.title}</h1>
+  <SectionIndex sections={sections} />
+  <Content />
+</BaseLayout>

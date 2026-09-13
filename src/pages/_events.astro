@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionIndex from '../components/SectionIndex.astro';
+import { formatEventDate, splitByDate, type CalendarEvent } from '../lib/events.ts';
+import fixtures from '../data/fixtures/events.json' with { type: 'json' };
+
+// Fixtures, not a live calendar. Shaped exactly like @palebluebytes/cms
+// `CalendarEvent[]`, so wiring the real calendar later is a one-line swap for
+// `await fetchEvents({ calendarId, auth })`.
+const events = fixtures as CalendarEvent[];
+const { upcoming, past } = splitByDate(events, new Date());
+
+const sections: [string, string][] = [
+  ['upcoming', 'Upcoming'],
+  ...(past.length > 0 ? [['past', 'Past'] as [string, string]] : []),
+];
+---
+<BaseLayout title="Events" description="Seminars, lab meetings and other dates.">
+  <h1>Events</h1>
+  <SectionIndex sections={sections} />
+
+  <section id="upcoming">
+    <h2>Upcoming</h2>
+    {upcoming.length === 0
+      ? <p class="muted">Nothing scheduled.</p>
+      : (
+        <ul class="pubs pubs--dated">
+          {upcoming.map((event) => (
+            <li class="pub">
+              <div class="pub__title">{event.summary ?? 'Untitled event'}</div>
+              <p class="pub__meta">{formatEventDate(event)}{event.location && ` · ${event.location}`}</p>
+              {event.description && <p class="small">{event.description}</p>}
+            </li>
+          ))}
+        </ul>
+      )}
+  </section>
+
+  {past.length > 0 && (
+    <section id="past">
+      <h2>Past</h2>
+      <ul class="pubs pubs--dated">
+        {past.map((event) => (
+          <li class="pub">
+            <div class="pub__title">{event.summary ?? 'Untitled event'}</div>
+            <p class="pub__meta">{formatEventDate(event)}{event.location && ` · ${event.location}`}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</BaseLayout>

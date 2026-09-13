@@ -1,0 +1,1476 @@
+/*
+ * "Record". Swiss / International Typographic.
+ *
+ * The design's own grammar: its arrangement of the shared grid, and the
+ * component detail that grammar implies. Declared inside the layers `base.css`
+ * already ordered, and imported after it, so this file extends the one cascade
+ * rather than competing with it. Colour, type and spacing are not here: those
+ * are tokens, generated from `DesignSpec` in `lib/design.ts` by `Tokens.astro`.
+ *
+ * The split with `base.css` is by what the rule is about, not by which file
+ * got there first. `base.css` is the reset, the shared components and the
+ * default single-column arrangement; this file is everything that is a choice
+ * this design made. `docs/design.md` is the prose version.
+ *
+ * The design in one paragraph: one grotesque (Archivo, variable, self-hosted),
+ * an achromatic palette with a single lavender, and a three-column module
+ * whose gutters are drawn rather than implied. Hierarchy comes from weight,
+ * case and rules; nothing is rounded, nothing is shadowed, and the only hue on
+ * the page marks something — a link, a preprint, the current page, a number.
+ *
+ * Two things stop it reading as the default serious-website answer. The module
+ * stays put across every page: the third column exists whether or not there is
+ * an index to put in it, and the content column reclaims it rather than the
+ * grid moving. And the home page spends its whole first row on a strapline
+ * instead of a hero, so the first thing read is who this is and what she does.
+ */
+
+@layer base {
+  /*
+    Page frame.
+
+    Below 42rem the menu is fixed to the foot of the screen, which takes it out
+    of the flow: the page would run underneath it and the last line of the
+    footer would sit behind the bar, readable only by scrolling past the end of
+    the document. The page pads the bar's own height back instead.
+
+    The height is the bar's parts rather than a number: a 44px control, the
+    padding above and below it, and the rule that closes it. Written once here
+    and read by nothing else, so the two cannot disagree - which is the failure
+    this kind of offset always has.
+  */
+  :root { --menu-bar: calc(2.75rem + var(--space-2xs) + var(--space-3xs) + var(--rule-heavy)); }
+
+  body {
+    /* Archivo ships real weights and a real italic; never let the browser fake one. */
+    font-synthesis: none;
+    padding-block-end: var(--menu-bar);
+  }
+
+  @media (min-width: 42rem) {
+    /* The menu is back in the flow, and pays for its own space. */
+    body { padding-block-end: 0; }
+  }
+
+  :is(h1, h2, h3, h4) {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+
+  /*
+    Unclassed h3s are subheadings, and Swiss sets those as tracked capitals.
+    `.person__name` and the other classed h3s are names and titles, which caps
+    would shout; they keep the size the component gives them.
+  */
+  h3:not([class]) {
+    font-size: var(--step-0);
+    letter-spacing: 0.06em;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+  @media (min-width: 34rem) {
+    /*
+      Tracked capitals are a label, and a label reads best on one line. In a
+      268px column a subheading like "Schmidt Science Fellowship" wraps to two
+      whatever the tracking - 0.06em does not save it, and nothing short of
+      going under the body size would - so the narrow end takes the tracking
+      that sets two lines of capitals best rather than the one that looks
+      widest. The wide setting comes back where there is a line to spread it
+      across.
+
+      What actually makes this read as a level again is the space above it:
+      see the margin under "Headings, ruled". This step carries no size of its
+      own, so at 320px, eight pixels under an <h2>, case and tracking were
+      being asked to do all of the work and could not.
+    */
+    h3:not([class]) { letter-spacing: 0.1em; }
+  }
+
+  a {
+    text-decoration-thickness: var(--rule);
+    text-underline-offset: 0.18em;
+  }
+
+  /*
+    The accent is reserved for links inside prose, where it marks the one word
+    in a sentence that goes somewhere. In a list of names, papers or projects
+    every entry is a link, so colouring them all says nothing: those take the
+    heading colour with a grey underline, and take the accent under the cursor,
+    which is the only moment the colour carries information.
+
+    The list of lists is the whole of it. Three were missed for a while — the
+    manual's contents, the 404 page's way out, and the identity links — and
+    nine accent links stacked down the 404 page were the most colour anywhere
+    on the site, on the page with the least information.
+
+    `--color-linkRule`, not `--color-border`. The title takes the heading
+    colour, so the underline is the entire affordance, and `border` is 1.71:1
+    against the page: a hairline that quiet is a decoration, not a control.
+    Under the cursor it still goes to the accent, but a phone never gets there,
+    so the resting state has to carry it alone.
+  */
+  :is(.person__name, .pub__title, .card__title, .toc, .link-list) a {
+    color: var(--color-heading);
+    text-decoration-color: var(--color-linkRule);
+  }
+  :is(.person__name, .pub__title, .card__title, .toc, .link-list) a:hover {
+    text-decoration-color: var(--color-accent);
+  }
+
+  hr {
+    border-block-start: var(--rule-strong) solid var(--color-heading);
+  }
+}
+
+@layer layout {
+  /*
+    A phone gets the page, and the menu gets out of the way.
+
+    Two rows: what is left of the identity, then the content. The menu is not
+    one of them - below 42rem it is a bar fixed to the foot of the screen, out
+    of the flow entirely, where a thumb is and where it costs the top of the
+    page nothing. See `.site-nav` under Navigation.
+
+    This replaces a stack four blocks deep. The menu was a bar across the top,
+    the identity a strapline under it, the profile links a row under that and
+    the in-page index a strip under that, and on `/research` at 375x812 the
+    page's own <h1> was 361px down - 44% of the first screen, behind five
+    horizontal rules, before a reader reached what they tapped through for. It
+    is 49px now, and the first sentence of the article is on the first screen.
+
+    What survives of the identity here is one line: the lab, in the accent.
+    The name, the strapline and the profile links are on the home page, which
+    is the page they are about, and the footer carries the lab and her name on
+    every page. See `.identity` under Identity.
+  */
+  .page {
+    column-gap: var(--space-xl);
+    grid-template-areas: 'identity' 'main';
+    row-gap: var(--space-s);
+    /*
+      One value, and the same on every page.
+
+      It used to be `--space-l` of padding plus whatever the rows above the
+      content came to, which made the top of the page an accident of how much
+      chrome each page happened to have: the lab name sat at y=41 on the home
+      page and y=25 everywhere else. It is the first thing on every page now,
+      so where it sits is a decision, and this is it - the home page's spacing,
+      which is the one a reader meets first.
+    */
+    padding-block-start: calc(var(--space-m) + var(--space-s));
+  }
+  /*
+    Off the home page the identity is a label rather than a block, and a label
+    belongs to the thing under it: the lab name is an eyebrow over the page's
+    title, not a row of its own with a row's worth of air beneath it.
+  */
+  .page:not(:has(h1.identity__name)) { row-gap: var(--space-2xs); }
+  /*
+    The row gap already separates the content from whatever is above it. This
+    margin was a second one, so the seam under the identity was twice every
+    other seam on the page.
+  */
+  .page > main { margin-block-start: 0; }
+
+  /*
+    Between a phone and the module, the identity and the menu share a row.
+
+    The module opens at 62rem, and everything under it got the phone
+    arrangement — so an iPad held upright, or a window at half a laptop screen,
+    drew a full-width identity with five hundred pixels of nothing beside the
+    name, a full-width menu under it, and the page's own title four hundred and
+    fifty pixels down. The stack is the right answer when there is one column
+    of room and the wrong one as soon as there are two.
+
+    Not the home page: there the identity is the content of the first row, and
+    the menu belongs under it rather than beside it.
+
+    42rem rather than the 40rem it started at, because the threshold is set by
+    what the narrower column has to hold rather than by a round number. The
+    menu is an `auto` track and takes its content's width; the identity gets
+    the rest, and it has to be wide enough for the row of profile links at the
+    foot of it. At 640px that left the identity 258px against the 266px the
+    row needs and one link wrapped onto a line of its own; 672px leaves 289.
+
+    The identity keeps the fraction and the menu takes what it needs, so the
+    rule that closes the strapline stops short of the menu instead of running
+    the width of the page. Two rules of two lengths is the module's own
+    argument arriving early, which is the point of the step.
+  */
+  @media (min-width: 42rem) {
+    /*
+      Every exception here is wrapped in `:where()`, and that is load-bearing
+      rather than a style preference.
+
+      A breakpoint band only owns the widths between itself and the next one,
+      and the only thing that ends it is a later rule winning the cascade. A
+      media query does not change specificity, so `.page:has(h1.identity__name)`
+      — which `:has()` makes (0,2,1) — goes on beating the plain `.page` at
+      62rem for as long as the page is wide, whatever the query says. That is
+      how the home page came to name three columns in `grid-template-areas`
+      while sizing one in `grid-template-columns`: the browser invented the
+      other two at 0px and drew `<main>` ninety-nine pixels wide, silently, on
+      a desktop, while every check stayed green.
+
+      `:where()` contributes nothing, so each of these is (0,1,0) like the
+      `.page` above it. Within this block the later rule wins on order, which
+      is what carves the home page out; at 62rem the plain `.page` wins on
+      order for the same reason, which is what hands the band back.
+      `scripts/check-responsive.mjs` now compares the named areas against the
+      sized tracks on every page and width, because this is not a mistake you
+      can see by reading either rule.
+    */
+    .page {
+      align-items: start;
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas: 'identity nav' 'main main';
+      /* The bar is back in the flow here, so the page keeps its own padding. */
+      padding-block-start: var(--space-l);
+    }
+    /*
+      And the identity is a block again rather than an eyebrow, so it gets a
+      row's worth of air under it back.
+
+      Same selector as the rule that tightened it, and that is the point rather
+      than a coincidence. `.page:not(:has(...))` is (0,2,1) and a plain `.page`
+      is (0,1,0): a reset written on `.page` here loses to the phone rule at
+      every width above this one, whatever the media query says. It did, and
+      the menu in the module sat eleven pixels under the identity instead of
+      thirty-three - a gap that is wrong by half a line on a desktop, from a
+      rule written for a phone.
+    */
+    .page:not(:has(h1.identity__name)) { row-gap: var(--space-s); }
+    /*
+      Level with the foot of the strapline, which is where the menu sits in the
+      column above 62rem. Anchored to the bottom of the row rather than the
+      top, so it keeps that relationship whatever the identity grows to.
+    */
+    /*
+      Grid placement only. How the menu is drawn at this width - the band
+      undone, the items to the right - is in `components` beside the rest of
+      `.site-nav`, because `components` comes after `layout` in the layer
+      order and a reset written here would lose to it however specific it was.
+    */
+    .page > .site-nav { align-self: end; }
+
+    /* The home page keeps the stack: there the identity is the row, not a label beside the menu. */
+    .page:where(:has(h1.identity__name)) {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: 'identity' 'nav' 'main';
+    }
+    .page:where(:has(h1.identity__name)) > .site-nav {
+      align-self: start;
+      justify-content: flex-start;
+    }
+  }
+
+  @media (min-width: 62rem) {
+    /*
+      The module: a 14rem identity and navigation column, the content column,
+      and a 13rem column for an in-page index. The three column positions are
+      the same on every page, so the left edge of the text never shifts as you
+      move around the site — and so is <main>, which is the middle column and
+      nothing else. A page with no index leaves the third one empty rather than
+      growing into it.
+
+      It used to grow, on the argument that an empty column is waste. What
+      that costs is visible on the home page, the one built page with no
+      index: <main> was two tracks wide, the prose inside it stopped at the
+      measure, and the rule that opens `## Education` ran two hundred and
+      seventy pixels past the last line of the paragraph above it — a rule
+      measuring a column no text was in. A rule crosses the whole column here,
+      so the column had better be the text column. It is also the same
+      argument as the one <main> already answers to below: it is the container
+      the justification threshold is measured against, and the element a
+      container query measures has to go on being the thing it claims to
+      measure.
+
+      The third area is named on every page and empty on some: the index is
+      positioned over that track rather than placed in it — see `The third
+      column, from inside <main>` — and naming it reserves the width either
+      way.
+    */
+    .page {
+      align-items: stretch;
+      /*
+        Read twice: here, and by <main> below, which measures the third column
+        from the right of the page. One declaration, so the two cannot drift
+        apart into a column that is 13rem on one side of the hairline and 12 on
+        the other.
+      */
+      --column-index: 13rem;
+      grid-template-columns: 14rem minmax(0, 1fr) var(--column-index);
+      grid-template-areas:
+        'identity main index'
+        'nav      main index';
+      /*
+        The wider setting, for the module and nowhere else.
+
+        The column here has a menu down one side and an index down the other,
+        and both edges of the text are drawn: the eye comes back to a hairline
+        rather than to the edge of the screen, and the line can be six
+        characters longer for it. `--measure` is declared on `.page` rather
+        than on `:root` because `Tokens.astro` emits the root block unlayered,
+        and an unlayered declaration beats every layer whatever it says. Set on
+        the element under it, it is simply inherited, and everything that keeps
+        a measure is inside `.page`.
+      */
+      --measure: var(--measure-wide);
+      /*
+        `1fr` on the second row, not two auto rows. The content column spans
+        both rows, and two auto rows would share its height between them —
+        which puts the navigation halfway down a long page, below a gap the
+        size of the article. The second row takes the slack instead.
+
+        The first row has a floor rather than being purely auto, because the
+        menu sits under it and the menu is the one thing on the page a reader
+        moves between pages to use. Left to the content, the identity row is
+        236px in the column and 276px as the masthead, so the menu jumped 40px
+        on the way to and from the home page — and the jump is not even
+        constant, since the two heights are driven by different type steps and
+        close to 29px at 62rem. A floor tall enough for the masthead at its
+        tallest makes the row one height everywhere, and the menu lands in the
+        same place on every page.
+
+        It was 17.5rem while the profile links were a row. Stacked one per line
+        in the 14rem column they are three times that height, the column
+        overshot the floor, and the jump came back the other way round - the
+        menu sitting 25px lower away from the home page than on it. The floor
+        is a measurement of the tallest thing the row has to hold, so it is
+        remeasured whenever that thing changes.
+
+        `minmax`, not a fixed height: an extra line in the footer of someone's
+        title, or a name that wraps, grows the row rather than overlapping the
+        menu. That page then sits lower than the rest, which is the right
+        failure — visible, and not a collision.
+      */
+      grid-template-rows: minmax(19.5rem, auto) 1fr;
+    }
+    /*
+      The home page, and only the home page: the identity spends the whole
+      first row as a masthead. It is the one page whose subject is the person,
+      which is also why its name is the <h1> — `identityIsHeading` in
+      BaseLayout — and that <h1> is what this selector reads.
+    */
+    .page:has(h1.identity__name) {
+      grid-template-areas:
+        'identity identity identity'
+        'nav      main     index';
+    }
+
+    /*
+      The identity fills its row and closes with the heavy rule at the foot of
+      it, so the rule is at the same height on every page and the menu starts
+      at the same place under it. On the home page the masthead nearly fills
+      the row; in the column there is a band of air above the rule, which is
+      the column reaching a common baseline rather than a gap.
+    */
+    .identity-column {
+      align-self: stretch;
+      border-block-end: var(--rule-heavy) solid var(--color-heading);
+      padding-block-end: var(--space-s);
+    }
+
+    .page > .site-nav { align-self: start; }
+    /*
+      One item per line in the column, so the menu reads as an index, and it
+      follows the reader down the page.
+
+      The column is two grid rows - identity, then nav - and the second takes
+      the slack, so the nav has the height of the page to stick inside. It
+      needs `align-self: start` above to do it: a stretched grid item is
+      already the height of its row and has nowhere to move. Same offset as the
+      in-page index on the other side of the content, so the two columns settle
+      level with each other.
+    */
+    .page > .site-nav {
+      flex-direction: column;
+      gap: 0;
+      inset-block-start: var(--space-m);
+      position: sticky;
+    }
+
+    /*
+      The gutters, drawn. The rule belongs in the middle of the gutter rather
+      than against the content, so each column is pulled half a gutter to the
+      left and pads the same amount back: the text lands exactly where the
+      grid puts it, and the hairline sits between the columns.
+
+      Both columns stretch, so the rules run the full height of the page
+      whatever the tallest column turns out to be.
+    */
+    .page > main {
+      border-inline-start: var(--rule) solid var(--color-grid);
+      margin-inline-start: calc(var(--space-xl) / -2);
+      padding-inline-start: calc(var(--space-xl) / 2);
+    }
+    /*
+      The third column, from inside <main>.
+
+      The index is a child of <main> now - it has to be, to sit between a
+      page's title and the page - so `.page` cannot place it in a track of its
+      own. It is taken out of the flow instead and positioned against `.page`,
+      in the same place the third column has always been: hard against the
+      right of the page's content, one index column wide, with the gutter and
+      the hairline of every other column in the module.
+
+      Out of the flow, and that is the point rather than a convenience. <main>
+      is the container the justification threshold is measured against - see
+      `Running prose` - so it has to go on being the text column and nothing
+      else. Widening it to span two tracks and dividing it again was the first
+      way this was built, and it justified the module's prose at 992px, where
+      the column is 23 characters short of taking it: the setting the
+      container query exists to prevent, turned on by the element it measures
+      growing a column that is not text.
+
+      Anchored from the right, so nothing here has to know how wide the
+      content column ended up. `inset-inline-end` is measured from `.page`'s
+      padding box, which is why it pays the page's own inline padding back.
+    */
+    .page { position: relative; }
+    .page > main > .section-index {
+      border-inline-start: var(--rule) solid var(--color-grid);
+      inline-size: calc(var(--column-index) + var(--space-xl) / 2);
+      inset-block: var(--space-l);
+      inset-inline-end: var(--space-m);
+      /*
+        The index is the second child of `main.flow`, which gives it the space
+        that separates one block of a page from the next. Out of the flow and
+        with both block insets set, that margin is no longer a gap above it but
+        an offset inside the box it is positioned in, and it pushed the column
+        twenty-two pixels below the <h1> it should start level with.
+      */
+      margin-block: 0;
+      padding-inline-start: calc(var(--space-xl) / 2);
+      position: absolute;
+    }
+    /*
+      The box is full height so the hairline runs the length of the page; the
+      index inside it is what follows the reader down. Two elements, because
+      one cannot be both - a box that stretches has nowhere to travel, and
+      `position` takes one value.
+    */
+    .section-index__inner {
+      inset-block-start: var(--space-m);
+      position: sticky;
+    }
+  }
+}
+
+@layer components {
+  /* ---- Identity: the strapline that signs the site ---------------------- */
+
+  .identity { gap: 0; }
+
+  .identity__lab {
+    color: var(--color-accent);
+    font-size: var(--step--1);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .identity__name {
+    font-size: var(--step-1);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-block-start: var(--space-3xs);
+  }
+
+  /*
+    The second line of the strapline, and the rule that closes the unit.
+
+    `ruleHeavy`, which is the weight this design gives to closing a masthead —
+    the same job the rule under an <h1> does, and the same one `.identity-column`
+    does at the foot of its column above 62rem. It was `ruleStrong`, which is
+    the weight that opens a section, and in one column that is a real
+    ambiguity: every rule on a phone is the width of the same single column, so
+    weight is the only thing left saying which rule is which, and the strapline
+    was closing itself with the mark that starts an <h2>.
+  */
+  .identity__discipline {
+    border-block-end: var(--rule-heavy) solid var(--color-heading);
+    color: var(--color-text);
+    font-size: var(--step-0);
+    font-weight: 500;
+    line-height: 1.2;
+    margin-block-end: var(--space-2xs);
+    padding-block: var(--space-3xs) var(--space-2xs);
+  }
+  .identity__affiliation { line-height: 1.35; }
+
+  /*
+    Off the home page, on a phone, the identity is one line: the lab.
+
+    Everything else in this block describes the site rather than identifying
+    it, and on an inner page all of it is repetition a reader has already read
+    on the way in. It cost 126px at the top of every phone screen - a name, a
+    strapline, three lines of department and school, and a row of profile links
+    - in front of the thing they came for.
+
+    The lab name stays because a page should say whose site it is, and it is
+    enough to: set in the accent above the page's own title, it reads as the
+    masthead of the thing the title belongs to. The rest is on the home page,
+    which is the page it is about and one tap away, and the footer carries the
+    lab and her name on every page.
+
+    From 42rem the name and the strapline come back - there the identity is a
+    block beside the menu rather than a label over a title - and from 62rem the
+    taxonomy comes back with them, because in the 14rem column the identity
+    costs no vertical space at all: it sits beside the content.
+  */
+  /*
+    Three selectors, not one `:is()` list. `:is()` takes the specificity of its
+    most specific argument, so folding `.identity .social` in with the two
+    single-class names made the whole rule (0,4,1) - and the rule at 42rem that
+    puts the name and the strapline back, written with a two-name `:is()`, came
+    to (0,3,1) and lost. A media query does not change specificity: the name
+    and the taxonomy stayed hidden at every width, on a desktop, silently,
+    while the profile links beside them came back. Each name gets its own
+    selector here and its own counterpart below, at the same weight.
+  */
+  .page:not(:has(h1.identity__name)) .identity__name,
+  .page:not(:has(h1.identity__name)) .identity__meta,
+  .page:not(:has(h1.identity__name)) .social {
+    display: none;
+  }
+  @media (min-width: 42rem) {
+    .page:not(:has(h1.identity__name)) .identity__name,
+    .page:not(:has(h1.identity__name)) .identity__meta {
+      display: block;
+    }
+    .page:not(:has(h1.identity__name)) .social { display: flex; }
+    /*
+      The taxonomy alone stays off until 62rem: three lines of department and
+      school beside a menu is the same repetition in a wider window.
+    */
+    .page:not(:has(h1.identity__name)) .identity__affiliation { display: none; }
+  }
+
+  /*
+    The one photograph on the site, on the one page it is about. Everywhere
+    else the identity is type. It is ordered after the taxonomy so that the top
+    of every page — including the home page on a phone — is the strapline and
+    not a face.
+  */
+  .identity__photo {
+    border: var(--rule) solid var(--color-border);
+    margin-block-start: var(--space-m);
+    max-inline-size: 9rem;
+    order: 1;
+  }
+
+  /*
+    Tight to the strapline above it. The links are 44px controls on a phone and
+    carry their own air inside the box, so a space-s on top of that put the
+    three of them adrift between the identity and the menu, reading as a third
+    block rather than as the last line of the first one. Above 62rem the column
+    pins them to its foot with an auto margin and this stops mattering.
+  */
+  .identity .social {
+    font-size: var(--step--1);
+    margin-block-start: var(--space-3xs);
+  }
+
+  /* On its own page the name is the <h1>, and it is sized like one. */
+  .page:has(h1.identity__name) .identity__name {
+    font-size: var(--step-4);
+  }
+
+  /*
+    The masthead. Type takes the row; the portrait is a small plate hung off
+    the right of it, bottom-aligned to the strapline, so the first thing read
+    is still the name and the discipline rather than a face.
+
+    From 42rem, not from 62rem. It sat inside the module's own query, so every
+    width below it stacked the portrait under the strapline instead — which on
+    a tablet held upright is a 9rem plate alone on a line with most of the page
+    empty beside it, and the first sentence of the site pushed half a screen
+    down. What this arrangement needs is a second column, not the whole module,
+    and 9rem beside a name fits from 640px on.
+  */
+  @media (min-width: 42rem) {
+    .page:has(h1.identity__name) .identity {
+      column-gap: var(--space-xl);
+      display: grid;
+      grid-template-areas:
+        'lab    photo'
+        'name   photo'
+        'meta   photo'
+        'social photo';
+      grid-template-columns: minmax(0, 1fr) 9rem;
+      /*
+        The address row takes the slack, which is what pins the links to the
+        foot here: an auto margin has no free space to claim inside a grid row
+        sized to its own content, so the row above has to give it up.
+      */
+      grid-template-rows: auto auto 1fr auto;
+    }
+    .page:has(h1.identity__name) .identity__lab { grid-area: lab; }
+    .page:has(h1.identity__name) .identity__name { grid-area: name; }
+    .page:has(h1.identity__name) .identity__meta { grid-area: meta; }
+    .page:has(h1.identity__name) .identity .social { grid-area: social; }
+    .page:has(h1.identity__name) .identity__photo {
+      align-self: end;
+      grid-area: photo;
+      justify-self: end;
+      margin-block-start: 0;
+    }
+  }
+
+  @media (min-width: 62rem) {
+    /* The name has a whole row of the module to spend, so it takes the top step. */
+    .page:has(h1.identity__name) .identity__name { font-size: var(--step-5); }
+    /*
+      The identity fills the column and its last line is pinned to the foot of
+      it, so ORCID, GitHub and Scholar sit at one height on every page in the
+      same way the rule below them and the menu below that do. The slack goes
+      above the links instead - into the gap under the address, where a column
+      short of the common baseline can absorb it without anything looking
+      misplaced.
+
+      Top and bottom both, which is the whole reason to pin one line rather
+      than to align the block: the lab name still starts level on every page,
+      because the block is not pushed down as a unit.
+
+      Declared here rather than beside the grid, because `.identity .social`
+      sets its own top margin in this layer and a rule in `layout` would lose
+      to it whatever its specificity.
+    */
+    .identity { block-size: 100%; }
+    /*
+      The auto margin takes whatever the address above has not claimed, which
+      on both arrangements is nothing: the address grows its own box to fill
+      the room, and this keeps the links against the foot of it.
+
+      It used to carry a `space-s` padding as a floor, because an auto margin
+      pins a block to the foot of its container and promises nothing about what
+      it lands next to, and the stacked links in the column had come to rest
+      against the last line of the address. The centring makes that promise
+      instead, and it makes it at both ends: a padding on top of it only pushes
+      the address back off centre by the height of the padding.
+    */
+    .identity .social {
+      margin-block-start: auto;
+    }
+
+    /*
+      The address sits in the middle of the room it has, not at the top of it.
+
+      Both arrangements have room to give. The identity fills its row either
+      way - `block-size: 100%` above, against a row with a floor under it - so
+      whatever it does not spend on the lab name, the name and the links is
+      slack, and all of it used to fall under the address: three lines wedged
+      against the rule that closes the strapline, with a band of nothing
+      between them and the profile links. An auto margin top and bottom splits
+      the same slack in two, so the rule has something under it and the links
+      have something over them.
+
+      The two get different amounts of it, and that is the arrangement rather
+      than an oversight. The column sets the same address one line narrower, so
+      it stands 61px taller than the masthead before either of them has any
+      slack, and one floor serves both: 29px to divide in the column against 68
+      in the masthead, which lands them at 14 and 34. A full-width row carries
+      air a 14rem column would look empty holding, so that is the right way
+      round.
+
+      No number, and that is why the address is an element. A padding would be
+      a second measurement to keep in step with the height of the row, and the
+      height of the row is already a measurement of something else -
+      `grid-template-rows` on `.page` above, which is the tallest thing it has
+      to hold.
+
+      Two selectors, and at the weight of the pair at 42rem that brings this
+      block back on an inner page: that one says `display: block`, it is
+      (0,3,1) for the `:has()` in front of it, and a plain `.identity__meta`
+      here is (0,1,0) and loses at every width above it. Written to the same
+      weight, source order decides, which is what this file does everywhere the
+      two arrangements disagree about one name.
+    */
+    .page:has(h1.identity__name) .identity__meta,
+    .page:not(:has(h1.identity__name)) .identity__meta {
+      display: flex;
+      /*
+        The slack has to reach the address, and in the column it was taken
+        before it got there: `.identity` is a flex column, the links below
+        claim what is left with an auto margin, and a content-sized address
+        block has nothing to centre itself in. Growing this one lets the links
+        go on sitting at the foot - the box above them fills the room, so their
+        auto margin resolves to nothing - and hands the room to the address
+        inside it. In the masthead it is a grid item in the `1fr` row and
+        already stretched, and `flex` says nothing there.
+      */
+      flex: 1;
+      flex-direction: column;
+    }
+    .identity__address { margin-block: auto; }
+
+    /*
+      The taxonomy comes back. Here the identity is a column beside the
+      content rather than a block in front of it, so it costs no vertical space
+      at all, and the three lines are the column's own subject. What made them
+      repetition on a phone is only that the reader had to scroll past them to
+      reach the page.
+    */
+    .page:not(:has(h1.identity__name)) .identity__affiliation { display: block; }
+
+    .identity .social a { min-block-size: 0; }
+    /*
+      Off the home page the identity is a 14rem column, and one link per line
+      is what fits in it - the three of them came to 224.6px in a 224px column
+      before they had marks beside them, and the marks add sixty. A column of
+      them is also the right rhythm here: the menu directly under this is a
+      stacked index for the same reason, and two stacked lists read as one
+      column where a wrapped row would read as a mistake.
+
+      The masthead on the home page has a whole row to spread across and keeps
+      the row. `scripts/check-responsive.mjs` allows either shape and rejects
+      the one in between - a ragged wrap, where one link has fallen onto a line
+      of its own and nothing says whether that was meant.
+    */
+    .page:not(:has(h1.identity__name)) .identity .social {
+      align-items: start;
+      flex-direction: column;
+      row-gap: var(--space-3xs);
+    }
+  }
+  /*
+    The one row of links that keeps the accent, and the only place on the site
+    with a mark beside the words.
+
+    It is the exception to the rule that an all-link list takes the heading
+    colour, and it earns it on a different axis: these three are the only links
+    that leave the site, and they are the record the page is a record of. The
+    colour and the mark say the same thing twice on purpose - this is where she
+    is elsewhere - and nothing near them competes, because the accent is
+    otherwise one word in a sentence.
+
+    The mark is drawn in `currentColor`, so it is the link's colour by
+    construction rather than by a second declaration that can drift from it.
+  */
+  /*
+    Tighter between the three than the shared row gap. With a mark in front of
+    each label the row is sixty pixels wider than it was, and at 320px it came
+    to 282px inside 272px - one link onto a second line for want of ten. The
+    marks are their own separation: a gap that reads as too small between two
+    words reads as right between two marked items.
+  */
+  .identity .social { column-gap: var(--space-2xs); }
+  @media (min-width: 42rem) {
+    /*
+      Wider again once the row is not trying to fit across a phone. Not all the
+      way back to the shared `space-s`: off the home page this is a fraction of
+      a two-column row, and at the narrow end of that band it is 289px against
+      the 278px the row needs at this gap - `space-s` would want 282 and leave
+      seven, which is the margin something eventually wraps by.
+    */
+    .identity .social { column-gap: var(--space-xs); }
+  }
+
+  .identity .social a {
+    color: var(--color-accent);
+    column-gap: var(--space-3xs);
+    display: inline-flex;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /*
+    Sized against the label rather than in pixels, so it tracks the fluid step
+    the row is set in and stays the same weight beside it at every width.
+    `flex: none` because a flex item with an intrinsic aspect ratio will
+    otherwise give up width before the text does, and a squashed mark is worse
+    than a wrapped row.
+  */
+  .icon {
+    block-size: 1.15em;
+    fill: currentColor;
+    flex: none;
+    inline-size: 1.15em;
+  }
+
+  /*
+    Standing controls are thumb-sized. 44px is what a thumb actually hits, and
+    the menu, the identity links, the in-page index and the footer's email are
+    the places on this site where a small link is the interface rather than a
+    phrase in a sentence. Written once, here, rather than as a padding value
+    tuned per control until each happens to clear it — which is how the menu
+    came to be 40px. `scripts/check-responsive.mjs` measures these selectors.
+
+    Lifted again above 62rem by each of them: at that width the pointer is a
+    mouse, and a stacked menu of 44px rows is a different design.
+
+    The height goes on the box and the box is not where a mark belongs. The
+    label is fifteen pixels of it, so a border on the block edge lands sixteen
+    pixels under the word and reads as a dash that has come loose rather than
+    as an underline — which is what the current-page marker did on every phone,
+    invisibly, because above 62rem the marker is an inline-start border and the
+    44px floor is switched off. Anything marking one of these controls marks
+    the text: see `.nav a[aria-current]`.
+  */
+  :where(.nav, .identity .social, .section-index, .footer) a {
+    align-items: center;
+    display: inline-flex;
+    min-block-size: 2.75rem;
+  }
+
+  /* ---- Navigation ------------------------------------------------------ */
+
+  /*
+    Below 42rem the menu is a bar at the foot of the screen.
+
+    It was a bar across the top, and the top of a phone screen turned out to be
+    the wrong place for it. Stacked with the identity, the profile links and
+    the in-page index underneath, it was the first of four blocks of chrome
+    that put the page's own <h1> 361px down an 812px screen. It was also out of
+    reach the moment a reader scrolled: `/publications` is nearly five screens
+    at 375px and the footer carries no links, so the only way back to the menu
+    was four screens of scrolling up.
+
+    At the foot it costs the page nothing, it is under a thumb rather than
+    across the screen from one, and it is there from anywhere on the page. It
+    bleeds to both edges, a heavy rule closes it off from the page above it,
+    and it is fixed: `body` pads its own height back so nothing can hide under
+    it - see `Page frame` at the head of this file.
+
+    Below 42rem only. From there the menu sits beside the identity in its own
+    column and the row it shares is the bar; above 62rem it is the stacked
+    index down the side of the module.
+  */
+  .site-nav {
+    background-color: var(--color-bg);
+    border-block-start: var(--rule-heavy) solid var(--color-heading);
+    inset-block-end: 0;
+    inset-inline: 0;
+    position: fixed;
+    row-gap: 0;
+    z-index: 20;
+    /*
+      No gap, and no `space-between`. The items divide the bar between them
+      instead - see `.nav a` - and the compartment boundaries are where the
+      dividers go, so a gap here would put each line half a gap off centre.
+    */
+    column-gap: 0;
+    justify-content: normal;
+    padding-block: var(--space-2xs) var(--space-3xs);
+    padding-inline: var(--space-m);
+  }
+
+  .nav a {
+    font-size: var(--step--1);
+    font-weight: 500;
+    /*
+      Each item takes its own width plus an equal share of what is left, and
+      centres its label in what it gets. That puts every boundary between two
+      items exactly halfway between the two words, at every width and with no
+      number to keep in step, which is what the dividers below need.
+
+      `1 1 auto`, not `1`. `flex: 1` zeroes the basis, the items come out equal
+      in width, and the boundary lands on the geometric third instead - 7 to
+      11px off the midpoint between two words of different lengths, and
+      visibly so between the shortest and the longest of these three.
+    */
+    flex: 1 1 auto;
+    justify-content: center;
+    letter-spacing: 0.08em;
+    padding-block: var(--space-2xs);
+    position: relative;
+    text-transform: uppercase;
+  }
+
+  /*
+    A hairline between the compartments, inset from both edges of the bar.
+
+    `--color-grid` is the weight this design gives to structure rather than to
+    grouping, and the faintest of the three: these are compartments of one bar,
+    not three separate things, and a line that read as a border would say the
+    wrong one. Inset, because a line running the full height of the bar would
+    meet the heavy rule above it and read as a second mark on it rather than as
+    a division of the row.
+  */
+  .nav a + a::before {
+    background-color: var(--color-grid);
+    content: '';
+    inline-size: var(--rule);
+    inset-block: var(--space-2xs);
+    inset-inline-start: 0;
+    position: absolute;
+  }
+
+  /*
+    The marker is drawn on the text, not on the control.
+
+    `base.css` hangs it off the block edge, which is right when the box is the
+    height of the line and wrong the moment the box is a 44px touch target: the
+    label is fifteen pixels of it and the rule landed sixteen pixels below the
+    word, reading as a loose dash. An underline follows the word instead, at
+    the same weight the rest of this design opens things with, so it stays a
+    mark rather than becoming a divider under the menu.
+
+    Both states, because both were on the box. Hover takes the quiet grey; the
+    current page takes the accent, which is the whole reason the marker exists.
+  */
+  .nav a {
+    text-decoration-thickness: var(--rule-strong);
+    text-underline-offset: 0.4em;
+  }
+  .nav a:hover {
+    text-decoration-color: var(--color-border);
+    text-decoration-line: underline;
+  }
+  .nav a[aria-current='page'] {
+    font-weight: 700;
+    text-decoration-color: var(--color-accent);
+    text-decoration-line: underline;
+  }
+
+  @media (min-width: 62rem) {
+    /*
+      Stacked, the underline that marks the current page runs the width of the
+      column and reads as a divider. In a column the marker belongs on the
+      inline edge, where it also lines up with the gutter rules.
+    */
+    .nav a {
+      min-block-size: 0;
+      border-inline-start: var(--rule-heavy) solid transparent;
+      padding-block: var(--space-3xs);
+      padding-inline-start: var(--space-2xs);
+    }
+    /*
+      The box is the height of its line again here, so the marker goes back on
+      the edge and the underline that carries it on a phone comes off.
+    */
+    .nav a:hover,
+    .nav a[aria-current='page'] { text-decoration-line: none; }
+    .nav a:hover { border-inline-start-color: var(--color-border); }
+    .nav a[aria-current='page'] {
+      border-inline-start-color: var(--color-accent);
+    }
+  }
+
+  @media (min-width: 42rem) {
+    /*
+      The bar is undone. The menu shares a row with the identity here and comes
+      back into the flow at the top of the page: there is room beside the
+      identity at this width, so none of the reasons for putting it at the foot
+      of the screen apply, and a bar fixed across the foot of a tablet is a
+      phone's answer on a screen that did not ask the question.
+    */
+    .site-nav {
+      border-block-start: 0;
+      column-gap: var(--space-s);
+      justify-content: flex-end;
+      padding-block: 0;
+      padding-inline: 0;
+      position: static;
+    }
+    .nav a { flex: 0 1 auto; justify-content: flex-start; }
+    .nav a + a::before { content: none; }
+    /*
+      And the tracking tightens, which is the one place in this design it goes
+      the other way.
+
+      The menu is an `auto` track here: it takes its content's width and the
+      identity gets what is left, so every pixel of tracking across three items
+      comes out of the column beside it. At 0.08em the menu is 300px wide at
+      640px, the identity is squeezed to 245, and the identity links - sixty
+      pixels wider for having marks - wrap one onto a line of its own, which
+      `pnpm check:responsive` rejects. At 0.04em the menu is 245 and the column
+      has room for the row it holds.
+
+      In the bar below and in the column above there is no column beside the
+      menu to pay for it, so both keep the 0.08em the rest of this design
+      tracks its labels at.
+    */
+    .nav a { letter-spacing: 0.04em; }
+  }
+
+  @media (min-width: 62rem) {
+    /* A stacked index down the side of the module: nothing to distribute. */
+    .site-nav { justify-content: normal; }
+    /* The column is 14rem of its own and pays nothing for tracking. */
+    .nav a { letter-spacing: 0.08em; }
+  }
+
+  /* ---- Running prose ---------------------------------------------------- */
+
+  /*
+    Body copy is justified. A design built on a visible grid wants a text
+    column with two straight edges rather than one.
+
+    Flow paragraphs only, named one level at a time rather than as `p`
+    anywhere. Everything this leaves ragged is something justification would
+    damage: an author list and a citation line inside a publication row, the
+    address in the identity column, a caption, the menu. Lists are ragged for
+    the same reason and were asked to be - a bullet is a short line, and
+    stretching it to the measure spaces three words across the column.
+
+    Only where the line is long enough to take it. Justification works by
+    stretching the spaces in a line, so a short line stretches few spaces a
+    long way: at 33 characters this prose opens rivers of white you can read
+    down the page, and the long words the subject is made of - epidemiological,
+    sociodemographic - are what makes it that bad.
+
+    A container query and not a media query, because the content column is not
+    a function of the viewport here. It is 70 characters at 768px, and then
+    43 at 992px, where the three-column module opens and takes 27rem of the
+    width back for the identity and the index. A breakpoint on the window
+    would justify precisely the narrowest column on the site.
+
+    `hyphens: auto` belongs with it rather than with the ragged setting: it
+    exists to close those gaps, and it hyphenates nothing in a browser with no
+    dictionary for the language, so the threshold has to hold on its own.
+  */
+  main { container-type: inline-size; }
+
+  @container (min-width: 32rem) {
+    .prose > p,
+    .prose > section > p,
+    .manual > section > p {
+      hyphens: auto;
+      text-align: justify;
+    }
+  }
+
+  /* ---- Lists in prose -------------------------------------------------- */
+
+  /*
+    An en-dash where the bullet was.
+
+    A disc is the one undrawn mark on a site whose argument is that structure
+    is drawn, and the Education list is where it shows: three entries, each a
+    degree over an institution, carrying the only piece of default browser
+    furniture on the page.
+
+    Through `::marker` rather than `list-style: none` and a `::before`, because
+    taking the list-style off a `<ul>` is what stops Safari announcing it as a
+    list at all. The list keeps its markers and its semantics; a browser that
+    does not support `content` here keeps the disc, which is the fallback
+    already in place.
+  */
+  .prose :is(ul, ol):not([class]) > li::marker {
+    color: var(--color-muted);
+  }
+  .prose ul:not([class]) > li::marker {
+    content: '– ';
+  }
+
+  /* ---- Headings, ruled ------------------------------------------------- */
+
+  /*
+    A rule is what starts a section here, so it has to cross the whole column
+    rather than stop at the measure the prose keeps. Classed headings — the
+    funding strip, the in-page index — bring their own rule and are left alone.
+  */
+  :is(main, .manual) > h1 {
+    border-block-end: var(--rule-heavy) solid var(--color-heading);
+    max-inline-size: none;
+    padding-block-end: var(--space-2xs);
+  }
+  :is(main, .manual) > section + section { margin-block-start: 0; }
+  :is(main, .manual) > section > h2:not([class]),
+  :is(main, .manual) > h2:not([class]) {
+    border-block-start: var(--rule-strong) solid var(--color-heading);
+    max-inline-size: none;
+    margin-block-start: var(--space-l);
+    padding-block-start: var(--space-2xs);
+  }
+  /*
+    That margin is the space between one section and the last line of the one
+    before it. The first section on a page has no section before it - only the
+    page's own opening line - so it claims space it is not separating anything
+    across, and the rule it carries ends up adrift between the two.
+
+    `main` and not `.manual`: the manual opens on a contents list, and there
+    the first heading is separating itself from that.
+  */
+  main > section:first-of-type > h2:not([class]) { margin-block-start: 0; }
+
+  /*
+    An <h3> is a level below the <h2>, not a kicker attached to it.
+
+    `.flow h2 + *` closes the gap after a heading to space-2xs, which is right
+    for the paragraph a heading is introducing and wrong for another heading.
+    This step carries no size — it is body size in tracked capitals — so the
+    space under the <h2> is most of what says a new thing has started, and at
+    eight pixels the two read as one title with a strapline under it.
+  */
+  :is(.flow, .manual) :is(h2, h3) + h3 { margin-block-start: var(--space-m); }
+
+  /* ---- The in-page index ----------------------------------------------- */
+
+  /*
+    Hidden, and still the landmark's name.
+
+    Below 62rem the index sits directly under the page's own <h1>, and there
+    "On this page" names what the title above it and the numbers below it have
+    already said - a label, a rule, and thirty vertical pixels spent saying
+    nothing at the top of every phone screen.
+
+    `display: none` rather than the clipped box that usually hides a label,
+    and that is deliberate. Accessible name computation reads a `display: none`
+    element when `aria-labelledby` points straight at it - that is the one
+    exception to hidden content being skipped - so the navigation landmark
+    keeps the name "On this page" for anyone who meets it without seeing where
+    it sits, and the page keeps nothing it has to draw.
+
+    In the column above 62rem it is shown, and needed: there the index is a
+    detached object beside the text rather than a strip under a heading.
+  */
+  .section-index__heading { display: none; margin: 0; }
+  .section-index__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .section-index a {
+    color: var(--color-text);
+    display: grid;
+    font-size: var(--step--1);
+    gap: var(--space-2xs);
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+    line-height: 1.3;
+    padding-block: var(--space-2xs);
+    text-decoration: none;
+  }
+  .section-index a:hover .section-index__label {
+    text-decoration: underline;
+  }
+  .section-index__number {
+    color: var(--color-accent);
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+  }
+
+  /*
+    Below 62rem the index is a strip under the title it indexes, not a column.
+
+    One rule, under it, not a pair. The heavy rule that closes the <h1> is
+    already above the entries, so a boxed strip would put three horizontal
+    rules into a hundred vertical pixels - in a single column, where every rule
+    is the width of that column and weight is the only thing telling them
+    apart, that is three dividers and no structure. The one that stays is the
+    one doing a job: it closes the index off from the page it indexes.
+  */
+  .section-index {
+    border-block-end: var(--rule) solid var(--color-border);
+    padding-block-end: var(--space-2xs);
+  }
+  .section-index__list {
+    column-gap: var(--space-m);
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  @media (min-width: 62rem) {
+    .section-index {
+      border-block-end: 0;
+      padding-block-end: 0;
+    }
+    /* The label comes back: see `.section-index__heading` above for why. */
+    .section-index__heading {
+      border-block-end: var(--rule-strong) solid var(--color-heading);
+      display: block;
+      font-size: var(--step--1);
+      letter-spacing: 0.12em;
+      padding-block-end: var(--space-3xs);
+      text-transform: uppercase;
+    }
+    /*
+      Back to a list of rows in the column, where a pointer rather than a thumb
+      is doing the hitting and 44px each would space seven entries down half
+      the page.
+    */
+    .section-index a { min-block-size: 0; }
+    .section-index__list { display: block; }
+    .section-index__item {
+      border-block-end: var(--rule) solid var(--color-border);
+    }
+  }
+
+  /* ---- Publications: years railed down the margin ---------------------- */
+
+  /*
+    The list opens with a rule of its own, under the heading that opened the
+    section, and the pair of them makes the heading a table head — which is
+    exactly what it is once the years are railed down the margin beside it.
+
+    Below 34rem the years are not railed, there is no table, and the same pair
+    reads as a heading someone has drawn a box around. So the list's rule is
+    tied to the same threshold the rail is: it appears when the thing it is
+    heading appears.
+  */
+  .pubs {
+    gap: 0;
+    max-inline-size: none;
+  }
+  @media (min-width: 34rem) {
+    .pubs { border-block-start: var(--rule-strong) solid var(--color-heading); }
+  }
+  .pub {
+    border-block-end: var(--rule) solid var(--color-border);
+    padding-block: var(--space-s);
+  }
+  /*
+    The rule between two rows belongs to the pair, not to the row above it, so
+    the last one has nothing to divide. It also sat directly under the heavier
+    rule that opens the next section, which read as one thick rule drawn badly
+    rather than as two doing different jobs.
+  */
+  .pub:last-child { border-block-end: 0; }
+  /*
+    The year comes out of the citation and becomes the rail. The copy that
+    lives inside the meta line goes away, so the year is announced once.
+  */
+  .pub__year {
+    color: var(--color-muted);
+    display: block;
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+  .pub__meta-year { display: none; }
+  /*
+    Tighter than the 1.6 body copy inherits. A title is a title at any length,
+    and at 1.6 a six-line one — which is what a paper about a 15A-CC63
+    sub-lineage comes to in a 268px column — sets six separately underlined
+    bars rather than one block of bold with a line under it.
+  */
+  .pub__title {
+    font-weight: 700;
+    line-height: 1.25;
+    max-inline-size: var(--measure);
+  }
+  .pub__authors,
+  .pub__meta { max-inline-size: var(--measure); }
+
+  /*
+    The author list is the one piece of fine print on this site that is running
+    text: six names and an "et al." wrap to three lines in a narrow column,
+    and the step below body is for labels — a year, a dateline, a menu — where
+    short and tracked is what makes small legible.
+
+    It matters most exactly where it reads worst. The scale interpolates over
+    320-1240px from a 1.2 ratio to a 1.333, so fine print is 0.84x body on a
+    phone against 0.75x on a desk: the distinction the small step exists to
+    draw is at its weakest on the smallest screen, and what is left is three
+    lines of grey at fourteen pixels. From 34rem the citation gets its rail and
+    its table, the line is short again, and the step goes back.
+
+    `pnpm check:responsive` cannot see this one: it flags text between the
+    fine-print step and the body floor as an ad-hoc shrink, and this resolved
+    exactly to the step, so it passed by construction.
+  */
+  .pub__authors { font-size: var(--step-0); }
+  @media (min-width: 34rem) {
+    .pub__authors { font-size: var(--step--1); }
+  }
+
+  /*
+    The rail is scoped to the citation lists, not to every `.pub`. News and
+    events reuse the row and have no year, so an unscoped rail left a 4rem
+    empty track down the side of both pages - a drawn gutter with nothing on
+    either side of it, in the one design whose motif is that the grid is
+    visible. Scoped by list rather than by `:has(.pub__year)`, so a paper that
+    happens to be missing a year still lines up with the ones around it.
+  */
+  @media (min-width: 34rem) {
+    .pubs:not(.pubs--dated) .pub {
+      column-gap: var(--space-m);
+      grid-template-columns: 4rem minmax(0, 1fr);
+    }
+    .pub__year { grid-column: 1; grid-row: 1; }
+    .pubs:not(.pubs--dated) .pub > :not(.pub__year) { grid-column: 2; }
+  }
+
+  /* The dateline, set as a label: tracked capitals over a rule, like the
+     funding strip's heading and the in-page index's. */
+  .dateline {
+    border-block-end: var(--rule-strong) solid var(--color-heading);
+    color: var(--color-heading);
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    max-inline-size: none;
+    padding-block-end: var(--space-3xs);
+    text-transform: uppercase;
+  }
+
+  /* ---- People ---------------------------------------------------------- */
+
+  /*
+    A ruled list of names, not a card wall: the avatars are initials in a grey
+    box for everyone but Sophie, and a grid of those is decoration standing in
+    for photography this design does not use.
+  */
+  /*
+    `auto-fit`, not the shared `auto-fill`. Most ranks in this lab hold one
+    person, and an auto-filled row keeps the empty tracks: the rule over a name
+    then stopped halfway across the module with nothing under the other half,
+    which in a design that draws its grid reads as a mistake rather than as
+    restraint. Collapsing the empty tracks lets a rank of one take the row and
+    its rule cross the column, the way the section rule above it does.
+  */
+  .people__grid {
+    column-gap: var(--space-l);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+    row-gap: 0;
+  }
+  .person {
+    background: none;
+    border: 0;
+    border-block-start: var(--rule) solid var(--color-border);
+    border-radius: 0;
+    padding: var(--space-2xs) 0 var(--space-s);
+  }
+  .person__avatar { display: none; }
+  .person__name { font-weight: 700; }
+  .person__rank { letter-spacing: 0.04em; }
+
+  /* The mark, tracked and capitalised like every other label in this design. */
+  .person__placeholder {
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  /* Alumni, folded away. The summary is a control, so it is sized like one. */
+  .people__summary {
+    border-block-start: var(--rule-strong) solid var(--color-heading);
+    color: var(--color-heading);
+    cursor: pointer;
+    font-size: var(--step--1);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding-block: var(--space-2xs);
+    text-transform: uppercase;
+  }
+
+  /* ---- Cards, flattened ------------------------------------------------ */
+
+  .cards { column-gap: var(--space-l); row-gap: var(--space-l); }
+  .card {
+    background: none;
+    border: 0;
+    border-block-start: var(--rule-strong) solid var(--color-heading);
+    padding: var(--space-2xs) 0 0;
+  }
+
+  /* ---- Funding --------------------------------------------------------- */
+
+  .funders {
+    border-block-start: var(--rule-strong) solid var(--color-heading);
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-2xs);
+  }
+  .funders__heading {
+    font-size: var(--step--1);
+    letter-spacing: 0.12em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+  .funders__list {
+    display: grid;
+    gap: var(--space-m);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+    list-style: none;
+    margin-block-start: var(--space-s);
+    max-inline-size: none;
+    padding: 0;
+  }
+  .funder__acronym {
+    color: var(--color-heading);
+    display: block;
+    font-size: var(--step-2);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .funder__name {
+    color: var(--color-muted);
+    display: block;
+    font-size: var(--step--1);
+    margin-block-start: var(--space-3xs);
+  }
+
+  /* ---- Long-form pages ------------------------------------------------- */
+
+  /*
+    The manual's index is the same device as the rail, so it is set the same:
+    opened by a rule, closed by the thing that comes next.
+
+    Not `border-block`. The first section under it opens with its own rule, one
+    space-l down, so a rule on the foot of this one put two identical marks
+    forty-nine pixels apart with nothing whatever between them — a band of
+    empty page that reads as a divider drawn twice by mistake. The section
+    rule is the divider; this one only has to start the list.
+  */
+  .toc {
+    background: none;
+    border-block-start: var(--rule-strong) solid var(--color-heading);
+    border-inline-start: 0;
+    padding-inline: 0;
+  }
+  .manual thead th,
+  .manual tbody th { color: var(--color-heading); }
+
+  /*
+    Inline code, boxed rather than filled. Nothing on this design is a filled
+    panel - structure is drawn with rules - so a grey block in the middle of a
+    sentence is the shared style asserting something this design does not.
+
+    It began as a contrast fix: the accent was a vermilion that fell to 4.26:1
+    against the grey surface, and `/admin` on this page is a link inside a
+    `<code>`. The accent has since moved to the lavender, which clears 5.73:1
+    there, so the box is now kept for the reason above rather than that one.
+  */
+  .manual code {
+    background: none;
+    border: var(--rule) solid var(--color-border);
+  }
+
+  /* ---- Footer: the signature, repeated -------------------------------- */
+
+  /*
+    Shared `.footer` pads the banner and centres the inner box inside that
+    padding, so footer text sits one gutter to the left of the content above
+    it. Alignment is the whole argument of this design, so the padding moves
+    onto the inner box, where it lines up with `.page`. The other two designs
+    keep the shared default until their own runs look at it.
+  */
+  .footer {
+    border-block-start: var(--rule-strong) solid var(--color-heading);
+    margin-block-start: var(--space-2xl);
+    padding-inline: 0;
+  }
+  /* The email is a link in a paragraph again here, not a control to hit. */
+  @media (min-width: 62rem) {
+    .footer a { min-block-size: 0; }
+  }
+  .footer__inner { padding-inline: var(--space-m); }
+  .footer__inner { display: grid; gap: var(--space-3xs); }
+  .footer__inner > p:first-child {
+    color: var(--color-accent);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    margin-block-end: var(--space-2xs);
+    text-transform: uppercase;
+  }
+  .footer__inner > p:nth-child(2) {
+    color: var(--color-heading);
+    font-size: var(--step-0);
+    font-weight: 600;
+  }
+  @media (min-width: 62rem) {
+    /* The lab name sits in the identity column, so the footer keeps the grid. */
+    .footer__inner {
+      column-gap: var(--space-xl);
+      grid-template-columns: 14rem minmax(0, 1fr);
+    }
+    .footer__inner > p:first-child { grid-column: 1; grid-row: 1; }
+    .footer__inner > p:not(:first-child) { grid-column: 2; }
+  }
+}

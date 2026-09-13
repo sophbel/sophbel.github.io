@@ -1,0 +1,33 @@
+---
+import funders from '../data/fixtures/funders.json' with { type: 'json' };
+
+/**
+ * Who pays for the work, set as type rather than as a row of logos.
+ *
+ * The acronym is what a funder is known by and the full name is what it is
+ * called, so both are shown: the strip reads at a glance and still says what
+ * the letters stand for, which a wall of logos does not.
+ *
+ * Fixtures, like the events and gallery data next to them. Every entry is a
+ * visible placeholder in the same style as the placeholder people; wiring real
+ * funders is replacing the contents of the JSON file.
+ */
+interface Funder {
+  acronym: string;
+  name: string;
+}
+const entries = funders as Funder[];
+---
+{entries.length > 0 && (
+  <section class="funders" aria-labelledby="funders-heading">
+    <h2 class="funders__heading" id="funders-heading">Funding</h2>
+    <ul class="funders__list">
+      {entries.map((funder) => (
+        <li class="funder">
+          <span class="funder__acronym">{funder.acronym}</span>
+          <span class="funder__name">{funder.name}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}

@@ -1,0 +1,55 @@
+---
+/**
+ * An index of the sections on the page.
+ *
+ * Rendered by the page itself, inside <main> and directly after its <h1>. It
+ * cannot come from a slot in BaseLayout: it belongs between a page's title and
+ * the page, and both of those are inside <main>, so a sibling of <main> can
+ * only be drawn above the whole article or below it. Where it lands is still
+ * the stylesheet's decision - a sticky third column beside the content above
+ * 62rem, a strip under the heading below that - and not this component's.
+ *
+ * It is a <nav>, but not the primary one: "Primary" is emitted once, in
+ * BaseLayout, and test/single-emission.test.ts enforces that. The in-page
+ * index on /how-this-works is the same idea written inline, and predates this.
+ *
+ * Its label is a <p>, not an <h2>. An <h2> here opens the document one level
+ * down between the <h1> and the page's own sections, which is a real
+ * heading-order failure rather than a tidiness point. It was never a section
+ * heading anyway: it names a navigation landmark, `aria-labelledby` is what
+ * carries that, and a landmark's name does not belong in the outline of the
+ * page. Below 62rem it is hidden from view and kept for that name, because
+ * under the title it indexes an index needs no label.
+ */
+interface Props {
+  /** `[id, label]` pairs, in page order. The id must exist on the page. */
+  sections: [string, string][];
+  /** Heading for the index, where "On this page" is not the right words. */
+  heading?: string;
+}
+const { sections, heading = 'On this page' } = Astro.props;
+---
+{/*
+  Two boxes, not one. Above 62rem the outer one is the column - full height,
+  carrying the hairline that divides it from the text - and the inner one is
+  what follows the reader down the page. A box that stretches to its column has
+  nowhere to travel, and `position` takes one value, so the two jobs need two
+  elements. Below 62rem the inner box does nothing and costs nothing.
+*/}
+{sections.length > 1 && (
+  <nav class="section-index" aria-labelledby="section-index-heading">
+   <div class="section-index__inner">
+    <p class="section-index__heading" id="section-index-heading">{heading}</p>
+    <ol class="section-index__list">
+      {sections.map(([id, label], index) => (
+        <li class="section-index__item">
+          <a href={`#${id}`}>
+            <span class="section-index__number">{String(index + 1).padStart(2, '0')}</span>
+            <span class="section-index__label">{label}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+   </div>
+  </nav>
+)}

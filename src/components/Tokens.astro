@@ -1,0 +1,41 @@
+---
+/**
+ * Emits the design tokens as custom properties on `:root`.
+ *
+ * The type and space scales are fluid, interpolated across the viewport range
+ * by `lib/utopia.ts`, so this is generated rather than written by hand: the
+ * scale is a formula and its steps are its output.
+ *
+ * `color-scheme: light` is declared here rather than left to the browser. The
+ * site has one palette, and letting the browser force a mode it was never
+ * drawn in would repaint form controls and scrollbars to match a dark page
+ * that does not exist.
+ */
+import { typeScale, spaceScale, tokensToCss } from '../lib/utopia.ts';
+import { DESIGN, VIEWPORT, TYPE_STEPS, SPACE_STEPS, FONT_STACKS } from '../lib/design.ts';
+
+const fluidTokens = {
+  ...typeScale({ ...VIEWPORT, ...DESIGN.type, steps: TYPE_STEPS }),
+  ...spaceScale({ ...VIEWPORT, ...DESIGN.space, steps: SPACE_STEPS }),
+};
+const staticTokens: Record<string, string> = {
+  'font-display': DESIGN.fonts.display,
+  'font-body': DESIGN.fonts.body,
+  // Monospace has no job here beyond `<code>`, so it keeps the system stack
+  // rather than shipping a face for one element.
+  'font-mono': DESIGN.fonts.mono ?? FONT_STACKS.mono,
+  radius: DESIGN.shape.radius,
+  rule: DESIGN.shape.rule,
+  'rule-strong': DESIGN.shape.ruleStrong,
+  'rule-heavy': DESIGN.shape.ruleHeavy,
+  measure: DESIGN.shape.measure,
+  'measure-wide': DESIGN.shape.measureWide,
+  'page-max': DESIGN.shape.pageMax,
+  ...Object.fromEntries(
+    Object.entries(DESIGN.colors).map(([name, value]) => [`color-${name}`, value]),
+  ),
+};
+const block = `:root {\n  color-scheme: light;\n${tokensToCss({ ...fluidTokens, ...staticTokens })}\n}`;
+---
+
+<style is:global set:html={block}></style>
