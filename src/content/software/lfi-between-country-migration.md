@@ -1,5 +1,5 @@
 ---
-title: LFI_between_country_migration
+title: Estimating Between Country Migration in Pneumococcal Populations
 summary: Repository containing the data for "Estimating Between Country Migration in Pneumococcal Populations"
 repo: https://github.com/sophbel/LFI_between_country_migration
 language: Python
