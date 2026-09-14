@@ -1,7 +1,29 @@
 {
   "orcid": "0000-0002-9778-7174",
-  "fetchedAt": "2026-09-09T13:45:08.485Z",
+  "fetchedAt": "2026-09-14T12:55:35.140Z",
   "works": [
+    {
+      "putCode": 226635995,
+      "title": "Pneumococcal population structure influences the effects of air pollution on invasive disease risk in South Africa",
+      "type": "journal-article",
+      "year": "2026",
+      "journal": "Nature Microbiology",
+      "doi": "10.1038/s41564-026-02458-5",
+      "url": "https://doi.org/10.1038/s41564-026-02458-5",
+      "authors": [
+        "Sophie Belman",
+        "Cebile Lekhuleni",
+        "Jackie Kleynhans",
+        "Giovenale Moirano",
+        "Daniela Lührsen",
+        "Cristina Carnerero",
+        "Susan Meiring",
+        "Stephanie W. Lo",
+        "Mignon du Plessis",
+        "Anne von Gottberg",
+        "Rachel Lowe"
+      ]
+    },
     {
       "putCode": 199471696,
       "title": "Microbial diversity modifies the impact of air pollution on pneumococcal disease risk",
