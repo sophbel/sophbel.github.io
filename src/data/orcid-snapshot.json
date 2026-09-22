@@ -1,7 +1,33 @@
 {
   "orcid": "0000-0002-9778-7174",
-  "fetchedAt": "2026-09-14T12:55:35.140Z",
+  "fetchedAt": "2026-09-22T11:44:49.610Z",
   "works": [
+    {
+      "putCode": 227397057,
+      "title": "Compound climate extremes, socioeconomic conditions and human mobility influence dengue dynamics heterogeneously across Vietnam",
+      "type": "preprint",
+      "year": "2026",
+      "journal": null,
+      "doi": "10.64898/2026.09.19.26363468",
+      "url": "https://doi.org/10.64898/2026.09.19.26363468",
+      "authors": [
+        "Chloe Fletcher",
+        "Sophie Belman",
+        "Kien Quoc Do",
+        "Quang Duy Pham",
+        "Thi Thanh Thao Nguyen",
+        "Rory Gibb",
+        "Phan Trong Lan",
+        "Tran Cong Tu",
+        "Nguyen Hai Tuan",
+        "Daniela Lührsen",
+        "Gina Tsarouchi",
+        "Quillon Harpham",
+        "Felipe J Colón-González",
+        "John Rossman Bertholf Palmer",
+        "Rachel Lowe"
+      ]
+    },
     {
       "putCode": 226635995,
       "title": "Pneumococcal population structure influences the effects of air pollution on invasive disease risk in South Africa",
