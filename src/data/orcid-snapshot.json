@@ -1,6 +1,6 @@
 {
   "orcid": "0000-0002-9778-7174",
-  "fetchedAt": "2026-09-29T12:59:15.683Z",
+  "fetchedAt": "2026-09-30T12:41:36.019Z",
   "works": [
     {
       "putCode": 227397057,
@@ -49,6 +49,32 @@
         "Mignon du Plessis",
         "Anne von Gottberg",
         "Rachel Lowe"
+      ]
+    },
+    {
+      "putCode": 228171827,
+      "title": "Genomic and statistical models to characterize Streptococcus pneumoniae transmission patterns in Malawi",
+      "type": "journal-article",
+      "year": "2026",
+      "journal": "Microbial Genomics",
+      "doi": "10.1099/mgen.0.001667",
+      "url": "http://dx.doi.org/10.1099/mgen.0.001667",
+      "authors": [
+        "Rory Cave",
+        "James Chirombo",
+        "Uri Obolski",
+        "Sophie Belman",
+        "Akuzike Kalizang'oma",
+        "Thandie S. Mwalukomo",
+        "Arox Kamng’ona",
+        "Comfort Brown",
+        "Jacquline Msefula",
+        "Farouck Bonomali",
+        "Roseline Nyirenda",
+        "Todd D. Swarthout",
+        "Brenda Kwambana-Adams",
+        "Neil French",
+        "Robert S. Heyderman"
       ]
     },
     {
