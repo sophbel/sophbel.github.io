@@ -26,7 +26,6 @@ Then open <http://localhost:4321>.
 | `pnpm build` | Same, then build to `dist/` |
 | `pnpm test` | Unit tests (Vitest) |
 | `pnpm typecheck` | `tsc --noEmit` |
-| `pnpm sync:orcid` | Re-fetch the ORCID snapshot |
 | `pnpm gen:og` | Redraw the link-preview card |
 | `pnpm check:responsive` | Drive a real browser over every page and viewport (needs `pnpm preview` running) |
 
@@ -55,18 +54,20 @@ and every link twice into every page.
 `docs/design.md` is the fuller version: what the design argues, what it costs,
 and the invariants that hold.
 
-**Most of the site is shelved.** Team, Software & data, Projects, News, Events,
-Gallery and Join us are still stand-in content, so nothing links to them and
+**Most of the site is shelved.** Team, Software & data, Projects, Events and
+Gallery are still stand-in content, so nothing links to them and
 nothing builds them. Their pages keep their code under a leading underscore in
 `src/pages/`, which is Astro's "compile this, do not route it", and
 `src/lib/nav.ts` keeps their menu entries behind a `shelved` flag. Bringing one
 back is dropping the underscore and dropping the flag.
 
-**Publications come from ORCID.** `pnpm sync:orcid` writes
-`src/data/orcid-snapshot.json`; the build reads only that file, so builds are
-reproducible and work offline. `src/lib/orcid.ts` handles presentation —
-repairing titles that Crossref mangled, resolving DOIs over https, and linking
-preprints to their published versions.
+**Publications are a list kept by hand.** One file, `src/data/publications.json`,
+with a row per paper, each holding a pasted BibTeX entry, edited through the
+CMS. The page prints two lists from it: every row under "All publications", and
+the ones marked `selected` above, where a picture can go with them. `src/lib/bibtex.ts` reads
+the entries, `src/lib/publication-data.ts` validates the file at build time and
+`src/lib/publications.ts` holds the ordering and selection rules; nothing
+reaches out to another service.
 
 **Events and gallery are fixtures.** `src/data/fixtures/` holds data shaped
 exactly like `@palebluebytes/cms` returns, so wiring the real Google Calendar
@@ -79,20 +80,17 @@ Everything the site publishes is real. Everything that is not is shelved.
 | On the site | Shelved |
 | --- | --- |
 | Home and Research prose | Everyone on the team except Sophie |
-| Publications (live ORCID record) | News, Projects, Join us |
+| Publications (her own list), Join, News | Projects |
 | Site details, footer, links | Events, Gallery, Software & data |
 
-The publications page shows the ORCID record **as it currently stands**, which
-is missing at least six papers including a Lancet Microbe article.
-`/how-this-works` names them, so the gap is a to-do list rather than an
-invisible omission, and each one drops off that list as it is added to ORCID.
+The publications list started as a copy of her ORCID record and is hers to add
+to from here; papers ORCID never had can simply be entered.
 
 ## Deployment
 
 GitHub Actions builds and deploys to GitHub Pages on every push touching the
-site, and again each morning if the ORCID record has changed. There is no
-server and no platform-specific code — `dist/` is plain static files. See
-`.github/workflows/`.
+site. There is no server and no platform-specific code — `dist/` is plain
+static files. See `.github/workflows/`.
 
 ## Editing
 

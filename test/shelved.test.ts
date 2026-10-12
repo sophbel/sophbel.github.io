@@ -61,7 +61,6 @@ describe('the shelved sections are linked from nowhere', () => {
 
   it('has something shelved to be wrong about', () => {
     expect(shelvedHrefs.length).toBeGreaterThan(0);
-    expect(SHELVED_PAGES.length).toBeGreaterThan(0);
   });
 
   it.each(pages.map((path) => [relative(PAGES, path), path]))(

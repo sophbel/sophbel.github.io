@@ -9,6 +9,8 @@ The environment (climatic or sociodemographic) shapes the patterns of infectious
 
 My research aims to understand how the environment shapes evolutionary selection among microbial populations to explain and predict disease burden and dynamics. Understanding these relationships enhances our ability to anticipate how environmental changes (e.g. increasing temperatures, prolonged drought, wildfire smoke) shape microbial populations (e.g. antimicrobial resistance, virulent strains, or genes under selection) and focus our public health strategies on the most vulnerable regions and populations.
 
+![Diagram of six steps from transmission to disease: transmission, carriage acquisition, epithelial adhesion and biofilm formation, translocation, and immune evasion, leading to either non-invasive or invasive disease.](/uploads/unknowns.png)
+
 ## Core research themes
 
 ### Epidemiological Associations

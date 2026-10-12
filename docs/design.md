@@ -109,7 +109,7 @@ Below 42rem              42rem to 62rem            62rem and up
 
 Narrow, the page comes first and the menu goes to the foot of the screen. It is
 drawn as a bar: it bleeds past the page's margin to both edges of the screen, a
-heavy rule closes it off from the page above it, its three items divide the
+heavy rule closes it off from the page above it, its items divide the
 width between them, and a hairline in the grid grey separates each compartment
 from the next.
 

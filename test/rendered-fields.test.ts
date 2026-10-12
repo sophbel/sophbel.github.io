@@ -32,6 +32,14 @@ const source = sourceFiles(SRC)
 
 const names = (fields: Field[]): string[] => fields.map((field) => field.name);
 
+/** The fields an editor fills in, looking through a list of rows to the row's own fields. */
+const leafNames = (fields: Field[]): string[] =>
+  fields.flatMap((field) =>
+    field.widget === 'list' && field.field.widget === 'object'
+      ? leafNames(field.field.fields)
+      : [field.name],
+  );
+
 describe('every CMS field is rendered somewhere', () => {
   for (const collection of collections) {
     it(`${collection.name}`, () => {
@@ -44,7 +52,11 @@ describe('every CMS field is rendered somewhere', () => {
 
   for (const file of fileCollections.flatMap((collection) => collection.files)) {
     it(`${file.name}`, () => {
-      const unrendered = names(file.fields).filter((name) => !source.includes(`site.${name}`));
+      // Site details are read as `site.<name>`; a list of rows is read as
+      // `data.<name>`, from the row, once it has been validated.
+      const read = (name: string) =>
+        file.name === 'site' ? `site.${name}` : `data.${name}`;
+      const unrendered = leafNames(file.fields).filter((name) => !source.includes(read(name)));
       expect(unrendered).toEqual([]);
     });
   }

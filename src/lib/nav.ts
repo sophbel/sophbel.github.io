@@ -35,7 +35,7 @@ export const COLLECTION_NAV: NavItem[] = [
   { label: 'Software & data', href: '/software', order: 4, shelved: true },
   { label: 'Team', href: '/team', order: 5, shelved: true },
   { label: 'Projects', href: '/projects', order: 6, shelved: true },
-  { label: 'News', href: '/news', order: 7, shelved: true },
+  { label: 'News', href: '/news', order: 7 },
   { label: 'Events', href: '/events', order: 8, shelved: true },
   { label: 'Gallery', href: '/gallery', order: 9, shelved: true },
 ];
@@ -43,13 +43,13 @@ export const COLLECTION_NAV: NavItem[] = [
 /**
  * Pages-collection entries that are shelved the same way.
  *
- * Join us describes positions that are not open yet. It cannot be
- * underscore-prefixed like the others, because it is not a route file: it is
- * Markdown rendered by `[slug].astro`, which filters on this list. The file
- * stays in the collection and the CMS keeps offering it, so the text can be
- * written before the page goes back.
+ * Empty now: Join us was the one, and is on the site. The mechanism stays
+ * because a page that is Markdown rendered by `[slug].astro` cannot be
+ * underscore-prefixed like the routed ones. Name its id here and it stays in
+ * the collection, and the CMS keeps offering it, so the text can be written
+ * before the page goes back.
  */
-export const SHELVED_PAGES = ['join-us'];
+export const SHELVED_PAGES: string[] = [];
 
 /** The menu, with the shelved sections taken out. */
 export const NAV = COLLECTION_NAV.filter((item) => !item.shelved);

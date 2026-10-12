@@ -12,7 +12,6 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "gen:cms": "node scripts/generate-cms-config.ts",
-    "sync:orcid": "node scripts/fetch-orcid.ts",
     "gen:og": "node scripts/generate-og-card.ts",
     "vendor:cms": "node scripts/vendor-cms.ts",
     "check:paths": "node scripts/check-base-paths.ts",

@@ -34,7 +34,7 @@ const VIEWPORTS = [
 ];
 // Only what the site publishes. The shelved sections are not built, so there
 // is nothing here to drive; see SHELVED_PAGES and `shelved` in src/lib/nav.ts.
-const PAGES = ['/', '/research/', '/publications/', '/how-this-works/', '/404.html'];
+const PAGES = ['/', '/research/', '/publications/', '/news/', '/join-us/', '/how-this-works/', '/404.html'];
 
 /*
  * Three floors, not one.

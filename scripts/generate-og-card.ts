@@ -32,7 +32,7 @@
  *
  * ## Why committed
  *
- * Same reason as the ORCID snapshot: `public/og.jpg` is checked in, and the
+ * `public/og.jpg` is checked in, and the
  * build only copies it. A deploy does not need a browser, and a card cannot
  * change because a font rendered differently on a runner one Tuesday.
  * Regenerate it - `pnpm gen:og` - when `src/data/site.json`, the portrait or

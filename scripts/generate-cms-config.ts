@@ -24,6 +24,12 @@ const branch = process.env.CMS_BRANCH ?? 'main';
 // resolve wrongly if /admin were ever reached without its trailing slash.
 const manualUrl = `${(process.env.SITE_BASE ?? '/').replace(/\/+$/, '')}/how-this-works`;
 
+// The preview picks her own name out in bold the way the page does, so it has
+// to be told the name the site details hold.
+const { name: siteName } = JSON.parse(
+  await readFile(new URL('../src/data/site.json', import.meta.url), 'utf8'),
+) as { name: string };
+
 const configOut = new URL('../public/admin/config.yml', import.meta.url);
 const pageOut = new URL('../public/admin/index.html', import.meta.url);
 const template = new URL('../src/admin/index.template.html', import.meta.url);
@@ -43,7 +49,8 @@ await writeFile(
 const page = (await readFile(template, 'utf8'))
   .replaceAll('{{REPO}}', repo)
   .replaceAll('{{REPO_NAME}}', repo.split('/')[1] ?? repo)
-  .replaceAll('{{MANUAL_URL}}', manualUrl);
+  .replaceAll('{{MANUAL_URL}}', manualUrl)
+  .replaceAll('{{SITE_NAME}}', siteName);
 
 await writeFile(pageOut, page);
 console.log(`Wrote public/admin/{config.yml,index.html} for ${repo}`);

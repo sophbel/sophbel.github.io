@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { url } from '../../lib/paths.ts';
+import { uploadSize } from '../../lib/uploads.ts';
 
 export async function getStaticPaths() {
   const news = await getCollection('news');
@@ -11,6 +12,10 @@ export async function getStaticPaths() {
 const { item } = Astro.props;
 const { Content } = await render(item);
 const date = item.data.date as Date;
+// The picture's own size, so the page holds its shape before it loads. It used
+// to say 1200x800 for every image, which is the right shape for hardly any.
+const image = item.data.image as string | undefined;
+const size = image ? uploadSize(image, item.data.title as string) : null;
 ---
 <BaseLayout
   title={item.data.title as string}
@@ -18,6 +23,6 @@ const date = item.data.date as Date;
 >
   <h1>{item.data.title}</h1>
   <p class="dateline"><time datetime={date.toISOString()}>{date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</time></p>
-  {item.data.image && <img src={url(item.data.image as string)} alt={(item.data.imageAlt as string | undefined) ?? ''} width="1200" height="800" />}
+  {image && <img src={url(image)} alt={(item.data.imageAlt as string | undefined) ?? ''} width={size?.width} height={size?.height} />}
   <Content />
 </BaseLayout>

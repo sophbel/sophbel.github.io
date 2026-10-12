@@ -1,0 +1,38 @@
+/*
+ * The editor's preview of the Publications page. A tool surface, like the rest
+ * of /admin, so it keeps its own light-dark() pairs rather than the site's
+ * tokens: the site is light-only, and the editor is not.
+ */
+:root { color-scheme: light dark; }
+body {
+  margin: 0;
+  padding: 1.25rem 1.5rem 3rem;
+  background: light-dark(#fff, #1c1c1c);
+  color: light-dark(#161616, #ececec);
+  font: 16px/1.5 system-ui, sans-serif;
+}
+h1 { margin: 0 0 0.75rem; font-size: 2rem; line-height: 1.1; border-block-end: 3px solid currentColor; padding-block-end: 0.5rem; }
+h2 { margin: 1.75rem 0 0.75rem; font-size: 1.25rem; border-block-start: 2px solid currentColor; padding-block-start: 0.5rem; }
+.pubs { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.9rem; }
+.pub {
+  display: grid;
+  grid-template-columns: 3.25rem 1fr;
+  gap: 0.15rem 0.75rem;
+  padding-block-end: 0.9rem;
+  border-block-end: 1px solid light-dark(#d4d4d4, #3a3a3a);
+}
+.pub:last-child { border-block-end: 0; }
+.pub > :not(.pub__year) { grid-column: 2; margin: 0; }
+.pub__year { grid-column: 1; grid-row: 1; margin: 0; font-weight: 600; font-size: 0.9rem; color: light-dark(#555, #aaa); }
+.pub__title { font-weight: 600; }
+.pub__title a { color: inherit; text-decoration: underline; text-decoration-color: light-dark(#999, #777); }
+.pub__authors, .pub__meta { font-size: 0.875rem; color: light-dark(#555, #aaa); }
+.pub__authors strong { color: light-dark(#161616, #ececec); }
+.pub__meta em { color: light-dark(#161616, #ececec); }
+.pub__figure { margin: 0.4rem 0 0; max-width: 100%; }
+.pub__caption { margin-top: 0.35rem; font-size: 0.75rem; line-height: 1.35; font-style: italic; color: light-dark(#555, #aaa); }
+.pub__image { display: block; max-width: 100%; height: auto; border: 1px solid light-dark(#d4d4d4, #3a3a3a); }
+.tag { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; border: 1px solid currentColor; padding: 0 0.3em; }
+.pub--problem { grid-template-columns: 1fr; padding: 0.6rem 0.75rem; border: 1px solid light-dark(#b3261e, #f2a29b); }
+.pub--problem > * { grid-column: 1; }
+.pub--problem .pub__title { color: light-dark(#b3261e, #f2a29b); }

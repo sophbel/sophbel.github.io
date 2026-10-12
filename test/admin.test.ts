@@ -56,3 +56,21 @@ describe('the admin page links to the manual', () => {
     expect(template).not.toContain('../how-this-works');
   });
 });
+
+describe('the publication preview', () => {
+  it('registers a preview for the publication list, keyed by its file name', () => {
+    // Sveltia keys a single-file collection's preview on the file's name.
+    expect(template).toMatch(/registerPreviewTemplate\(\s*'publications'/);
+  });
+
+  it('loads the files vendor-cms.ts writes for it', () => {
+    expect(template).toContain("from './publications-parse.js'");
+    expect(template).toContain("from './publication-preview.js'");
+    expect(template).toContain('publication-preview.css');
+  });
+
+  it('is told her name by a placeholder rather than naming her', () => {
+    expect(template).toContain('{{SITE_NAME}}');
+    expect(template).not.toContain('Sophie');
+  });
+});

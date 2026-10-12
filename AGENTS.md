@@ -21,8 +21,8 @@ pieces fit together; the design and the content model were worked out in
 - **The site is light-only and has no dark palette.** `src/admin/` is the
   exception: the CMS shell is a tool surface and keeps its own `light-dark()`
   pairs.
-- **Seven of the site's sections are shelved, not deleted.** Team, Software &
-  data, Projects, News, Events, Gallery and Join us are nothing but stand-in
+- **Five of the site's sections are shelved, not deleted.** Team, Software &
+  data, Projects, Events and Gallery are nothing but stand-in
   content so far, so they are built no longer and linked from nowhere. Their
   pages sit in `src/pages/` under a leading underscore and still typecheck;
   `src/lib/nav.ts` holds the menu entries behind a `shelved` flag and the
@@ -30,9 +30,10 @@ pieces fit together; the design and the content model were worked out in
 - **`src/schema/collections.ts` is the single source for the content model.**
   It generates both the Zod schema and `public/admin/config.yml`; commit the
   regenerated config alongside any change to it.
-- **Publications come from `src/data/orcid-snapshot.json`**, a committed
-  snapshot. Only `pnpm sync:orcid` talks to ORCID, so builds are reproducible
-  and work offline.
+- **Publications are a hand-kept list**: one file, `src/data/publications.json`,
+  with a row per paper, each a pasted BibTeX entry (`src/lib/bibtex.ts` reads
+  it), edited in the CMS. Nothing syncs from ORCID any more;
+  the list was seeded from her ORCID record once and is hers to maintain.
 - **The link-preview card is generated, not drawn.** `public/og.jpg` is a
   committed artefact of `pnpm gen:og`, which screenshots the site's own
   masthead. Regenerate it when `src/data/site.json`, the portrait or the
@@ -40,7 +41,7 @@ pieces fit together; the design and the content model were worked out in
 - **Stand-in content stays visibly fake, and off the site.** Stand-in people
   are named "PhD Student Name" and carry a `placeholder` flag the team page
   renders as a label; the whole section is shelved until they are real. What
-  the site publishes is real: her ORCID record, her GitHub account, her own
+  the site publishes is real: her publication list, her GitHub account, her own
   words.
 - **The site is indexable, and that is a default rather than a setting.** See
   `src/lib/env.ts` for which way round the switch goes and why. Pages that

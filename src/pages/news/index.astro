@@ -13,6 +13,8 @@ const format = (date: Date) =>
 <BaseLayout title="News" description="Announcements and updates from the lab.">
   <h1>News</h1>
 
+  {news.length === 0 && <p class="muted">No news yet.</p>}
+
   <ul class="pubs pubs--dated">
     {news.map((item) => (
       <li class="pub">
