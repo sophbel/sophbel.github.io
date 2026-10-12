@@ -6,23 +6,17 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../lib/site.ts';
 import { url } from '../lib/paths.ts';
-import { normalisePublications, stillMissing, type Snapshot, type MissingWork } from '../lib/orcid.ts';
-import snapshot from '../data/orcid-snapshot.json' with { type: 'json' };
-import claimedMissing from '../data/orcid-missing.json' with { type: 'json' };
+import { publicationEntries } from '../lib/publication-data.ts';
 
 // The numbers on this page are read from the same data the site renders, so it
 // cannot drift into describing a version of the site that no longer exists.
-const { publications, syncedAt } = normalisePublications(snapshot as Snapshot);
-const missing = stillMissing(publications, claimedMissing as MissingWork[]);
-const synced = new Date(syncedAt).toLocaleDateString('en-GB', {
-  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
-});
+const selectedCount = publicationEntries.filter((entry) => entry.selected).length;
 
 const sections = [
   ['changing-things', 'Changing things'],
   ['in-the-editor', 'Things in the editor that aren’t obvious'],
   ['publishing', 'Why a change takes a minute'],
-  ['publications', 'Publications, and the ORCID list'],
+  ['publications', 'Publications'],
   ['shelved', 'What isn’t on the site yet'],
   ['signing-in', 'Signing in'],
   ['moving', 'If this ever has to move'],
@@ -67,7 +61,7 @@ const sections = [
 
       <dl>
         <dt>Pages</dt>
-        <dd>The body text of Home, Research, and Join us.</dd>
+        <dd>The body text of Home, Research, and Join.</dd>
 
         <dt>People</dt>
         <dd>
@@ -81,10 +75,11 @@ const sections = [
           one copy of each of these, used everywhere it appears.
         </dd>
 
-        <dt>Selected publications</dt>
+        <dt>Publications</dt>
         <dd>
-          The short list at the top of the Publications page. You give it a DOI and
-          a sentence about why the paper matters.
+          One list of every paper. Tick a paper as selected and it also goes in the
+          short list at the top of the Publications page, with a sentence about why
+          it matters.
         </dd>
 
         <dt>News and Projects</dt>
@@ -109,12 +104,11 @@ const sections = [
       </p>
 
       <dl>
-        <dt>Selected publications wants a DOI</dt>
+        <dt>A publication is in “All publications” whatever you tick</dt>
         <dd>
-          Not a title. A DOI looks like <code>10.1038/s41586-024-07626-3</code> and
-          is printed on the paper’s page at the publisher, and on your ORCID record.
-          The paper also has to be on your ORCID record — if it isn’t, the
-          Publications page says so rather than quietly leaving it out.
+          Every entry is listed under <cite>All publications</cite>. Ticking <b>Selected publication</b> lists it a second time, at
+          the top of the page. The DOI is just the identifier, like <code>10.1038/s41586-024-07626-3</code>, printed on the paper’s page at
+          the publisher.
         </dd>
 
         <dt>“Order” is a number, not a position</dt>
@@ -177,91 +171,60 @@ const sections = [
     </section>
 
     <section id="publications">
-      <h2>Publications, and the ORCID list</h2>
+      <h2>Publications</h2>
 
       <p>
-        Your publications aren’t typed into this site. They’re copied from
-        your <a href={`https://orcid.org/${site.orcid}`} rel="noopener">ORCID
-        record</a>, which means you maintain one list, in the place you already
-        maintain it for grants and your institution, and the site follows.
+        Your publications are a list you keep yourself, in the editor under <b>Publications</b>: one row per paper. Nothing is copied in from
+        anywhere, so a paper is on the site when you have added it and not
+        before, and what it says is what you typed. There are {publicationEntries.length} papers at the moment, {selectedCount} of them selected.
       </p>
 
-      <p>
-        The copy is taken once a day rather than on every page view. It last
-        changed on <time datetime={syncedAt}>{synced}</time>, and that date is
-        printed at the top of the Publications page. Reading ORCID live on every
-        visit would mean the page quietly changing whenever ORCID did, and going
-        blank whenever ORCID was down.
-      </p>
-
-      <h3>Why some of your papers are missing</h3>
-
-      <p>
-        Because the list is copied from ORCID, <b>anything not on ORCID is not on
-        this site.</b> Right now {missing.length} of your publications aren’t on your
-        ORCID record, including your <cite>Lancet Microbe</cite> paper. Your ORCID
-        record has been filling itself in automatically from Crossref, and Crossref
-        doesn’t know about everything you’ve written.
-      </p>
-
-      <p>
-        They’re listed here rather than on the Publications page itself. It’s a
-        to-do list for you, and on a page visitors read it would say nothing about
-        your work and quite a lot about the website.
-      </p>
-
-      <div class="notice">
-        <p><strong>Not on your ORCID record, so not on the site:</strong></p>
-        <ol>
-          {missing.map((work) => (
-            <li>
-              {work.title}
-              {work.venue && <span class="muted"> — {work.venue}</span>}
-              {work.year && <span class="muted"> ({work.year})</span>}
-            </li>
-          ))}
-        </ol>
-      </div>
-
-      <p>To fix it:</p>
+      <h3>Adding a paper</h3>
 
       <ol>
-        <li>Go to <a href="https://orcid.org/my-orcid" rel="noopener">orcid.org</a> and sign in.</li>
-        <li>Add the works named above.</li>
+        <li>On Google Scholar, find the paper, click <b>Cite</b> and then <b>BibTeX</b>, and copy what it shows.</li>
+        <li>In the editor choose <b>Publications</b>, open <b>Publication list</b> and add a row at the top of the list.</li>
+        <li>Paste the entry into <b>BibTeX entry</b>. The title, authors, journal, year, DOI and link are all read from it, so there is nothing else to type.</li>
+        <li>Tick <b>Selected publication</b> if it should also appear at the top.</li>
+        <li>
+          For a selected paper you can also add an <b>Image</b>, such as a figure or
+          graphical abstract. <b>Image caption</b> is the text printed under it, such
+          as the figure legend from the paper, and <b>Image description</b> is a short
+          sentence saying what it shows for anyone who cannot see it.
+        </li>
+        <li>Save, then press <b>Publish changes</b>. The list is sorted for you, so a new row can go anywhere.</li>
       </ol>
 
       <p>
-        That’s the whole job — there is no step where you tell anyone.
-        The site re-reads your ORCID record every morning. If anything has changed
-        it republishes itself, and each paper drops off this list as it
-        appears. Nobody has to remember to do anything, and the list can’t end up
-        nagging you about something you’ve already fixed.
+        One entry to a row. Anything in the entry can be corrected by editing the
+        pasted text, which is the way to fix a journal name Scholar has put in the
+        wrong case, or to add authors it has cut off. Scholar often stops an author
+        list after about ten names and ends it with “and others”; the page only
+        prints the first six anyway, and keeps your own name in if you would
+        otherwise be cut off, so that is rarely worth fixing. If a row cannot be
+        read, the site refuses to publish and says which row and why, rather than
+        printing half a citation.
       </p>
 
-      <p>
-        If nothing has changed, nothing happens — no rebuild, and the date on the
-        Publications page stays where it is. That date is when your publication
-        list last <em>changed</em>, not the last time we looked.
-      </p>
-
-      <h3>Two other things the page does on its own</h3>
+      <h3>Things the page does on its own</h3>
 
       <p>
-        Your name is picked out in bold in every author list, wherever you appear in
-        it. And no work is listed twice: a paper you’ve marked as selected appears
-        only under <cite>Selected publications</cite>, and where your record holds
-        both a preprint and the published version of the same work, only the
-        published version is shown.
+        Newest first, and alphabetical within a year, so the order never depends on
+        when you added something. Long author lists are cut after six, with your
+        own name kept in if you would otherwise be cut off, and your name is bold
+        wherever it appears. The title links to the paper’s DOI unless the entry has
+        a link of its own. Entries from preprint servers such as bioRxiv, medRxiv
+        and SSRN are labelled Preprint automatically; tick <b>Preprint</b> if one
+        is not recognised.
       </p>
 
       <details>
-        <summary>Why not Google Scholar?</summary>
+        <summary>Why not copy it from ORCID?</summary>
         <p>
-          Scholar has no official way for a website to read from it, so anything
-          that reads Scholar is scraping the page and will break without warning
-          when Google changes it. Your old publications page was built that way,
-          which is why none of its entries had authors. ORCID publishes a proper,
-          documented feed, and you control what’s in it.
+          It used to be. The site re-read your ORCID record every morning, which
+          meant anything missing from ORCID was missing here too, and the only fix
+          was to go and edit ORCID. A list you keep yourself can be corrected on
+          the spot, and it can hold papers ORCID has never heard of.
         </p>
       </details>
     </section>
@@ -270,7 +233,7 @@ const sections = [
       <h2>What isn’t on the site yet</h2>
 
       <p>
-        The site is Home, Research and Publications. Six other sections are
+        The site is Home, Research, Publications, News and Join. Five other sections are
         written and working but switched off, because every one of them is
         currently filled with stand-in content, and a menu item that leads to
         invented people or invented projects is worse than a short menu.
@@ -284,13 +247,14 @@ const sections = [
         </thead>
         <tbody>
           <tr><th scope="row">Home, Research</th><td>Live. Your real text, carried over</td></tr>
-          <tr><th scope="row">Publications</th><td>Live. Your real ORCID record</td></tr>
+          <tr><th scope="row">Join</th><td>Live. A short note that you will soon be recruiting</td></tr>
+          <tr><th scope="row">Publications</th><td>Live. A list you keep in the editor</td></tr>
           <tr><th scope="row">Site details, footer</th><td>Live. Real</td></tr>
           <tr><th scope="row">Team</th><td>Waiting. You are real; everyone else is a placeholder</td></tr>
           <tr><th scope="row">Software &amp; data</th><td>Waiting. Your real repositories, but nothing links to them yet</td></tr>
-          <tr><th scope="row">News, Projects</th><td>Waiting. Placeholder entries</td></tr>
+          <tr><th scope="row">News</th><td>Live. Empty until you add the first item</td></tr>
+          <tr><th scope="row">Projects</th><td>Waiting. Placeholder entries</td></tr>
           <tr><th scope="row">Events, Gallery</th><td>Waiting. Fixtures, not yet connected to Google</td></tr>
-          <tr><th scope="row">Join us</th><td>Waiting. An empty outline waiting for your words</td></tr>
         </tbody>
         </table>
       </div>

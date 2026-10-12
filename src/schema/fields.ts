@@ -25,7 +25,7 @@ export type ScalarWidget = 'string' | 'text' | 'markdown' | 'image' | 'datetime'
 export type Field =
   | (FieldBase & { widget: ScalarWidget })
   | (FieldBase & { widget: 'select'; options: string[] })
-  | (FieldBase & { widget: 'list'; field: Field })
+  | (FieldBase & { widget: 'list'; field: Field; /** How a row is labelled when the list is collapsed, e.g. `{{fields.title}}`. */ summary?: string })
   | (FieldBase & { widget: 'object'; fields: Field[] });
 
 export interface CollectionSpec {

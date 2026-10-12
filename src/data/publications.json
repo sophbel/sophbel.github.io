@@ -1,0 +1,71 @@
+{
+  "publications": [
+    {
+      "bibtex": "@misc{fletcher2026compound,\n  title = {Compound climate extremes, socioeconomic conditions and human mobility influence dengue dynamics heterogeneously across Vietnam},\n  author = {Chloe Fletcher and Sophie Belman and Kien Quoc Do and Quang Duy Pham and Thi Thanh Thao Nguyen and Rory Gibb and Phan Trong Lan and Tran Cong Tu and Nguyen Hai Tuan and Daniela Lührsen and Gina Tsarouchi and Quillon Harpham and Felipe J. Colón-González and John Palmer and Vu Sinh Nam and Rachel Lowe},\n  year = {2026},\n  doi = {10.64898/2026.09.19.26363468},\n  url = {https://doi.org/10.64898/2026.09.19.26363468}\n}",
+      "preprint": true
+    },
+    {
+      "bibtex": "@article{cave2026genomic,\n  title = {Genomic and statistical models to characterize Streptococcus pneumoniae transmission patterns in Malawi},\n  author = {Rory Cave and James Chirombo and Uri Obolski and Sophie Belman and Akuzike Kalizang'oma and Thandie S. Mwalukomo and Arox Kamng’ona and Comfort Brown and Jacquline Msefula and Farouck Bonomali and Roseline Nyirenda and Todd D. Swarthout and Brenda Kwambana-Adams and Neil French and Robert S. Heyderman},\n  journal = {Microbial Genomics},\n  year = {2026},\n  doi = {10.1099/mgen.0.001667},\n  url = {https://doi.org/10.1099/mgen.0.001667}\n}"
+    },
+    {
+      "bibtex": "@article{belman2026pneumococcal,\n  title = {Pneumococcal population structure influences the effects of air pollution on invasive disease risk in South Africa},\n  author = {Sophie Belman and Cebile Lekhuleni and Jackie Kleynhans and Giovenale Moirano and Daniela Lührsen and Cristina Carnerero and Susan Meiring and Stephanie W. Lo and Mignon du Plessis and Anne von Gottberg and Rachel Lowe},\n  journal = {Nature Microbiology},\n  year = {2026},\n  doi = {10.1038/s41564-026-02458-5},\n  url = {https://doi.org/10.1038/s41564-026-02458-5}\n}",
+      "selected": true,
+      "image": "/uploads/fig2_2026.png",
+      "imageAlt": "Relative risk plotted against temperature (a), absolute and relative humidity (b), and concentrations of PM2.5, PM10 and sulfur dioxide (c), as curves with shaded uncertainty bands.",
+      "imageCaption": "Figure 2. a,b, Meteorological models. a, Exposure–response curves for maximum (pink), mean (yellow) and minimum (blue) temperature in °C. b, Exposure–response curves for absolute humidity (g m−3) (left) and % relative humidity (right). c, Air pollution models. Exposure–response curves for PM2.5 (left) PM10 (middle) or sulfur dioxide (SO2) (right) including models with combinations of meteorological covariates (temperature metrics with linear formulations and humidity metrics with nonlinear formulations): maximum temperature (red), mean temperature (yellow), absolute humidity and mean temperature (light blue), relative humidity and mean temperature (dark blue), and none (black) with 3-week lags for humidity and no lag for temperature. These models were fitted to weekly district-level data from 2005 to 2019 across South Africa. The DLNM cross-basis for the humidity variables has 3 degrees of freedom, while the rest of the DLNMs have 2 degrees of freedom. At the bottom of a–c are rug plots with the distribution of the variables in the DLNM. In a, the rug plot is for mean temperature. Shading represents 95% credible intervals and points indicate the median."
+    },
+    {
+      "bibtex": "@misc{belman2025microbial,\n  title = {Microbial diversity modifies the impact of air pollution on pneumococcal disease risk},\n  author = {Sophie Belman and Cebile Lekhuleni and Jackie Kleynhans and Giovenale Moirano and Daniela Lührsen and Cristina Carnerero and Susan Meiring and Stephanie W. Lo and Mignon du Plessis and Anne von Gottberg and Rachel Lowe},\n  year = {2025},\n  doi = {10.64898/2025.12.10.25341877},\n  url = {https://doi.org/10.64898/2025.12.10.25341877}\n}",
+      "preprint": true
+    },
+    {
+      "bibtex": "@misc{cave2024characterising,\n  title = {Characterising Streptococcus pneumoniae Transmission Patterns in Malawi Through Genomic and Statistical Modelling},\n  author = {Rory Cave and James Chirombo and Uri Obolski and Sophie Belman and Akuzike Kalizang’oma and Thandie S. Mwalukomo and Arox Kamng’ona and Comfort Brown and Jacquline Msefula and Farouck Bonomali and Roseline Nyirenda and Todd D. Swarthout and Brenda Kwambana-Adams and Neil French and Robert S. Heyderman},\n  year = {2024},\n  doi = {10.1101/2024.11.22.24317796},\n  url = {https://doi.org/10.1101/2024.11.22.24317796}\n}",
+      "preprint": true
+    },
+    {
+      "bibtex": "@article{belman2024estimating,\n  title = {Estimating between-country migration in pneumococcal populations},\n  author = {Sophie Belman and Henri Pesonen and Nicholas J Croucher and Stephen D Bentley and Jukka Corander and M-A Félix},\n  journal = {G3: Genes, Genomes, Genetics},\n  year = {2024},\n  doi = {10.1093/g3journal/jkae058},\n  url = {https://doi.org/10.1093/g3journal/jkae058}\n}",
+      "selected": true,
+      "image": "/uploads/fig3_2024.jpeg",
+      "imageAlt": "Migration between Kenya, Malawi, South Africa and The Gambia: scaled parameter distributions across lineages for each pair of countries (a), and heatmaps of directional migration probability from each origin to each destination for six lineages, GPSC2, 5, 8, 10, 22 and 26 (b).",
+      "imageCaption": "Figure 3a, b. Migration parameters summary estimates. a, The scaled distribution of migration probabilities for each deme across GPSCs grouped by deme pair and colored according to country of origin and shaped according to destination. b, Migration parameters directional probability estimates between each deme pair. Colored by the probability of migration between each deme pair. Where red is >50% migration probability and blue is <50% migration probability."
+    },
+    {
+      "bibtex": "@article{cheng2024estimating,\n  title = {Estimating geographical spread of Streptococcus pneumoniae within Israel using genomic data},\n  author = {Hsueh-Chien Raymond Cheng and Sophie Belman and Henrik Salje and Ron Dagan and Stephen D. Bentley},\n  journal = {Microbial Genomics},\n  year = {2024},\n  doi = {10.1099/mgen.0.001262},\n  url = {https://doi.org/10.1099/mgen.0.001262}\n}"
+    },
+    {
+      "bibtex": "@article{belman2024geographical,\n  title = {Geographical migration and fitness dynamics of Streptococcus pneumoniae},\n  author = {Sophie Belman and Noémie Lefrancq and Susan Nzenze and Sarah Downs and Mignon du Plessis and Stephanie W. Lo and Alejandra Corso and Paula Gagetti and Abdullah W. Brooks and Md Hasanuzzaman and Samir K. Saha and Senjuti Saha and Alexander Davydov and Leonid Titov and Samanta Cristine Grassi Almeida and Paul Turner and Chunjiang Zhao and Hui Wang and Margaret Ip and Pak Leung Ho and Pierra Law and Jeremy D. Keenan and Robert Cohen and Emmanuelle Varon and Eric Sampane-Donkor and Balaji Veeraraghavan and Geetha Nagaraj and K. L. Ravikumar and J. Yuvaraj and Varun Shamanna Noga and Rachel Benisty and Ron Dagan and Godfrey Bigogo and Jennifer Verani and Anmol Kiran and Dean B. Everett and Jennifer Cornick and Maaike Alaerts and Shamala Devi Sekaran and Stuart C. Clarke and Benild Moiane and Betuel Sigauque and Helio Mucavele and Andrew J. Pollard and Rama Kandasamy and Philip E. Carter and Stephen K. Obaro and Deborah Lehmann and Rebecca Ford and Theresa J. Ochoa and Anna Skoczynska and Ewa Sadowy and Waleria Hryniewicz and Weronika Puzia and Sanjay Doiphode and Ekaterina Egorova and Elena Voropaeva and Yulia Urban and Tamara Kastrin and Kedibone Ndlangisa and Linda De Gouveia and Mushal Ali and Nicole Wolter and Cebile Lekhuleni and Carmen Muñoz Almagro and Alba Redin Alonso and Desiree Henares and Somporn Srifuengfung and Brenda Kwambana-Adams and Ebenezer Foster-Nyarko and Ebrima Bojang and Martin Antonio and Peggy-Estelle Tientcheu and Jennifer Moïsi and Michele Nurse-Lucas and Patrick E. Akpaka and Özgen Köseoglu Eser and Anthony Scott and David Aanensen and Nicholas Croucher and John A. Lees and Rebecca A. Gladstone and Gerry Tonkin-Hill and Chrispin Chaguza and David Cleary and Kate Mellor and Bernard Beall and Keith P. Klugman and Gail Rodgers and Paulina A. Hawkins and Anne J. Blaschke and Nicole L. Pershing and Lesley McGee and Shabir A. Madhi and Anne von Gottberg and Stephen D. Bentley and Henrik Salje},\n  journal = {Nature},\n  year = {2024},\n  doi = {10.1038/s41586-024-07626-3},\n  url = {https://doi.org/10.1038/s41586-024-07626-3}\n}",
+      "selected": true,
+      "image": "/uploads/fig1acd_2024.png",
+      "imageAlt": "Phylogenetic tree of South African pneumococcal isolates with the GPSC1 and GPSC5 lineages enlarged beside serotype and province colour bars.",
+      "imageCaption": "Figure 1a. Phylogenetic tree of 6,910 South African isolates included in this study. Dominant GPSCs (n > 50) are in purple. GPSC1 (top) and GPSC5 (bottom) are highlighted. The columns describe the serotypes and provincial region for each isolate. The branch length legends refer to single nucleotide polymorphisms (SNPs) per site and trees are midpoint rooted."
+    },
+    {
+      "bibtex": "@article{hawkins2023global,\n  title = {A global genomic perspective on the multidrug-resistant Streptococcus pneumoniae 15A-CC63 sub-lineage following pneumococcal conjugate vaccine introduction},\n  author = {Paulina A. Hawkins and Sopio Chochua and Stephanie W. Lo and Sophie Belman and Martin Antonio and Brenda Kwambana-Adams and Anne von Gottberg and Mignon du Plessis and Jen Cornick and Bernard Beall and Robert F. Breiman and Stephen D. Bentley and Lesley McGee},\n  journal = {Microbial Genomics},\n  year = {2023},\n  doi = {10.1099/mgen.0.000998},\n  url = {https://doi.org/10.1099/mgen.0.000998}\n}"
+    },
+    {
+      "bibtex": "@misc{belman2023geographic,\n  title = {Geographic migration and vaccine-induced fitness changes of Streptococcus pneumoniae},\n  author = {Sophie Belman and Noémie Lefrancq and Susan Nzenze and Sarah Downs and Mignon du Plessis and Stephanie Lo and Lesley McGee and Shabir A. Madhi and Anne von Gottberg and Stephen D. Bentley and Henrik Salje},\n  year = {2023},\n  doi = {10.1101/2023.01.18.524577},\n  url = {https://doi.org/10.1101/2023.01.18.524577}\n}",
+      "preprint": true
+    },
+    {
+      "bibtex": "@phdthesis{belman2023geographic,\n  title = {Geographic Migration and Evolution of Streptococcus pneumoniae},\n  author = {Belman, Sophie},\n  school = {University of Cambridge},\n  year = {2023}\n}"
+    },
+    {
+      "bibtex": "@article{belman2022new,\n  title = {A new perspective on ancient Mitis group streptococcal genetics},\n  author = {Sophie Belman and Chrispin Chaguza and Narender Kumar and Stephanie Lo and Stephen D. Bentley},\n  journal = {Microbial Genomics},\n  year = {2022},\n  doi = {10.1099/mgen.0.000753},\n  url = {https://doi.org/10.1099/mgen.0.000753}\n}"
+    },
+    {
+      "bibtex": "@article{lo2022emergence,\n  title = {Emergence of a multidrug-resistant and virulent Streptococcus pneumoniae lineage mediates serotype replacement after PCV13: an international whole-genome sequencing study},\n  author = {Stephanie W Lo and Kate Mellor and Robert Cohen and Alba Redin Alonso and Sophie Belman and Narender Kumar and Paulina A Hawkins and Rebecca A Gladstone and Anne von Gottberg and Balaji Veeraraghavan and K L Ravikumar and Rama Kandasamy and Sir Andrew J Pollard and Samir K Saha and Godfrey Bigogo and Martin Antonio and Brenda Kwambana-Adams and Shaper Mirza and Sadia Shakoor and Imran Nisar and Jennifer E Cornick and Deborah Lehmann and Rebecca L Ford and Betuel Sigauque and Paul Turner and Jennifer Moïsi and Stephen K Obaro and Ron Dagan and Idrissa Diawara and Anna Skoczyńska and Hui Wang and Philip E Carter and Keith P Klugman and Gail Rodgers and Robert F Breiman and Lesley McGee and Stephen D Bentley and Carmen Muñoz-Almagro and Emmanuelle Varon and Abdullah Brooks and Alejandra Corso and Alexander Davydov and Alison Maguire and Anmol Kiran and Benild Moiane and Bernard Beall and Chunjiang Zhao and David Aanensen and Dean Everett and Diego Faccone and Ebenezer Foster-Nyarko},\n  journal = {The Lancet Microbe},\n  year = {2022},\n  doi = {10.1016/s2666-5247(22)00158-6},\n  url = {https://doi.org/10.1016/s2666-5247(22)00158-6}\n}"
+    },
+    {
+      "bibtex": "@article{belman2022genetic,\n  title = {Genetic background of Cambodian pneumococcal carriage isolates following pneumococcal conjugate vaccine 13},\n  author = {Sophie Belman and Sona Soeng and Chansovannara Soputhy and Rebecca Gladstone and Paulina A. Hawkins and Robert F. Breiman and Lesley McGee and Stephen D. Bentley and Stephanie W. Lo and Paul Turner},\n  journal = {Microbial Genomics},\n  year = {2022},\n  doi = {10.1099/mgen.0.000837},\n  url = {https://doi.org/10.1099/mgen.0.000837}\n}"
+    },
+    {
+      "bibtex": "@article{belman2021psoriasis,\n  title = {Psoriasis Characteristics for the Early Detection of Psoriatic Arthritis},\n  author = {Sophie Belman and Jessica A. Walsh and Courtney Carroll and Michael Milliken and Benjamin Haaland and Kristina Callis Duffin and Gerald G. Krueger and Bing-Jian Feng},\n  journal = {The Journal of Rheumatology},\n  year = {2021},\n  doi = {10.3899/jrheum.201123},\n  url = {https://doi.org/10.3899/jrheum.201123}\n}"
+    },
+    {
+      "bibtex": "@article{anon2021sars,\n  title = {SARS-CoV-2 genomics as a springboard for future disease mitigation in LMICs},\n  journal = {Nature Reviews Microbiology},\n  year = {2021},\n  doi = {10.1038/s41579-021-00664-y},\n  url = {https://doi.org/10.1038/s41579-021-00664-y}\n}"
+    },
+    {
+      "bibtex": "@article{anon2020considerations,\n  title = {Considerations in assessing germline variant pathogenicity using cosegregation analysis.},\n  journal = {Genetics in medicine : official journal of the American College of Medical Genetics},\n  year = {2020},\n  doi = {10.1038/s41436-020-0920-4},\n  url = {https://doi.org/10.1038/s41436-020-0920-4}\n}"
+    }
+  ]
+}

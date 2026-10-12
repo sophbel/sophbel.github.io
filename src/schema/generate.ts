@@ -66,6 +66,7 @@ export interface SveltiaField {
   hint?: string;
   options?: string[];
   field?: SveltiaField;
+  summary?: string;
   fields?: SveltiaField[];
 }
 
@@ -80,7 +81,10 @@ export function toSveltiaFields(fields: Field[]): SveltiaField[] {
     if (field.required === false) emitted.required = false;
     if (field.hint !== undefined) emitted.hint = field.hint;
     if (field.widget === 'select') emitted.options = field.options;
-    if (field.widget === 'list') emitted.field = toSveltiaFields([field.field])[0]!;
+    if (field.widget === 'list') {
+      emitted.field = toSveltiaFields([field.field])[0]!;
+      if (field.summary !== undefined) emitted.summary = field.summary;
+    }
     if (field.widget === 'object') emitted.fields = toSveltiaFields(field.fields);
     return emitted;
   });

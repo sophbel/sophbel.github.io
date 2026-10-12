@@ -102,19 +102,21 @@ export const collections: CollectionSpec[] = [
       body,
     ],
   },
-  {
-    name: 'highlights',
-    // Must match the heading on the Publications page: an editor looking for
-    // "Selected publications" should find it under that name.
-    label: 'Selected publications',
-    labelSingular: 'Selected publication',
-    folder: 'src/content/highlights',
-    fields: [
-      { name: 'doi', label: 'DOI', widget: 'string', hint: 'e.g. 10.1038/s41586-024-07626-3 - must match a paper on your ORCID record' },
-      { name: 'order', label: 'Order', widget: 'number' },
-      { name: 'note', label: 'Why it matters', widget: 'text', required: false },
-    ],
-  },
+];
+
+/**
+ * One paper, as the BibTeX entry it was exported as plus the choices that are
+ * hers rather than the entry's. The Publications page prints every one under
+ * "All publications" and the ones marked `selected` again under "Selected
+ * publications", where a picture can go with them.
+ */
+export const PUBLICATION_FIELDS: Field[] = [
+  { name: 'bibtex', label: 'BibTeX entry', widget: 'text', hint: 'Paste one entry exactly as exported, e.g. from Google Scholar (Cite, then BibTeX). The title, authors, journal, year, DOI and link are read from it.' },
+  { name: 'preprint', label: 'Preprint', widget: 'boolean', required: false, hint: 'Tick if it is a preprint and the entry does not say so. Entries from bioRxiv, medRxiv, arXiv and SSRN are recognised on their own.' },
+  { name: 'selected', label: 'Selected publication', widget: 'boolean', required: false, hint: 'Also list it under Selected publications, at the top of the page' },
+  { name: 'image', label: 'Image', widget: 'image', required: false, hint: 'A figure or graphical abstract for the paper. Shown under it in Selected publications only.' },
+  { name: 'imageAlt', label: 'Image description', widget: 'string', required: false, hint: 'For screen readers: say what the picture shows, briefly. Leave blank if it is purely decorative.' },
+  { name: 'imageCaption', label: 'Image caption', widget: 'text', required: false, hint: 'Shown as text under the picture, such as the figure legend from the paper. Different from the description, which is not shown.' },
 ];
 
 /**
@@ -145,6 +147,28 @@ export const fileCollections: FileCollectionSpec[] = [
           { name: 'orcid', label: 'ORCID iD', widget: 'string' },
           { name: 'github', label: 'GitHub username', widget: 'string', required: false },
           { name: 'scholar', label: 'Google Scholar user id', widget: 'string', required: false },
+        ],
+      },
+    ],
+  },
+  {
+    // One file with every paper in it, rather than a file per paper: the list
+    // is edited as a list, in order, on one screen.
+    name: 'publications',
+    label: 'Publications',
+    files: [
+      {
+        name: 'publications',
+        label: 'Publication list',
+        file: 'src/data/publications.json',
+        fields: [
+          {
+            name: 'publications',
+            label: 'Publications',
+            widget: 'list',
+            summary: '{{fields.bibtex}}',
+            field: { name: 'publication', label: 'Publication', widget: 'object', fields: PUBLICATION_FIELDS },
+          },
         ],
       },
     ],

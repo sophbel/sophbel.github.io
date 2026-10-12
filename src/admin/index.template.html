@@ -96,6 +96,18 @@
     -->
     <script type="module">
       import './sveltia-cms.mjs';
+      import * as publications from './publications-parse.js';
+      import { publicationPreview } from './publication-preview.js';
+
+      // Beside the publication list's form, draw the Publications page as the
+      // BibTeX is pasted. The name is the file's, not the collection's: that is
+      // what Sveltia keys a preview on for a single-file collection.
+      window.CMS.registerPreviewTemplate(
+        'publications',
+        publicationPreview(window.h, publications, '{{SITE_NAME}}'),
+      );
+      window.CMS.registerPreviewStyle(new URL('./publication-preview.css', import.meta.url).href);
+
       window.CMS.init();
     </script>
 

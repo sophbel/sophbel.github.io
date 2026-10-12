@@ -199,26 +199,6 @@ collections:
       - name: body
         label: Content
         widget: markdown
-  - name: highlights
-    label: Selected publications
-    label_singular: Selected publication
-    folder: src/content/highlights
-    create: true
-    extension: md
-    format: frontmatter
-    slug: "{{slug}}"
-    fields:
-      - name: doi
-        label: DOI
-        widget: string
-        hint: e.g. 10.1038/s41586-024-07626-3 - must match a paper on your ORCID record
-      - name: order
-        label: Order
-        widget: number
-      - name: note
-        label: Why it matters
-        widget: text
-        required: false
   - name: settings
     label: Site details
     files:
@@ -270,3 +250,53 @@ collections:
             label: Google Scholar user id
             widget: string
             required: false
+  - name: publications
+    label: Publications
+    files:
+      - name: publications
+        label: Publication list
+        file: src/data/publications.json
+        fields:
+          - name: publications
+            label: Publications
+            widget: list
+            field:
+              name: publication
+              label: Publication
+              widget: object
+              fields:
+                - name: bibtex
+                  label: BibTeX entry
+                  widget: text
+                  hint: Paste one entry exactly as exported, e.g. from Google Scholar (Cite, then BibTeX). The title, authors, journal, year, DOI and link are read from it.
+                - name: preprint
+                  label: Preprint
+                  widget: boolean
+                  required: false
+                  hint: Tick if it is a preprint and the entry does not say so. Entries from bioRxiv, medRxiv, arXiv and SSRN are recognised on their own.
+                - name: selected
+                  label: Selected publication
+                  widget: boolean
+                  required: false
+                  hint: Also list it under Selected publications, at the top of the page
+                - name: note
+                  label: Why it matters
+                  widget: text
+                  required: false
+                  hint: Shown under the paper in Selected publications only
+                - name: image
+                  label: Image
+                  widget: image
+                  required: false
+                  hint: A figure or graphical abstract for the paper. Shown under it in Selected publications only.
+                - name: imageAlt
+                  label: Image description
+                  widget: string
+                  required: false
+                  hint: "For screen readers: say what the picture shows, briefly. Leave blank if it is purely decorative."
+                - name: imageCaption
+                  label: Image caption
+                  widget: text
+                  required: false
+                  hint: Shown as text under the picture, such as the figure legend from the paper. Different from the description, which is not shown.
+            summary: "{{fields.bibtex}}"

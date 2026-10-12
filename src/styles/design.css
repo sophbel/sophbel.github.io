@@ -1249,6 +1249,35 @@
   .pub__meta { max-inline-size: var(--measure); }
 
   /*
+    A selected paper's picture, at its own shape. The markup carries the file's
+    width and height, so the browser holds that shape before the file arrives
+    and nothing below moves; `block-size: auto` (base.css) keeps it from being
+    stretched when the column is narrower than the file. It is never made larger
+    than it is, so a small figure is not blown up past its resolution. A rule
+    around it marks the edge of a figure whose own background is white.
+  */
+  .pub__figure { max-inline-size: var(--measure); padding-block-start: var(--space-2xs); }
+  .pub__image { border: var(--rule) solid var(--color-border); }
+  /*
+    A figure legend is running text and often a thousand characters long, so it
+    takes the grey of the author list under a title, not a label's tracked
+    capitals, and sits a notch under it: nine tenths of the smallest step. That
+    is a deliberate size and not a new rung - it resolves to 12.2px at the
+    narrowest and 12.7px on a phone, clear of the 12px floor the checker holds
+    fine print to, and it stays tied to the scale rather than to a pixel value.
+  */
+  .pub__caption {
+    color: var(--color-muted);
+    font-size: calc(var(--step--1) * 0.9);
+    font-style: italic;
+    /* Tighter than the 1.6 body copy it inherits, and the same 1.35 as the
+       other fine print on the page: a legend this long reads as a block, and
+       at 1.6 its twelve lines stood apart like separate sentences. */
+    line-height: 1.35;
+    padding-block-start: var(--space-2xs);
+  }
+
+  /*
     The author list is the one piece of fine print on this site that is running
     text: six names and an "et al." wrap to three lines in a narrow column,
     and the step below body is for labels — a year, a dateline, a menu — where

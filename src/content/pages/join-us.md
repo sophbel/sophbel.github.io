@@ -1,24 +1,17 @@
 ---
-title: Join us
+title: Join
 order: 10
-showInNav: false
+showInNav: true
 description: Opportunities to join the Belman Lab at the Yale School of Public Health.
 ---
 
-<!-- Sophie: this page is a scaffold. Replace the text below with what you
-     actually want to say, then delete this note. -->
-
-We are always glad to hear from people interested in the intersection of
-environmental change, pathogen genomics, and infectious disease epidemiology.
-
 ## Prospective PhD students
 
-Describe which Yale programmes to apply through, and what a good fit looks like.
+If you are interested in a PhD, you need to apply through the [PhD program at
+the Yale School of Public
+Health](https://ysph.yale.edu/school-of-public-health/graduate-programs/phd-degree/).
 
 ## Postdoctoral researchers
 
-Describe current funded positions, or say that enquiries are welcome.
-
-## Undergraduate and Masters projects
-
-Describe what a short project in the lab involves.
+We will soon be looking for postdoctoral researchers. If you are interested,
+please get in touch by email; the address is at the foot of this page.

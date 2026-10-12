@@ -1,18 +1,18 @@
 ---
-import { formatAuthors, type Publication } from '../lib/orcid.ts';
+import { formatAuthors, type Publication } from '../lib/publications.ts';
 import { site } from '../lib/site.ts';
+import { url } from '../lib/paths.ts';
 
 interface Props {
   publications: Publication[];
-  /** Curated notes keyed by DOI. */
-  notes?: Record<string, string>;
+  /** Draw each entry's own picture under it. Only the selected list does. */
+  showImages?: boolean;
 }
-const { publications, notes = {} } = Astro.props;
+const { publications, showImages = false } = Astro.props;
 ---
 <ol class="pubs">
   {publications.map((publication) => {
     const { shown, truncated } = formatAuthors(publication.authors, { max: 6, emphasise: site.name });
-    const note = publication.doi ? notes[publication.doi] : undefined;
     return (
       <li class="pub">
         {/*
@@ -64,7 +64,21 @@ const { publications, notes = {} } = Astro.props;
         {publication.doi && (
           <p class="pub__doi"><a href={`https://doi.org/${publication.doi}`} rel="noopener">doi:{publication.doi}</a></p>
         )}
-        {note && <p class="small">{note}</p>}
+        {/*
+          The picture comes last, so the year's rail still lines up with the
+          title and not with the top of a figure. `alt` is the editor's own
+          description, empty when she has given none: that is the right answer
+          for a decorative picture and the visible gap in the CMS form for any
+          other. `width` and `height` are the file's own, read at build time, so
+          the page holds the picture's real shape before it arrives and does not
+          jump. They are left off only for a format that has no pixel size.
+        */}
+        {showImages && publication.image && (
+          <figure class="pub__figure">
+            <img class="pub__image" src={url(publication.image)} alt={publication.imageAlt ?? ''} width={publication.imageWidth ?? undefined} height={publication.imageHeight ?? undefined} loading="lazy" decoding="async" />
+            {publication.imageCaption && <figcaption class="pub__caption">{publication.imageCaption}</figcaption>}
+          </figure>
+        )}
       </li>
     );
   })}
