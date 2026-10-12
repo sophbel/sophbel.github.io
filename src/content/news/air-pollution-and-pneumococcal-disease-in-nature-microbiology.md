@@ -2,23 +2,21 @@
 title: Air pollution and pneumococcal disease in Nature Microbiology
 date: 2026-09-14
 summary: Which pneumococcal subtypes are circulating changes how air pollution affects the risk of invasive disease in South Africa.
+image: ''
+imageAlt: ''
 ---
 
-We published our paper in *Nature Microbiology*:
+We published our paper in _Nature Microbiology_:
 [Pneumococcal population structure influences the effects of air pollution on invasive disease risk in South Africa](https://doi.org/10.1038/s41564-026-02458-5).
 
-We followed about 59,000 cases of invasive pneumococcal disease over 19 years in
-South Africa's national surveillance programme, together with air pollution and
-temperature data. We found that the effect of air pollution depends on which
-subtypes of the bacterium are common. Where some subtypes were common, cases
-rose within the same week of high pollution; across all cases, risk peaked
-about two weeks after exposure. Older adults and young children were the most
-vulnerable.
 
-We suggest that cleaner air could lower the risk, and that combining
-environmental monitoring with genomic surveillance could help predict outbreaks
-and prepare vaccination and hospitals. We did the work with the National
-Institute for Communicable Diseases in Johannesburg, the Barcelona
-Supercomputing Center and the Wellcome Sanger Institute. Read the
-[press release from the Wellcome Sanger
-Institute](https://www.sanger.ac.uk/news_item/bacteria-in-airway-shape-air-pollution-health-risk/).
+TLDR: changes in weather and air pollution influence the risk for invasive pneumococcal disease (e.g. meningitis or bacteremia) with variation by age and disease type. Additionally, the serotypes and lineages of bacteria circulating in the population influence the timing and magnitude of this risk. Looking forward to exploring these genome-environment-disease interactions further at [**Yale School of Public Health**](https://www.linkedin.com/school/yalesph/)!
+
+This work brought together over 59,000 epidemiological cases spanning 19 years from GERMS-SA and over 4,000 genome-sequenced isolates from the Global Pneumococcal Sequencing Project.
+
+Using distributed lag non-linear models in a Bayesian hierarchical framework, we found that changes in weather and air pollution influence IPD risk, with variations by age, disease presentation, serotype, and lineage. Cold temperatures, moderate humidity, and high temperatures all increased risk with variable timing. Air pollution (specifically PM2.5) consistently increased disease risk, but response timing varied across serotypes (immediate heightened risk for  NVT serotype 8 and PCV serotypes 4 and 23F), and lineages (such as GPSC21). Some of these different effects by strain could be explained by their gene prevalence (pangenome) and may suggest divergent serotype-specific invasion pathways. For example, the acute serotype 4 effect could be driven by its high prevalence of virulent psrP adhesion gene. Lots more to do! Looking forward to continuing this work towards identifying mechanisms and exploring different geographic and sociodemographic contexts over the coming years!
+
+
+Huge thanks to the team at [**National Institute for Communicable Diseases (NICD)**](https://www.linkedin.com/company/national-institute-for-communicable-diseases-nicd/) (NICD), especially Anne von Gottberg and my co-authors there [**Cebile Lekhuleni**](https://www.linkedin.com/in/cebile-lekhuleni/), [**Jackie Kleynhans**](https://www.linkedin.com/in/jackie-kleynhans-40840475/), [**Meiring Susan**](https://www.linkedin.com/in/meiring-susan-a122b725/), [**Mignon du Plessis**](https://www.linkedin.com/in/mignon-du-plessis-28b21918/) without whom this work would not be possible. Thanks to [**Rachel Lowe**](https://www.linkedin.com/in/drrachellowe/) and the GHR team at [**Barcelona Supercomputing Center**](https://www.linkedin.com/company/barcelona-supercomputing-center/) for climate and health discussions throughout development of this project. Thanks to [**Stephanie LO**](https://www.linkedin.com/in/stephanie-lo-ba2a9133/) and the GPS project and partners, especially at [**Wellcome Sanger Institute**](https://www.linkedin.com/company/wellcome-sanger-institute/), for continuing support. Global collaborations like this are critical to answering such complex questions across massive microbial diversity. Thanks to [**Cristina Carnerero**](https://www.linkedin.com/in/cristina-carnerero-q/) and [**Daniela Lührsen**](https://www.linkedin.com/in/danielaluhrsen/) for lots of lessons about atmospheric composition and [**Giovenale Moirano**](https://www.linkedin.com/in/giovenale-moirano-82549492/) for helping develop the method to incorporate the genomes into this analysis. Finally thanks to [**Schmidt Science Fellows**](https://www.linkedin.com/company/-schmidt-science-fellows/) without whom this wouldn’t have been possible. 
+
+Read the [press release from the Wellcome Sanger Institute](https://www.sanger.ac.uk/news_item/bacteria-in-airway-shape-air-pollution-health-risk/).
