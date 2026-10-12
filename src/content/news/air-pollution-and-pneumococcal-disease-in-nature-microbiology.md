@@ -1,7 +1,7 @@
 ---
 title: 'We published our paper in Nature Microbiology: Pneumococcal population structure influences the effects of air pollution on invasive disease risk in South Africa.'
 date: 2026-09-14
-summary: changes in weather and air pollution influence the risk for invasive pneumococcal disease (e.g. meningitis or bacteremia) with variation by age and disease type. Additionally, the serotypes and lineages of bacteria circulating in the population influence the timing and magnitude of this risk.
+summary: Changes in weather and air pollution influence the risk for invasive pneumococcal disease (e.g. meningitis or bacteremia) with variation by age and disease type. Additionally, the serotypes and lineages of bacteria circulating in the population influence the timing and magnitude of this risk.
 image: ''
 imageAlt: ''
 ---
