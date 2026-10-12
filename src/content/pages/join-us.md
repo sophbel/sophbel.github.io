@@ -15,6 +15,4 @@ We will be opening a position some time next year, keep on eye on this space.
 
 ## Prospective PhD students
 
-If you are interested in a PhD, you need to apply through the [PhD program at
-the Yale School of Public
-Health](https://ysph.yale.edu/school-of-public-health/graduate-programs/phd-degree/).
+If you are interested in a PhD in the Yale School of Public Health, you need to apply through the  [Graduate School of Arts and Sciences](https://ysph.yale.edu/school-of-public-health/graduate-programs/phd-degree/).
