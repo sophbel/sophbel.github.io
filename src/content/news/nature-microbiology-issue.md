@@ -1,7 +1,7 @@
 ---
 title: Nature Microbiology Issue
 date: 2026-10-12T17:23:00
-summary: ''
+summary: The October issue of Nature Microbiology (Volume 11 Issue 10) containing our recent paper is out! https://www.nature.com/articles/s41564-026-02458-5
 image: /uploads/natmicro.png
 imageAlt: ''
 ---
