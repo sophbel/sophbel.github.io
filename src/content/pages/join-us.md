@@ -5,13 +5,16 @@ showInNav: true
 description: Opportunities to join the Belman Lab at the Yale School of Public Health.
 ---
 
+## Collaborations
+
+Always excited to discuss research synergies. Get in touch if there is a collaboration you are hoping to pursue.
+
+## Postdoctoral researchers
+
+We will be opening a position some time next year, keep on eye on this space. 
+
 ## Prospective PhD students
 
 If you are interested in a PhD, you need to apply through the [PhD program at
 the Yale School of Public
 Health](https://ysph.yale.edu/school-of-public-health/graduate-programs/phd-degree/).
-
-## Postdoctoral researchers
-
-We will soon be looking for postdoctoral researchers. If you are interested,
-please get in touch by email; the address is at the foot of this page.
