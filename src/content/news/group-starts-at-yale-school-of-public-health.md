@@ -1,12 +1,10 @@
 ---
 title: Group starts at Yale School of Public Health
 date: 2026-09-01
-summary: ''
+summary: The next adventure begins. I am thrilled to be starting my group at the Yale School of Public Health in the Department of Environmental Health Science. What a perfect home for someone like myself, with research sitting in the intersection of several disciplines!
 image: /uploads/ysph.jpg
 imageAlt: The blue Yale University School of Public Health sign at 60 College Street, with plants in front of it.
 ---
-
-The next adventure begins. I am thrilled to be starting my group at the [**Yale School of Public Health**](https://www.linkedin.com/school/yalesph/) in the Department of Environmental Health Science. What a perfect home for someone like myself, with research sitting in the intersection of several disciplines!  
 
 🧬 The Belman research group will use pathogen genomes to understand infectious disease dynamics, including how the environment impacts disease patterns and how existing microbial diversity both modifies and is modified by these effects. 
 
