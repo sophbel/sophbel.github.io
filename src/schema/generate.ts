@@ -32,8 +32,11 @@ function zodForField(field: Field): z.ZodType {
       return z.boolean();
     case 'datetime':
       return z.coerce.date();
-    case 'select':
-      return z.enum(field.options as [string, ...string[]]);
+    case 'select': {
+      const options = z.enum(field.options as [string, ...string[]]);
+      // The CMS saves an optional select left alone as "", not as a missing key.
+      return field.required === false ? z.union([options, z.literal('')]) : options;
+    }
     case 'list':
       return z.array(zodForField(field.field));
     case 'object':
