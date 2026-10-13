@@ -130,6 +130,18 @@ home page — the page they are about, one tap away — and the footer carries t
 lab and her name on every page. The home page keeps all of it, because there
 the identity is not chrome in front of the content; it is the content.
 
+**On a phone with script, the bar is one control.** Five labels shared out across
+320px left each compartment barely wider than its word, so below 42rem the bar
+is a single "Menu" button and the pages open upward from it as a list of 44px
+rows, the current page marked in the accent. The collapsed bar is the same
+height as the five-tab bar, which is what `--menu-bar` adds up, so the page's
+own padding at the foot has no new number. It is an enhancement: without script
+the five-tab bar is what a phone gets, and from 42rem up, where the menu is in
+the flow, the button is not drawn. It closes on Escape, on a tap outside, and on
+returning from the browser's cache. `pnpm check:responsive` opens and closes it
+at each phone width, and with script off; `test/menu-toggle.test.ts` pins the
+two rules that are plain to read in the source.
+
 The items divide the bar with `flex: 1 1 auto` and centre their labels in what
 they get, which puts every compartment boundary exactly halfway between two
 words at every width, with no number to keep in step. `flex: 1` is the version

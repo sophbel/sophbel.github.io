@@ -55,6 +55,8 @@ const MIN_BODY_PX = 16;
 const MIN_TOUCH_PX = 44;
 /** Under this width the visitor is holding the page, and the floors apply. */
 const MOBILE_MAX_PX = 700;
+/** 42rem: below it the menu is the burger, from it up the menu is in the flow. */
+const BURGER_MAX_PX = 42 * 16;
 /** 62rem: where the three-column module opens and the identity becomes 14rem. */
 const MODULE_MIN_PX = 992;
 
@@ -174,7 +176,7 @@ for (const vp of VIEWPORTS) {
 
     const smallTargets = await page.evaluate(
       ({ minTouch }) => {
-        const STANDING = '.site-nav a, .social a, .footer a, .skip, .section-index a';
+        const STANDING = '.site-nav a, .nav__toggle, .social a, .footer a, .skip, .section-index a';
         return [...document.querySelectorAll(STANDING)]
           .filter((el) => {
             const b = el.getBoundingClientRect();
@@ -215,6 +217,84 @@ for (const vp of VIEWPORTS) {
         `${where}: ${r.socialLinks} identity links wrap raggedly onto ${r.socialRows} rows`,
       );
     }
+  }
+
+  /*
+    The menu itself, not just its size.
+
+    Everything above measures a page at rest. The burger is a control with
+    states, and a state that cannot be reached is invisible to a measurement:
+    a bar that never opens measures perfectly. So below 42rem this opens it,
+    reads what opened, and shuts it by each of the three ways a reader will
+    try; and above 42rem it checks the button is not there to get in the way.
+  */
+  await page.goto(BASE + '/', { waitUntil: 'networkidle' });
+  const where = `${vp.name}/menu`;
+  const state = () =>
+    page.evaluate(() => {
+      const toggle = document.querySelector('.nav__toggle');
+      const links = [...document.querySelectorAll('.site-nav a')];
+      const shown = links.filter((a) => a.getBoundingClientRect().height > 0);
+      const bar = document.querySelector('.site-nav').getBoundingClientRect();
+      return {
+        toggleShown: !!toggle && toggle.getBoundingClientRect().height > 0,
+        toggleHeight: Math.round(toggle?.getBoundingClientRect().height ?? 0),
+        expanded: toggle?.getAttribute('aria-expanded'),
+        total: links.length,
+        shown: shown.length,
+        shortest: Math.round(Math.min(...shown.map((a) => a.getBoundingClientRect().height))),
+        barTop: Math.round(bar.top),
+        barBottom: Math.round(bar.bottom),
+        focusOnToggle: document.activeElement === toggle,
+        current: links.filter((a) => a.getAttribute('aria-current') === 'page').length,
+        overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+      };
+    });
+
+  if (vp.width < BURGER_MAX_PX) {
+    const closed = await state();
+    if (!closed.toggleShown) problems.push(`${where}: no menu button below 42rem`);
+    if (closed.toggleHeight < MIN_TOUCH_PX) problems.push(`${where}: menu button is ${closed.toggleHeight}px, under ${MIN_TOUCH_PX}`);
+    if (closed.expanded !== 'false') problems.push(`${where}: menu button starts ${closed.expanded}, not closed`);
+    if (closed.shown !== 0) problems.push(`${where}: ${closed.shown} menu links showing while the menu is closed`);
+    if (Math.abs(closed.barBottom - vp.height) > 1) problems.push(`${where}: the closed bar ends ${closed.barBottom}px, not at the foot (${vp.height}px)`);
+
+    await page.click('.nav__toggle');
+    const open = await state();
+    if (open.expanded !== 'true') problems.push(`${where}: menu button did not report open`);
+    if (open.shown !== open.total) problems.push(`${where}: ${open.shown} of ${open.total} menu links showing when open`);
+    if (open.shortest < MIN_TOUCH_PX) problems.push(`${where}: a menu row is ${open.shortest}px, under ${MIN_TOUCH_PX}`);
+    if (open.barTop < 0) problems.push(`${where}: the open menu runs off the top of the screen`);
+    if (Math.abs(open.barBottom - vp.height) > 1) problems.push(`${where}: the open menu moved off the foot of the screen`);
+    if (open.current !== 1) problems.push(`${where}: ${open.current} links marked as the current page`);
+    if (open.overflow) problems.push(`${where}: the open menu scrolls the page sideways`);
+
+    await page.keyboard.press('Escape');
+    const escaped = await state();
+    if (escaped.expanded !== 'false' || escaped.shown !== 0) problems.push(`${where}: Escape did not close the menu`);
+    if (!escaped.focusOnToggle) problems.push(`${where}: Escape did not return focus to the menu button`);
+
+    await page.click('.nav__toggle');
+    await page.mouse.click(vp.width / 2, 10);
+    const outside = await state();
+    if (outside.expanded !== 'false' || outside.shown !== 0) problems.push(`${where}: a tap outside did not close the menu`);
+
+    // And the way in for anyone with no script: the five-tab bar, whole.
+    const bare = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, javaScriptEnabled: false });
+    const barePage = await bare.newPage();
+    await barePage.goto(BASE + '/', { waitUntil: 'networkidle' });
+    const noScript = await barePage.evaluate(() => ({
+      toggle: document.querySelector('.nav__toggle').getBoundingClientRect().height,
+      links: [...document.querySelectorAll('.site-nav a')].filter((a) => a.getBoundingClientRect().height > 0).length,
+      total: document.querySelectorAll('.site-nav a').length,
+    }));
+    if (noScript.toggle > 0) problems.push(`${where}: a menu button with no script to open it`);
+    if (noScript.links !== noScript.total) problems.push(`${where}: with no script ${noScript.links} of ${noScript.total} menu links are reachable`);
+    await bare.close();
+  } else {
+    const wide = await state();
+    if (wide.toggleShown) problems.push(`${where}: a menu button at ${vp.width}px, where the menu is already in the page`);
+    if (wide.shown !== wide.total) problems.push(`${where}: ${wide.shown} of ${wide.total} menu links showing`);
   }
   await ctx.close();
 }

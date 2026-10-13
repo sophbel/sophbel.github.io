@@ -115,6 +115,7 @@ export const PUBLICATION_FIELDS: Field[] = [
   { name: 'preprint', label: 'Preprint', widget: 'boolean', required: false, hint: 'Tick if it is a preprint and the entry does not say so. Entries from bioRxiv, medRxiv, arXiv and SSRN are recognised on their own.' },
   { name: 'selected', label: 'Selected publication', widget: 'boolean', required: false, hint: 'Also list it under Selected publications, at the top of the page' },
   { name: 'image', label: 'Image', widget: 'image', required: false, hint: 'A figure or graphical abstract for the paper. Shown under it in Selected publications only.' },
+  { name: 'imageScale', label: 'Image width', widget: 'select', options: ['Half width', 'Large', 'Full width'], required: false, hint: 'How wide the picture is, as a share of the column. Large is the default. A busy figure can take more room, a simple one less.' },
   { name: 'imageAlt', label: 'Image description', widget: 'string', required: false, hint: 'For screen readers: say what the picture shows, briefly. Leave blank if it is purely decorative.' },
   { name: 'imageCaption', label: 'Image caption', widget: 'text', required: false, hint: 'Shown as text under the picture, such as the figure legend from the paper. Different from the description, which is not shown.' },
 ];

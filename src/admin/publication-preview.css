@@ -30,8 +30,10 @@ h2 { margin: 1.75rem 0 0.75rem; font-size: 1.25rem; border-block-start: 2px soli
 .pub__authors strong { color: light-dark(#161616, #ececec); }
 .pub__meta em { color: light-dark(#161616, #ececec); }
 .pub__figure { margin: 0.4rem 0 0; max-width: 100%; }
+.pub__figure--half .pub__image { max-width: 50%; }
+.pub__figure--full .pub__image { max-width: 100%; }
 .pub__caption { margin-top: 0.35rem; font-size: 0.75rem; line-height: 1.35; font-style: italic; color: light-dark(#555, #aaa); }
-.pub__image { display: block; max-width: 100%; height: auto; border: 1px solid light-dark(#d4d4d4, #3a3a3a); }
+.pub__image { display: block; max-width: 70%; height: auto; border: 1px solid light-dark(#d4d4d4, #3a3a3a); }
 .tag { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; border: 1px solid currentColor; padding: 0 0.3em; }
 .pub--problem { grid-template-columns: 1fr; padding: 0.6rem 0.75rem; border: 1px solid light-dark(#b3261e, #f2a29b); }
 .pub--problem > * { grid-column: 1; }

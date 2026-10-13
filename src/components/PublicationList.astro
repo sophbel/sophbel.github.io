@@ -74,7 +74,7 @@ const { publications, showImages = false } = Astro.props;
           jump. They are left off only for a format that has no pixel size.
         */}
         {showImages && publication.image && (
-          <figure class="pub__figure">
+          <figure class:list={['pub__figure', publication.imageScale !== 'large' && `pub__figure--${publication.imageScale}`]}>
             <img class="pub__image" src={url(publication.image)} alt={publication.imageAlt ?? ''} width={publication.imageWidth ?? undefined} height={publication.imageHeight ?? undefined} loading="lazy" decoding="async" />
             {publication.imageCaption && <figcaption class="pub__caption">{publication.imageCaption}</figcaption>}
           </figure>

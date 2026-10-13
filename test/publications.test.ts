@@ -7,6 +7,8 @@ import {
   type PublicationData,
 } from '../src/lib/publications.ts';
 import { publicationEntries } from '../src/lib/publication-data.ts';
+import { PUBLICATION_FIELDS, collections } from '../src/schema/collections.ts';
+import { toZod } from '../src/schema/generate.ts';
 
 /** A row holding a minimal BibTeX entry, identified in assertions by its title. */
 const bib = (title: string, fields = '', year: string | null = '2024') =>
@@ -74,6 +76,14 @@ describe('toPublication', () => {
     const thesis = toPublication({ bibtex: '@phdthesis{k, title={T}, school={University of Cambridge}, year={2023}}' });
     expect(thesis.journal).toBe('PhD thesis, University of Cambridge');
     expect(toPublication({ bibtex: '@phdthesis{k, title={T}, year={2023}}' }).journal).toBe('PhD thesis');
+  });
+
+  it('reads the image width the editor chose, and calls anything else, or nothing, large', () => {
+    expect(pub('a').imageScale).toBe('large');
+    expect(pub('a', { imageScale: 'Half width' }).imageScale).toBe('half');
+    expect(pub('a', { imageScale: 'Large' }).imageScale).toBe('large');
+    expect(pub('a', { imageScale: 'Full width' }).imageScale).toBe('full');
+    expect(pub('a', { imageScale: 'Enormous' }).imageScale).toBe('large');
   });
 
   it('defaults the flag to false and the image to null, and carries them through when set', () => {
@@ -156,6 +166,18 @@ describe('formatAuthors', () => {
 
   it('handles an empty author list', () => {
     expect(formatAuthors([], { max: 6 })).toEqual({ shown: [], truncated: false });
+  });
+});
+
+describe('the publication schema', () => {
+  it('keeps the image width through validation, instead of dropping it as unknown', () => {
+    const row = { bibtex: '@article{k, title={T}}', imageScale: 'Half width' };
+    expect(toZod(PUBLICATION_FIELDS).parse(row)).toMatchObject({ imageScale: 'Half width' });
+  });
+
+  it('does not offer the image width on the folder collections, whose pages have no such setting', () => {
+    const offered = collections.filter((c) => c.fields.some((f) => f.name === 'imageScale')).map((c) => c.name);
+    expect(offered).toEqual([]);
   });
 });
 
