@@ -927,6 +927,86 @@
     text-decoration-line: underline;
   }
 
+  /*
+    The burger.
+
+    Five labels shared out across a 320px bar left each one a compartment
+    barely wider than its word, with "Publications" hard against its
+    neighbours. Below 42rem, where there is script to open it, the bar is one
+    control instead - the word "Menu" and a mark - and the list of pages opens
+    upward from it, one 44px row each.
+
+    The collapsed bar is the same height as the old one: one 44px control, the
+    padding above and below it and the rule on top, which is what `--menu-bar`
+    adds up, so the page's own padding at the foot needs no new number. The
+    open list overlays the page and takes nothing from it.
+
+    Scoped to `.js`, so that with no script the five-tab bar above is what a
+    phone gets and every page is still reachable. Mobile-first like the rest of
+    this file: it is the default, and from 42rem up, where the menu is in the
+    flow, the button is switched off and the links put back.
+  */
+  .nav__toggle { display: none; }
+
+  .js .nav__toggle {
+    align-items: center;
+    appearance: none;
+    background: none;
+    border: 0;
+    color: var(--color-heading);
+    cursor: pointer;
+    display: flex;
+    flex: 1 0 100%;
+    font: inherit;
+    font-size: var(--step--1);
+    font-weight: 500;
+    justify-content: space-between;
+    letter-spacing: 0.08em;
+    min-block-size: 2.75rem;
+    /* Drawn last: the bar is at the foot of the screen, the list opens above it. */
+    order: 2;
+    padding: 0;
+    text-transform: uppercase;
+  }
+  .nav__icon {
+    block-size: 1.5rem;
+    fill: none;
+    inline-size: 1.5rem;
+    stroke: currentColor;
+    stroke-width: var(--rule-strong);
+  }
+  .nav__icon-close,
+  .nav__toggle[aria-expanded='true'] .nav__icon-open { display: none; }
+  .nav__toggle[aria-expanded='true'] .nav__icon-close { display: inline; }
+
+  /* Closed, the bar is the button and nothing else. */
+  .js .site-nav:not(.is-open) a { display: none; }
+
+  /*
+    Open, the pages stack above the button, a hairline between each pair in
+    the grid grey. They are the rows of one list, so the vertical dividers of
+    the five-tab bar go, and the label sits at the start of the row, where a
+    list is read, not in the middle of it.
+  */
+  .js .site-nav.is-open { flex-direction: column; flex-wrap: nowrap; }
+  .js .site-nav.is-open a {
+    border-block-end: var(--rule) solid var(--color-grid);
+    flex: 0 0 auto;
+    justify-content: flex-start;
+    order: 1;
+  }
+  .js .site-nav a + a::before { content: none; }
+
+  @media (min-width: 42rem) {
+    /*
+      The menu is in the flow from here, and the button has nothing to open.
+      The class that opens it is cleared by script as the window crosses this
+      width, so only the two rules that hold when it is not set need undoing.
+    */
+    .js .nav__toggle { display: none; }
+    .js .site-nav:not(.is-open) a { display: inline-flex; }
+  }
+
   @media (min-width: 62rem) {
     /*
       Stacked, the underline that marks the current page runs the width of the
@@ -1212,6 +1292,7 @@
   }
   .pub {
     border-block-end: var(--rule) solid var(--color-border);
+    overflow-wrap: anywhere; /* a pasted URL in a summary must not widen a phone */
     padding-block: var(--space-s);
   }
   /*
@@ -1257,7 +1338,23 @@
     around it marks the edge of a figure whose own background is white.
   */
   .pub__figure { max-inline-size: var(--measure); padding-block-start: var(--space-2xs); }
+  /*
+    Seven tenths of the column, not all of it: a figure at the full width
+    dwarfs the citation it illustrates and runs to half a screen. Only from
+    34rem, where the years are railed and the column is wide enough to spare it:
+    on a phone the figure already has little enough room, and its labels are
+    small as it is. A fraction of the column, not of `--measure`, because the
+    column is narrower than the measure beside the index. The caption below
+    keeps the whole width, so its lines do not get more numerous.
+  */
   .pub__image { border: var(--rule) solid var(--color-border); }
+  @media (min-width: 34rem) {
+    .pub__image { max-inline-size: 70%; }
+    /* The editor's choice for one paper, where a figure wants more or less. */
+    .pub__figure--half .pub__image { max-inline-size: 50%; }
+    .pub__figure--full .pub__image { max-inline-size: 100%; }
+  }
+
   /*
     A figure legend is running text and often a thousand characters long, so it
     takes the grey of the author list under a title, not a label's tracked

@@ -7,6 +7,11 @@
 
 import { decodeLatex, parseBibAuthors, parseBibtex } from './bibtex.ts';
 
+export type ImageScale = 'half' | 'large' | 'full';
+
+/** The CMS's wording for a width, and what the page calls it. Anything else, or nothing, is large. */
+const IMAGE_SCALES: Record<string, ImageScale> = { 'Half width': 'half', Large: 'large', 'Full width': 'full' };
+
 export interface Publication {
   title: string;
   /** Null for an entry that carries no year, such as a talk; those sort last. */
@@ -20,6 +25,8 @@ export interface Publication {
   selected: boolean;
   /** Site path of an uploaded picture, drawn under the paper in the selected list. */
   image: string | null;
+  /** How wide the picture is drawn, as a share of its column. */
+  imageScale: ImageScale;
   imageAlt: string | null;
   /** The picture's own pixel size, filled in at build time so the page can reserve its space. */
   imageWidth: number | null;
@@ -35,6 +42,7 @@ export interface PublicationData {
   preprint?: boolean;
   selected?: boolean;
   image?: string;
+  imageScale?: string;
   imageAlt?: string;
   imageCaption?: string;
 }
@@ -90,6 +98,7 @@ export function toPublication(data: PublicationData): Publication {
     isPreprint,
     selected: data.selected === true,
     image: data.image ?? null,
+    imageScale: IMAGE_SCALES[data.imageScale ?? ''] ?? 'large',
     imageAlt: data.imageAlt ?? null,
     imageWidth: null,
     imageHeight: null,

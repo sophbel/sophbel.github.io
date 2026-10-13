@@ -73,6 +73,16 @@ describe('the publication preview', () => {
     expect(images[0]!.props.src).toBe('/uploads/fig.png');
   });
 
+  it('marks a picture the editor made narrower or wider, and leaves the default unmarked', () => {
+    const tree = render([
+      { bibtex: bib('Half'), selected: true, image: '/uploads/a.png', imageScale: 'Half width' },
+      { bibtex: bib('Full', 'year = {2023}'), selected: true, image: '/uploads/b.png', imageScale: 'Full width' },
+      { bibtex: bib('Large', 'year = {2022}'), selected: true, image: '/uploads/c.png' },
+    ]);
+    const classes = find(tree, (n) => n.tag === 'figure').map((n) => n.props.className);
+    expect(classes).toEqual(['pub__figure pub__figure--half', 'pub__figure pub__figure--full', 'pub__figure']);
+  });
+
   it('shows the caption as text under the picture, and only with a picture', () => {
     const tree = render([
       { bibtex: bib('Pictured'), selected: true, image: '/uploads/fig.png', imageCaption: 'Monthly case counts, 2005 to 2023.' },

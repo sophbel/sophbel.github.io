@@ -279,16 +279,20 @@ collections:
                   widget: boolean
                   required: false
                   hint: Also list it under Selected publications, at the top of the page
-                - name: note
-                  label: Why it matters
-                  widget: text
-                  required: false
-                  hint: Shown under the paper in Selected publications only
                 - name: image
                   label: Image
                   widget: image
                   required: false
                   hint: A figure or graphical abstract for the paper. Shown under it in Selected publications only.
+                - name: imageScale
+                  label: Image width
+                  widget: select
+                  required: false
+                  hint: How wide the picture is, as a share of the column. Large is the default. A busy figure can take more room, a simple one less.
+                  options:
+                    - Half width
+                    - Large
+                    - Full width
                 - name: imageAlt
                   label: Image description
                   widget: string

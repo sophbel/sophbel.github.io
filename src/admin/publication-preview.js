@@ -59,7 +59,7 @@ export function publicationPreview(h, lib, siteName) {
       selected && publication.image
         ? h(
             'figure',
-            { className: 'pub__figure' },
+            { className: 'pub__figure' + (publication.imageScale !== 'large' ? ' pub__figure--' + publication.imageScale : '') },
             h('img', { className: 'pub__image', src: imageSource(getAsset, publication.image), alt: publication.imageAlt || '' }),
             publication.imageCaption ? h('figcaption', { className: 'pub__caption' }, publication.imageCaption) : null,
           )
