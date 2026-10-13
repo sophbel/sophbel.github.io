@@ -97,7 +97,7 @@ export function toPublication(data: PublicationData): Publication {
     url: url ?? (doi ? `https://doi.org/${doi}` : null),
     isPreprint,
     selected: data.selected === true,
-    image: data.image ?? null,
+    image: data.image || null,
     imageScale: IMAGE_SCALES[data.imageScale ?? ''] ?? 'large',
     imageAlt: data.imageAlt ?? null,
     imageWidth: null,

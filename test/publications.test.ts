@@ -175,6 +175,17 @@ describe('the publication schema', () => {
     expect(toZod(PUBLICATION_FIELDS).parse(row)).toMatchObject({ imageScale: 'Half width' });
   });
 
+  it('accepts a row as the CMS saves it, with every optional field left empty', () => {
+    // Sveltia writes "" for an untouched optional select, which once broke the live build.
+    const row = { bibtex: '@article{k, title={T}}', preprint: false, selected: false, image: '', imageScale: '', imageAlt: '', imageCaption: '' };
+    expect(() => toZod(PUBLICATION_FIELDS).parse(row)).not.toThrow();
+    expect(toPublication(row)).toMatchObject({ imageScale: 'large', image: null });
+  });
+
+  it('still rejects a width that is not one of the options', () => {
+    expect(() => toZod(PUBLICATION_FIELDS).parse({ bibtex: 'x', imageScale: 'Huge' })).toThrow();
+  });
+
   it('does not offer the image width on the folder collections, whose pages have no such setting', () => {
     const offered = collections.filter((c) => c.fields.some((f) => f.name === 'imageScale')).map((c) => c.name);
     expect(offered).toEqual([]);
