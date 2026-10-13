@@ -1292,6 +1292,7 @@
   }
   .pub {
     border-block-end: var(--rule) solid var(--color-border);
+    overflow-wrap: anywhere; /* a pasted URL in a summary must not widen a phone */
     padding-block: var(--space-s);
   }
   /*
