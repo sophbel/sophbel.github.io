@@ -2,7 +2,7 @@
 title: Join
 order: 10
 showInNav: true
-description: Opportunities to join the Belman Lab at the Yale School of Public Health.
+description: Opportunities to join the Belman Group at the Yale School of Public Health.
 ---
 
 ## Collaborations
