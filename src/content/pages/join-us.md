@@ -11,8 +11,9 @@ Always excited to discuss research synergies. Get in touch if there is a collabo
 
 ## Postdoctoral researchers
 
-We will be opening a position some time next year, keep on eye on this space. 
+[![](/uploads/Belman_PostdocAdvertisement.png "Postdoctoral Scientist, Environmental and Genomic Epidemiology of Bacterial Disease")](https://docs.google.com/forms/d/e/1FAIpQLSdaksrR-bMTHvR2fLtHrh4Eiekxgu5sETNk8B9XANXHWgnf0g/viewform)
 
+ 
 ## Prospective PhD students
 
 If you are interested in a PhD in the Yale School of Public Health, you need to apply through the  [Graduate School of Arts and Sciences](https://ysph.yale.edu/school-of-public-health/graduate-programs/phd-degree/).
