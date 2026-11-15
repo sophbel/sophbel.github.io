@@ -51,7 +51,7 @@ Ideally, the candidate would be able to start between January 4 and March 1, 202
 
 #### How to apply
 
-[Please submit a CV and why you are interested in working with me and on these topics to this google form. Only the highest levels of academic excellence will be considered. ](https://docs.google.com/forms/d/e/1FAIpQLSdaksrR-bMTHvR2fLtHrh4Eiekxgu5sETNk8B9XANXHWgnf0g/viewform)
+Please submit a CV and why you are interested in working with me, and on these topics to [this google form](https://docs.google.com/forms/d/e/1FAIpQLSdaksrR-bMTHvR2fLtHrh4Eiekxgu5sETNk8B9XANXHWgnf0g/viewform). Only the highest levels of academic excellence will be considered. 
 
 ## Prospective PhD students
 
