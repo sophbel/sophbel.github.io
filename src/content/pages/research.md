@@ -15,15 +15,15 @@ My research aims to understand how the environment shapes evolutionary selection
 
 ### Epidemiological Associations
 
-I am interested in understanding how environmental factors together with other human factors shape disease dynamics, especially for infectious diseases for which we have a limited understanding of the climatic sensitivity.
+We are interested in understanding how environmental factors together with other human factors shape disease dynamics, especially for infectious diseases for which we have a limited understanding of the climatic sensitivity.
 
 ### Biological Mechanisms
 
-I am interested in identifying the biological mechanisms by which environmental factors shape microbial evolution. I am working to identify signals of genomic evolutionary selection in microbial populations exposed to high levels of air pollution or other environmental factors.
+We are interested in identifying the biological mechanisms by which environmental factors shape microbial evolution. We are working to identify signals of genomic evolutionary selection in microbial populations exposed to high levels of air pollution or other environmental factors.
 
 ### Genomic and Environmental Data Integration
 
-I am developing frameworks to bring pathogen genomic data to similar space-time scales as environmental and sociodemographic datasets enabling further exploration of their interactions.
+We are developing frameworks to bring pathogen genomic data to similar space-time scales as environmental and sociodemographic datasets enabling further exploration of their interactions.
 
 ## Previous research
 
