@@ -45,7 +45,7 @@ We encourage applicants who meet the core requirements but do not have experienc
 
 #### Start date, duration and salary
 
-Ideally, the candidate would be able to start between January 4 and March 1, 2027, though earlier or later start dates may be considered. The duration for this position is 1 year with potential to renew. Starting salary for a Postdoctoral Associate is $68,500. Salary will also include competitive benefits, and support for travel to conferences will be provided. We can support visa applications through the Yale OISS (https://oiss.yale.edu/) although for some countries it may not be possible at this time. The position is in person at Yale University, New Haven, CT, USA.
+Ideally, the candidate would be able to start between January 4 and March 1, 2027, though earlier or later start dates may be considered. The duration for this position is 1 year with potential to renew. Starting salary for a Postdoctoral Associate is $68,500. Salary will also include competitive benefits, and support for travel to conferences will be provided. We can support visa applications through the Yale OISS (https://oiss.yale.edu/) although for some countries it may not be possible at this time. The position is in person at Yale University, New Haven, CT, USA. The candidate will have a desk within the Public Health Modeling Unit.
 
 #### How to apply
 
