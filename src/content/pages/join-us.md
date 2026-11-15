@@ -37,13 +37,13 @@ The postdoctoral scientist will lead and contribute to projects that combine pat
 
 #### Preferred qualifications
 
+We encourage applicants who meet the core requirements but do not have experience in every preferred area to apply. We expect candidates to bring depth and expertise in at least one field and an interest in learning the others. We are looking for someone who is enthusiastic and quick to learn, can lead projects to completion, and develop or implement new methods. 
+
 •	Experience with Bayesian spatial modeling, time-series modeling, bacterial population genomics, or phylogeographic methods.
 
 •	Familiarity with environmental exposure data, such as air pollution, atmospheric composition, or meteorological data. 
 
 •	Comfort working with diverse data formats (e.g., genome sequence data, geospatial files, gridded climate or atmospheric data, human mobility data).
-
-We encourage applicants who meet the core requirements but do not have experience in every preferred area to apply. We expect candidates to bring depth and expertise in at least one field and an interest in learning the others. We are looking for someone who is enthusiastic and quick to learn, can lead projects to completion, and develop or implement new methods. 
 
 #### Start date, duration and salary
 
