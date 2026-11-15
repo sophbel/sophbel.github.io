@@ -5,13 +5,11 @@ showInNav: true
 description: Opportunities to join the Belman Group at the Yale School of Public Health.
 ---
 
-## Collaborations
+# Collaborations
 
 I am always excited to discuss research synergies. Get in touch if there is a collaboration you are hoping to pursue.
 
-## Postdoctoral researchers
-
-##
+# Postdoctoral researchers
 
 ### Postdoctoral Scientist, Environmental and Genomic Epidemiology of Bacterial Disease
 
@@ -53,14 +51,14 @@ Ideally, the candidate would be able to start between January 4 and March 1, 202
 
 Please submit a CV and why you are interested in working with me, and on these topics to [this google form](https://docs.google.com/forms/d/e/1FAIpQLSdaksrR-bMTHvR2fLtHrh4Eiekxgu5sETNk8B9XANXHWgnf0g/viewform). Only the highest levels of academic excellence will be considered. 
 
-## Prospective PhD students
+# Prospective PhD students
 
 If you are interested in a PhD in the Yale School of Public Health, you need to apply through the  [Graduate School of Arts and Sciences](https://ysph.yale.edu/school-of-public-health/graduate-programs/phd-degree/). I am in the Environmental Health Sciences department but there may be opportunities for co-supervision across other departments at YSPH. 
 
-## Masters or Undergraduate
+# Masters or Undergraduate
 
 If you are an undergraduate or a Masters student who is interested in working with us please reach out. I would like to know what about our team makes you excited, what your goals are (e.g. learning a particular skill, trying things out to determine career path, specific research question).
 
-## Expression of Interest
+# Expression of Interest
 
 [https://forms.gle/iDFQ5TY4cqXG3tMMA](https://forms.gle/iDFQ5TY4cqXG3tMMA)
